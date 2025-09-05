@@ -14,9 +14,7 @@ namespace web {
         [LCEngineFunction("TestCloudFunc")]
         public static string TestCloudFunc([LCEngineFunctionParam("name")] string name)
         {
-            string msg = $"TestCloudFunc, {name}";
-            Console.WriteLine(msg);
-            return msg;
+            return "TestCloudFunc:"+ name;
         }
     }
 }
