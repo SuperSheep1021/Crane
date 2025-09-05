@@ -31,36 +31,42 @@ namespace web {
             LCQuery<LCUser> userQuery = LCUser.GetQuery();
             ReadOnlyCollection<LCUser> users = await userQuery.Find();
 
-            // 创建消息内容
-            string messageTitle = "每周更新与新闻";
-            string messageContent = "亲爱的用户，欢迎阅读本周更新！我们很高兴为您带来新功能和改进。";
-
-            // 给每个用户发送消息
-            foreach (LCUser user in users)
-            {
-                // 创建消息对象
-                LCObject message = new LCObject("Message");
-                message["title"] = messageTitle;
-                message["content"] = messageContent;
-                message["recipient"] = user;
-                message["isRead"] = false;
-
-                // 保存到数据库
-                await message.Save();
-
-                // 发送推送通知（如果需要）
-                LCPush push = new LCPush();
-                push.Data = new Dictionary<string, object> {{ "alert", messageTitle }};
-                //push.Query = new LCQuery<LCInstallation>().WhereEqualTo("user", user);
-                await push.Send();
+            foreach (LCUser uu in users) {
+                Console.WriteLine(uu.ObjectId);
+                Console.WriteLine(uu.Password);
             }
 
-            // 记录发送任务
-            LCObject taskRecord = new LCObject("SendTask");
-            taskRecord["type"] = "weekly";
-            taskRecord["userCount"] = users.Count;
-            taskRecord["status"] = "completed";
-            await taskRecord.Save();
+
+            //// 创建消息内容
+            //string messageTitle = "每周更新与新闻";
+            //string messageContent = "亲爱的用户，欢迎阅读本周更新！我们很高兴为您带来新功能和改进。";
+
+            //// 给每个用户发送消息
+            //foreach (LCUser user in users)
+            //{
+            //    // 创建消息对象
+            //    LCObject message = new LCObject("Message");
+            //    message["title"] = messageTitle;
+            //    message["content"] = messageContent;
+            //    message["recipient"] = user;
+            //    message["isRead"] = false;
+
+            //    // 保存到数据库
+            //    await message.Save();
+
+            //    // 发送推送通知（如果需要）
+            //    LCPush push = new LCPush();
+            //    push.Data = new Dictionary<string, object> {{ "alert", messageTitle }};
+            //    //push.Query = new LCQuery<LCInstallation>().WhereEqualTo("user", user);
+            //    await push.Send();
+            //}
+
+            //// 记录发送任务
+            //LCObject taskRecord = new LCObject("SendTask");
+            //taskRecord["type"] = "weekly";
+            //taskRecord["userCount"] = users.Count;
+            //taskRecord["status"] = "completed";
+            //await taskRecord.Save();
         }
 
 
