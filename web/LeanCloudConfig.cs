@@ -20,10 +20,9 @@ namespace web
 
 
             AVClient.Initialize(appId, appKey);
-            AVClient.UseMasterKey = true;
             AVClient.CurrentConfiguration.MasterKey = masterKey;
-
-            Console.WriteLine(masterKey);
+            AVClient.UseMasterKey = true;
+            Console.WriteLine(AVClient.CurrentConfiguration.MasterKey);
         }
 
     }
