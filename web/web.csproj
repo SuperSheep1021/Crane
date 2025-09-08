@@ -32,4 +32,7 @@
     <Content Remove="Libs\Engine.deps.json" />
     <Content Remove="Libs\Engine.deps.json" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LeanCloud" Version="2017.10.15.3" />
+  </ItemGroup>
 </Project>
