@@ -29,7 +29,7 @@ namespace web {
 
 
         [LCEngineFunction("GetAllUserIdsAsync")]
-        public async Task<string>  GetAllUserIdsAsync()
+        public static async Task<string>  GetAllUserIdsAsync()
         {
             var userIds = new List<string>();
             // 创建用户查询
