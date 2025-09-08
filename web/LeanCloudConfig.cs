@@ -22,7 +22,7 @@ namespace web
             AVClient.Initialize(appId, appKey);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
-            Console.WriteLine(AVClient.CurrentConfiguration.MasterKey);
+            Console.WriteLine("≈‰÷√≥…π¶!!!");
         }
 
     }
