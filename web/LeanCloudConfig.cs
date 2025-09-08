@@ -22,6 +22,8 @@ namespace web
             AVClient.Initialize(appId, appKey);
             AVClient.UseMasterKey = true;
             AVClient.CurrentConfiguration.MasterKey = masterKey;
+
+            Console.WriteLine(masterKey);
         }
 
     }
