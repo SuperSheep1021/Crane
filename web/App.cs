@@ -29,16 +29,13 @@ namespace web {
 
 
         [LCEngineFunction("GetAllUserIdsAsync")]
-        public static async void GetAllUserIdsAsync()
+        public async Task<string>  GetAllUserIdsAsync()
         {
             var userIds = new List<string>();
-
             // 创建用户查询
             var query = new AVQuery<AVUser>();
-
             // 只选择 objectId 字段以提高性能
             query.Select("objectId");
-
             // 设置跳过记录数
             int skip = 0;
             const int limit = 100; // 每次查询的最大记录数
@@ -70,11 +67,11 @@ namespace web {
                 skip += limit;
             }
 
-            foreach (string id in userIds)
-            {
-                Console.WriteLine(id);
+            string ids = string.Empty;
+            foreach (string id in userIds) {
+                ids += id;
             }
-            //return userIds;
+            return ids;
         }
 
 
