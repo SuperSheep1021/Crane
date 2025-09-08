@@ -34,8 +34,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LeanCloud" Version="2017.10.15.3" />
-    <PackageReference Include="LeanCloud.Core" Version="2016.12.28.1" />
-    <PackageReference Include="LeanCloud.Engine" Version="2020.9.10.1" />
-    <PackageReference Include="LeanCloud.Storage" Version="2020.1.16.1" />
   </ItemGroup>
 </Project>
