@@ -19,8 +19,9 @@ namespace web.Models
             try
             {
                 // 1. 验证发送者
-                if (!await ValidateSenderAsync(request.SenderId))
+                if (!await ValidateSenderAsync(request.senderId))
                 {
+                    Console.WriteLine("ValidateSender：false");
                     return new MessageProcessingResult
                     {
                         Success = false,
@@ -88,14 +89,14 @@ namespace web.Models
         {
             var message = new LCMessage
             {
-                SenderId = request.SenderId,
-                Content = request.Content,
-                Type = request.Type,
+                SenderId = request.senderId,
+                Content = request.content,
+                Type = request.msgType,
                 IsProcessed = false
             };
 
             // 添加元数据
-            foreach (var item in request.Metadata)
+            foreach (var item in request.metadata)
             {
                 message[item.Key] = item.Value;
             }
@@ -109,7 +110,7 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessMessageByTypeAsync(ClientMessageRequest request)
         {
-            switch (request.Type.ToLower())
+            switch (request.msgType.ToLower())
             {
                 case "text":
                     return await ProcessTextMessageAsync(request);
@@ -124,7 +125,7 @@ namespace web.Models
                     return await ProcessImageMessageAsync(request);
 
                 default:
-                    return $"收到 {request.Type} 类型消息";
+                    return $"收到 {request.msgType} 类型消息";
             }
         }
 
@@ -134,13 +135,13 @@ namespace web.Models
         private async Task<string> ProcessTextMessageAsync(ClientMessageRequest request)
         {
             // 这里可以添加自然语言处理或关键词检测
-            if (request.Content.Contains("帮助"))
+            if (request.content.Contains("帮助"))
             {
                 return "这是帮助信息：...";
             }
-            Console.WriteLine($"已收到您的消息: {request.Content}");
+            Console.WriteLine($"已收到您的消息: {request.content}");
             // 默认响应
-            return $"已收到您的消息: {request.Content}";
+            return $"已收到您的消息: {request.content}";
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessCommandMessageAsync(ClientMessageRequest request)
         {
-            var command = request.Content.ToLower();
+            var command = request.content.ToLower();
 
             switch (command)
             {
@@ -169,8 +170,8 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessLocationMessageAsync(ClientMessageRequest request)
         {
-            if (request.Metadata.TryGetValue("latitude", out var latObj) &&
-                request.Metadata.TryGetValue("longitude", out var lngObj))
+            if (request.metadata.TryGetValue("latitude", out var latObj) &&
+                request.metadata.TryGetValue("longitude", out var lngObj))
             {
                 // 处理位置信息
                 return $"已收到位置信息: {latObj}, {lngObj}";
@@ -184,7 +185,7 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessImageMessageAsync(ClientMessageRequest request)
         {
-            if (request.Metadata.TryGetValue("url", out var urlObj))
+            if (request.metadata.TryGetValue("url", out var urlObj))
             {
                 // 处理图片
                 return $"已收到图片: {urlObj}";

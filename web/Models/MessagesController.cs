@@ -71,16 +71,12 @@ namespace web.Models
 
     public class ClientMessageRequest
     {
-        [Required]
-        public string SenderId { get; set; }
+        public string conversationId;
+        public string senderId;
+        public string msgType="text";
+        public string content;
 
-        [Required]
-        [MinLength(1)]
-        public string Content { get; set; }
-
-        public string Type { get; set; } = "text";
-
-        public Dictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object> metadata { get; set; } = new Dictionary<string, object>();
     }
 
     public class MessageProcessingResult
