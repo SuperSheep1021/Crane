@@ -4,7 +4,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace web {
     public class Program {
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
+            LeanCloudConfig.InitializeFromEnvironment();
             CreateHostBuilder(args).Build().Run();
         }
 

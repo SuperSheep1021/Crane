@@ -12,14 +12,16 @@ using LeanCloud.Engine;
 
 namespace web {
     public class Startup {
-        public Startup(IConfiguration configuration) {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services) 
+        {
             services.AddLogging(builder => {
                 builder
                     .AddFilter("Microsoft", LogLevel.Error)
