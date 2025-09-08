@@ -138,7 +138,7 @@ namespace web.Models
             {
                 return "这是帮助信息：...";
             }
-
+            Console.WriteLine($"已收到您的消息: {request.Content}");
             // 默认响应
             return $"已收到您的消息: {request.Content}";
         }
