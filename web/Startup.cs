@@ -1,14 +1,15 @@
-using System;
-using System.IO;
+using LeanCloud;
+using LeanCloud.Engine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using LeanCloud;
-using LeanCloud.Engine;
+using System;
+using System.IO;
+using web.Models;
 
 namespace web {
     public class Startup {
@@ -22,7 +23,8 @@ namespace web {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) 
         {
-            services.AddLogging(builder => {
+            services.AddLogging(builder => 
+            {
                 builder
                     .AddFilter("Microsoft", LogLevel.Error)
                     .AddFilter("System", LogLevel.Error)
@@ -47,11 +49,16 @@ namespace web {
             LCEngine.Initialize(services);
 
             services.AddControllersWithViews();
+
+            // 注册消息服务
+            services.AddSingleton<MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment()) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) 
+        {
+            if (env.IsDevelopment()) 
+            {
                 app.UseDeveloperExceptionPage();
             } else {
                 app.UseExceptionHandler("/Home/Error");
