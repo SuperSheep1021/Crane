@@ -20,11 +20,31 @@ namespace web {
             return msg;
         }
 
-        [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser user)
+        private static async Task<bool> ValidateSenderAsync(string senderId)
         {
-            Console.WriteLine("Console.WriteLine" + user.ClassName);
-            LCLogger.Debug("LCLogger.Debug" + user.ClassName);
+            try
+            {
+                AVQuery<AVUser> query = new AVQuery<AVUser>().WhereEqualTo("objectId", senderId);
+                AVUser user = await query.FirstAsync();
+                return user != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
+        public static async Task OnLogin(LCUser user)
+        {
+            bool isValidate = await ValidateSenderAsync(user.ObjectId);
+            if (isValidate)
+            {
+                Console.WriteLine($"{0}login", user["usename"]);
+            }
+            else {
+                Console.WriteLine($"无效的登陆 {0}",user.ObjectId);
+            }
         }
 
         [LCEngineFunction("TestCloudFunc")]
