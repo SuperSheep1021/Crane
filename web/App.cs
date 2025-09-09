@@ -37,14 +37,17 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
+            Console.WriteLine("Execute OnLogin");
             bool isValidate = await ValidateSenderAsync(user.ObjectId);
+            Console.WriteLine("ValidateSenderAsync");
             if (isValidate)
             {
-                Console.WriteLine($"{0}login", user["usename"]);
+                Console.WriteLine(string.Format("{0}login", user["usename"]));
             }
             else {
-                Console.WriteLine($"无效的登陆 {0}",user.ObjectId);
+                Console.WriteLine(string.Format("无效的登陆{0}", user.ObjectId));
             }
+            Console.WriteLine("final OnLogin");
         }
 
         [LCEngineFunction("TestCloudFunc")]
