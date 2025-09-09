@@ -42,7 +42,14 @@ namespace web {
             Console.WriteLine("ValidateSenderAsync");
             if (validateUser!=null)
             {
-                validateUser["loginTime"] = DateTime.Now.ToString();
+
+                if (validateUser.ContainsKey("loginTime"))
+                {
+                    validateUser["loginTime"] = DateTime.Now.ToString();
+                }
+                else {
+                    validateUser.Add("loginTime",DateTime.Now.ToString() );
+                }
                 Console.WriteLine(string.Format("{0} login", validateUser["username"]));
             }
             else {
