@@ -2,11 +2,13 @@
 using LeanCloud.Engine;
 using LeanCloud.Push;
 using LeanCloud.Storage;
+using LeanCloud.Storage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace web {
@@ -69,16 +71,26 @@ namespace web {
         }
 
 
-        [LCEngineFunction("_clientOffline")]
-        public static async Task<object> ClientOffLine([FromBody] ClientStatusEventPayload payload)
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
+        public static async Task<object> ClientOffLine(dynamic request)
         {
-            Console.WriteLine("start execute: ClientOffLine");
-            Console.WriteLine(payload.ClientId);
-            Console.WriteLine("end execute: ClientOffLine");
+            // 打印整个request对象（转换为JSON字符串以便查看）
+            string requestJson = Json.Encode(request);
+            Console.WriteLine($"收到_clientOnline请求: {requestJson}");
+
+            // 您也可以访问request中的具体属性
+            string clientId = request.clientId;
+            string sessionToken = request.sessionToken;
+            string deviceId = request.deviceId;
+
+            Console.WriteLine($"客户端上线: {clientId}, 设备ID: {deviceId}");
+
+            // 您的业务逻辑，比如更新用户状态等
+
             return new { success = true };
         }
 
-        [LCEngineFunction("_clientOnline")]
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static async Task<object> ClientOnLine([FromBody] ClientStatusEventPayload payload)
         {
             Console.WriteLine("start execute: ClientOnLine");
