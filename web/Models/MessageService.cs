@@ -28,15 +28,19 @@ namespace web.Models
                         Response = "无效的发送者"
                     };
                 }
-
+                Console.WriteLine("ValidateSender：true");
                 // 2. 保存消息到 LeanCloud
                 var messageId = await SaveMessageToLeanCloudAsync(request);
+                Console.WriteLine(string.Format("saveMessageToLeanCloud__{0}", messageId ));
 
                 // 3. 根据消息类型处理消息
                 var response = await ProcessMessageByTypeAsync(request);
+                Console.WriteLine(string.Format("ProcessMessageByTypeAsync__{0}", messageId));
 
                 // 4. 更新消息状态为已处理
                 await MarkMessageAsProcessedAsync(messageId);
+                Console.WriteLine(string.Format("MarkMessageAsProcessedAsync__{0}", messageId));
+
 
                 //// 5. 可选：发送推送通知给相关用户
                 //if (request.Type == "urgent")
