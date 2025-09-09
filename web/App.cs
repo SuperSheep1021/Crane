@@ -92,7 +92,11 @@ namespace web {
             try
             {
                 var dic = request;
-                LCLogger.Debug(dic["ClientId"]);
+                foreach (KeyValuePair<string,object> item in dic) 
+                {
+                    LCLogger.Debug(item.Key+":"+item.Value);
+                }
+                
             }
             catch (LCException ex) {
                 LCLogger.Error(ex.Message);
