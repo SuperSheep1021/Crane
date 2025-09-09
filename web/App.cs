@@ -42,7 +42,7 @@ namespace web {
             Console.WriteLine("ValidateSenderAsync");
             if (validateUser!=null)
             {
-                Console.WriteLine(string.Format("{0}login", validateUser["usename"]));
+                Console.WriteLine(string.Format("{0}login", validateUser["username"]));
             }
             else {
                 Console.WriteLine(string.Format("无效的登陆{0}", user.ObjectId) );
