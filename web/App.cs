@@ -76,9 +76,20 @@ namespace web {
 
             // 您也可以访问request中的具体属性
             string data = JsonConvert.SerializeObject(request);
-
             LCLogger.Debug($"客户端下线: {request}");
+            try
+            {
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                }
 
+            }
+            catch (LCException ex)
+            {
+                LCLogger.Error(ex.Message);
+            }
             // 您的业务逻辑，比如更新用户状态等
 
             return new { success = true };
