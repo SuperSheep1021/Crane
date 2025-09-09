@@ -8,17 +8,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
 namespace web {
     public class App
     {
-        // 定义接收 Hook 负载（Payload）的数据结构
-        // LeanCloud 会发送一个 JSON 对象，包含以下字段
-        
 
         // Function
         [LCEngineFunction("hello")]
