@@ -89,6 +89,14 @@ namespace web {
         {
             string data = JsonConvert.SerializeObject(request);
             LCLogger.Debug($"客户端上线: {request}");
+            try
+            {
+                var dic = request;
+                LCLogger.Debug(dic["ClientId"]);
+            }
+            catch (LCException ex) {
+                LCLogger.Error(ex.Message);
+            }
             return new { success = true };
         }
     }
