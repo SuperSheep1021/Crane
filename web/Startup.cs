@@ -31,11 +31,12 @@ namespace web {
                     .AddConsole();
             });
 
-            LCLogger.LogDelegate = (level, log) => {
+            LCLogger.LogDelegate = (level, log) => 
+            {
                 switch (level) {
-                    //case LCLogLevel.Debug:
-                    //    Console.WriteLine($"[DEBUG] {log}");
-                    //    break;
+                    case LCLogLevel.Debug:
+                        Console.WriteLine($"[DEBUG] {log}");
+                        break;
                     case LCLogLevel.Warn:
                         Console.WriteLine($"[WARN] {log}");
                         break;
