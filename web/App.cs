@@ -81,7 +81,7 @@ namespace web {
             //Console.WriteLine($"收到_clientOnline请求: {requestJson}");
 
             // 您也可以访问request中的具体属性
-            string data = JsonConvert.DeserializeObject<string>(request);
+            string data = JsonConvert.SerializeObject(request);
 
             LCLogger.Debug($"客户端下线: {request}");
 
@@ -93,10 +93,8 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static async Task<object> ClientOnLine(dynamic request)
         {
-            Console.WriteLine("start execute: ClientOnLine");
-            string data = JsonConvert.DeserializeObject<string>(request);
+            string data = JsonConvert.SerializeObject(request);
             LCLogger.Debug($"客户端上线: {request}");
-            Console.WriteLine("end execute: ClientOnLine");
             return new { success = true };
         }
     }
