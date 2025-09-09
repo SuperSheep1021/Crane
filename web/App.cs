@@ -45,26 +45,41 @@ namespace web {
         }
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLogin(LCUser user)
+        public static async Task OnLogin(dynamic request)
         {
-            AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
-            if (validateUser != null)
+            string data = JsonConvert.SerializeObject(request);
+            try
             {
-                if (validateUser.ContainsKey("loginTime"))
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
                 {
-                    validateUser["loginTime"] = DateTime.Now.ToString();
+                    LCLogger.Debug(item.Key + ":" + item.Value);
                 }
-                else
-                {
-                    validateUser.Add("loginTime", DateTime.Now.ToString());
-                }
-                await validateUser.SaveAsync();
-                LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
+
             }
-            else
+            catch (LCException ex)
             {
-                LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
+                LCLogger.Error(ex.Message);
             }
+
+            //AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
+            //if (validateUser != null)
+            //{
+            //    if (validateUser.ContainsKey("loginTime"))
+            //    {
+            //        validateUser["loginTime"] = DateTime.Now.ToString();
+            //    }
+            //    else
+            //    {
+            //        validateUser.Add("loginTime", DateTime.Now.ToString());
+            //    }
+            //    await validateUser.SaveAsync();
+            //    LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
+            //}
+            //else
+            //{
+            //    LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
+            //}
         }
 
 
