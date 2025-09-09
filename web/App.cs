@@ -20,17 +20,17 @@ namespace web {
             return msg;
         }
 
-        private static async Task<bool> ValidateSenderAsync(string senderId)
+        private static async Task<AVUser> ValidateSenderAsync(string senderId)
         {
             try
             {
                 AVQuery<AVUser> query = new AVQuery<AVUser>().WhereEqualTo("objectId", senderId);
                 AVUser user = await query.FirstAsync();
-                return user != null;
+                return user;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -38,17 +38,18 @@ namespace web {
         public static async Task OnLogin(LCUser user)
         {
             Console.WriteLine("Execute OnLogin");
-            bool isValidate = await ValidateSenderAsync(user.ObjectId);
+            AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
             Console.WriteLine("ValidateSenderAsync");
-            if (isValidate)
+            if (validateUser!=null)
             {
-                Console.WriteLine(string.Format("{0}login", user["usename"]));
+                Console.WriteLine(string.Format("{0}login", validateUser["usename"]));
             }
             else {
-                Console.WriteLine(string.Format("无效的登陆{0}", user.ObjectId));
+                Console.WriteLine(string.Format("无效的登陆{0}", user.ObjectId) );
             }
             Console.WriteLine("final OnLogin");
         }
+
 
         [LCEngineFunction("TestCloudFunc")]
         public static string TestCloudFunc([LCEngineFunctionParam("name")] string name)
