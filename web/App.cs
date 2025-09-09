@@ -42,7 +42,6 @@ namespace web {
             Console.WriteLine("ValidateSenderAsync");
             if (validateUser!=null)
             {
-
                 if (validateUser.ContainsKey("loginTime"))
                 {
                     validateUser["loginTime"] = DateTime.Now.ToString();
@@ -50,9 +49,9 @@ namespace web {
                 }
                 else {
                     validateUser.Add("loginTime",DateTime.Now.ToString() );
-                    await validateUser.SaveAsync();
                     Console.WriteLine("!ContainsKey loginTime" +  DateTime.Now.ToString());
                 }
+                await validateUser.SaveAsync();
                 Console.WriteLine(string.Format("{0} login", validateUser["username"]));
             }
             else {
