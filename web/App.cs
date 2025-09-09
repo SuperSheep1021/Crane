@@ -20,6 +20,12 @@ namespace web {
             return msg;
         }
 
+        [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
+        public static void OnLogin(LCUser user)
+        {
+            Console.WriteLine("Console.WriteLine" + user.ClassName);
+            LCLogger.Debug("LCLogger.Debug" + user.ClassName);
+        }
 
         [LCEngineFunction("TestCloudFunc")]
         public static string TestCloudFunc([LCEngineFunctionParam("name")] string name)
