@@ -47,29 +47,24 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
-            Console.WriteLine("Execute OnLogin");
             AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
-            Console.WriteLine("ValidateSenderAsync");
             if (validateUser != null)
             {
                 if (validateUser.ContainsKey("loginTime"))
                 {
                     validateUser["loginTime"] = DateTime.Now.ToString();
-                    Console.WriteLine("ContainsKey loginTime" + DateTime.Now.ToString());
                 }
                 else
                 {
                     validateUser.Add("loginTime", DateTime.Now.ToString());
-                    Console.WriteLine("!ContainsKey loginTime" + DateTime.Now.ToString());
                 }
                 await validateUser.SaveAsync();
-                Console.WriteLine(string.Format("{0} login", validateUser["username"]));
+                LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
             }
             else
             {
-                Console.WriteLine(string.Format("无效的登陆{0}", user.ObjectId));
+                LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
             }
-            Console.WriteLine("final OnLogin");
         }
 
 
@@ -77,7 +72,6 @@ namespace web {
         public static async Task<object> ClientOffLine(dynamic request)
         {
             // 打印整个request对象（转换为JSON字符串以便查看）
-            //string requestJson = Json.Encode(request);
             //Console.WriteLine($"收到_clientOnline请求: {requestJson}");
 
             // 您也可以访问request中的具体属性
