@@ -19,7 +19,7 @@ namespace web.Models
             try
             {
                 // 1. 验证发送者
-                if (!await ValidateSenderAsync(request.senderId))
+                if (!await ValidateSenderAsync(request.SenderId))
                 {
                     Console.WriteLine("ValidateSender：false");
                     return new MessageProcessingResult
@@ -70,10 +70,8 @@ namespace web.Models
         {
             try
             {
-                var query = new AVQuery<AVUser>()
-                    .WhereEqualTo("objectId", senderId);
-
-                var user = await query.FirstAsync();
+                AVQuery<AVUser> query = new AVQuery<AVUser>().WhereEqualTo("objectId", senderId);
+                AVUser user = await query.FirstAsync();
                 return user != null;
             }
             catch
@@ -87,16 +85,16 @@ namespace web.Models
         /// </summary>
         private async Task<string> SaveMessageToLeanCloudAsync(ClientMessageRequest request)
         {
-            var message = new LCMessage
+            LCMessage message = new LCMessage
             {
-                SenderId = request.senderId,
-                Content = request.content,
-                Type = request.msgType,
+                SenderId = request.SenderId,
+                Content = request.Content,
+                Type = request.MsgType,
                 IsProcessed = false
             };
 
             // 添加元数据
-            foreach (var item in request.metadata)
+            foreach (KeyValuePair<string ,object> item in request.metadata)
             {
                 message[item.Key] = item.Value;
             }
@@ -110,7 +108,7 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessMessageByTypeAsync(ClientMessageRequest request)
         {
-            switch (request.msgType.ToLower())
+            switch (request.MsgType.ToLower())
             {
                 case "text":
                     return await ProcessTextMessageAsync(request);
@@ -125,7 +123,7 @@ namespace web.Models
                     return await ProcessImageMessageAsync(request);
 
                 default:
-                    return $"收到 {request.msgType} 类型消息";
+                    return $"收到 {request.MsgType} 类型消息";
             }
         }
 
@@ -135,13 +133,13 @@ namespace web.Models
         private async Task<string> ProcessTextMessageAsync(ClientMessageRequest request)
         {
             // 这里可以添加自然语言处理或关键词检测
-            if (request.content.Contains("帮助"))
+            if (request.Content.Contains("帮助"))
             {
                 return "这是帮助信息：...";
             }
-            Console.WriteLine($"已收到您的消息: {request.content}");
+            Console.WriteLine($"已收到您的消息: {request.Content}");
             // 默认响应
-            return $"已收到您的消息: {request.content}";
+            return $"已收到您的消息: {request.Content}";
         }
 
         /// <summary>
@@ -149,7 +147,7 @@ namespace web.Models
         /// </summary>
         private async Task<string> ProcessCommandMessageAsync(ClientMessageRequest request)
         {
-            var command = request.content.ToLower();
+            var command = request.Content.ToLower();
 
             switch (command)
             {
@@ -199,7 +197,7 @@ namespace web.Models
         /// </summary>
         private async Task MarkMessageAsProcessedAsync(string messageId)
         {
-            var message = AVObject.CreateWithoutData("Message", messageId) as LCMessage;
+            var message = AVObject.CreateWithoutData("AllMessage", messageId) as LCMessage;
             message.IsProcessed = true;
             await message.SaveAsync();
         }

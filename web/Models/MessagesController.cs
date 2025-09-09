@@ -7,6 +7,23 @@ using System.Collections.Generic;
 
 namespace web.Models 
 {
+    public class ClientMessageRequest
+    {
+        public string ConversationId;
+        public string SenderId;
+        public string MsgType = "text";
+        public string Content;
+        public Dictionary<string, object> metadata{ get; set; } = new Dictionary<string, object>();
+    }
+
+    public class MessageProcessingResult
+    {
+        public bool Success { get; set; }
+        public string MessageId { get; set; }
+        public DateTime ProcessedAt { get; set; }
+        public string Response { get; set; }
+    }
+
 
     [ApiController]
     [Route("api/[controller]")]
@@ -69,22 +86,6 @@ namespace web.Models
         }
     }
 
-    public class ClientMessageRequest
-    {
-        public string conversationId;
-        public string senderId;
-        public string msgType="text";
-        public string content;
-
-        public Dictionary<string, object> metadata { get; set; } = new Dictionary<string, object>();
-    }
-
-    public class MessageProcessingResult
-    {
-        public bool Success { get; set; }
-        public string MessageId { get; set; }
-        public DateTime ProcessedAt { get; set; }
-        public string Response { get; set; }
-    }
+    
 
 }
