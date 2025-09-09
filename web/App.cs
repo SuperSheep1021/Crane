@@ -72,16 +72,16 @@ namespace web {
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static async Task<object> ClientOffLine(dynamic request)
+        public static async Task<object> ClientOffLine([FromBody] ClientStatusEventPayload payload)
         {
             // 打印整个request对象（转换为JSON字符串以便查看）
-            string requestJson = Json.Encode(request);
-            Console.WriteLine($"收到_clientOnline请求: {requestJson}");
+            //string requestJson = Json.Encode(request);
+            //Console.WriteLine($"收到_clientOnline请求: {requestJson}");
 
             // 您也可以访问request中的具体属性
-            string clientId = request.clientId;
-            string sessionToken = request.sessionToken;
-            string deviceId = request.deviceId;
+            string clientId = payload.ClientId;
+            string sessionToken = payload.SessionToken;
+            string deviceId = payload.DeviceId;
 
             Console.WriteLine($"客户端上线: {clientId}, 设备ID: {deviceId}");
 
@@ -94,7 +94,7 @@ namespace web {
         public static async Task<object> ClientOnLine([FromBody] ClientStatusEventPayload payload)
         {
             Console.WriteLine("start execute: ClientOnLine");
-            Console.WriteLine(payload.ClientId);
+            Console.WriteLine($"客户端上线: {payload.ClientId}, 设备ID: {payload.DeviceId}");
             Console.WriteLine("end execute: ClientOnLine");
             return new { success = true };
         }
