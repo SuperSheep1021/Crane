@@ -4,6 +4,8 @@ using LeanCloud.Push;
 using LeanCloud.Storage;
 using LeanCloud.Storage.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -72,18 +74,16 @@ namespace web {
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static async Task<object> ClientOffLine([FromBody] ClientStatusEventPayload payload)
+        public static async Task<object> ClientOffLine(dynamic request)
         {
             // 打印整个request对象（转换为JSON字符串以便查看）
             //string requestJson = Json.Encode(request);
             //Console.WriteLine($"收到_clientOnline请求: {requestJson}");
 
             // 您也可以访问request中的具体属性
-            string clientId = payload.ClientId;
-            string sessionToken = payload.SessionToken;
-            string deviceId = payload.DeviceId;
+            string data = JsonConvert.DeserializeObject<string>(request);
 
-            Console.WriteLine($"客户端上线: {clientId}, 设备ID: {deviceId}");
+            LCLogger.Debug($"客户端下线: {request}");
 
             // 您的业务逻辑，比如更新用户状态等
 
@@ -91,10 +91,11 @@ namespace web {
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async Task<object> ClientOnLine([FromBody] ClientStatusEventPayload payload)
+        public static async Task<object> ClientOnLine(dynamic request)
         {
             Console.WriteLine("start execute: ClientOnLine");
-            Console.WriteLine($"客户端上线: {payload.ClientId}, 设备ID: {payload.DeviceId}");
+            string data = JsonConvert.DeserializeObject<string>(request);
+            LCLogger.Debug($"客户端上线: {request}");
             Console.WriteLine("end execute: ClientOnLine");
             return new { success = true };
         }
