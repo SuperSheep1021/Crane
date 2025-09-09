@@ -70,19 +70,21 @@ namespace web {
 
 
         [LCEngineFunction("_clientOffline")]
-        public static void ClientOffLine([FromBody] ClientStatusEventPayload payload)
+        public static async Task<object> ClientOffLine([FromBody] ClientStatusEventPayload payload)
         {
             Console.WriteLine("start execute: ClientOffLine");
             Console.WriteLine(payload.ClientId);
             Console.WriteLine("end execute: ClientOffLine");
+            return new { success = true };
         }
 
         [LCEngineFunction("_clientOnline")]
-        public static void ClientOnLine([FromBody] ClientStatusEventPayload payload)
+        public static async Task<object> ClientOnLine([FromBody] ClientStatusEventPayload payload)
         {
             Console.WriteLine("start execute: ClientOnLine");
             Console.WriteLine(payload.ClientId);
             Console.WriteLine("end execute: ClientOnLine");
+            return new { success = true };
         }
     }
 }
