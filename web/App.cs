@@ -46,9 +46,11 @@ namespace web {
                 if (validateUser.ContainsKey("loginTime"))
                 {
                     validateUser["loginTime"] = DateTime.Now.ToString();
+                    Console.WriteLine("ContainsKey loginTime");
                 }
                 else {
                     validateUser.Add("loginTime",DateTime.Now.ToString() );
+                    Console.WriteLine("!ContainsKey loginTime");
                 }
                 Console.WriteLine(string.Format("{0} login", validateUser["username"]));
             }
