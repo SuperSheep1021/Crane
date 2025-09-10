@@ -1,4 +1,5 @@
 ﻿using LeanCloud;
+using LeanCloud.Core.Internal;
 using LeanCloud.Engine;
 using LeanCloud.Push;
 using LeanCloud.Realtime;
@@ -141,8 +142,8 @@ namespace web {
                 AVObject saveMessage = new AVObject("customMessage");
                 JObject jsonObject = JObject.Parse(dic["content"].ToString());
                 Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
-                saveMessage["content"] = content;
-                saveMessage["IsProcessed"] = false;
+                saveMessage.Set("IsProcessed",false);
+                saveMessage.Set("content", content);
                 await saveMessage.SaveAsync();
 
                 foreach (KeyValuePair<string, object> item in dic)
