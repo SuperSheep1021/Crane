@@ -138,7 +138,7 @@ namespace web {
                     LCLogger.Debug(item.Key + ":" + item.Value);
                     if (item.Key =="content") 
                     {
-                        Dictionary<string, object> content = dic["content"] as Dictionary<string, object>;
+                        Dictionary<string, object> content = item.Value as Dictionary<string, object>;
                         foreach (KeyValuePair<string, object> contentItem in content)
                         {
                             LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
