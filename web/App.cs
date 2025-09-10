@@ -118,12 +118,12 @@ namespace web {
             return new { success = true };
         }
 
-        public class cMessage
+        public class ClientMessage
         {
             public string ClientId;
             public string Conversation;
             public int MessageType;
-            public Dictionary<string, object> Content = new Dictionary<string, object>();
+            public Dictionary<string, object> Data = new Dictionary<string, object>();
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
@@ -132,6 +132,12 @@ namespace web {
             LCLogger.Debug("OnMessageReceived Start");
             try
             {
+                //ClientMessage message = new ClientMessage();
+
+                //message.ClientId = dic["fromPeer"];
+                //message.Conversation = dic["convId"];
+                //message.MessageType = dic["content"]["_lctype"];
+
                 var dic = request;
                 foreach (KeyValuePair<string, object> item in dic)
                 {
@@ -143,6 +149,7 @@ namespace web {
 
                         foreach (KeyValuePair<string, object> contentItem in content)
                         {
+                            //message.Data.Add(contentItem.Key, contentItem.Value);
                             LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
                         }
                     }
@@ -161,14 +168,24 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
         public static async Task<object> OnMessageSent(dynamic request)
         {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"OnMessageSent Start: {data}");
+            LCLogger.Debug("OnMessageSent Start");
             try
             {
                 var dic = request;
                 foreach (KeyValuePair<string, object> item in dic)
                 {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
+                    LCLogger.Debug(item.Key + "______" + item.Value);
+                    if (item.Key == "content")
+                    {
+                        JObject jsonObject = JObject.Parse(item.Value.ToString());
+                        Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
+
+                        foreach (KeyValuePair<string, object> contentItem in content)
+                        {
+                            //message.Data.Add(contentItem.Key, contentItem.Value);
+                            LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
+                        }
+                    }
                 }
 
             }
