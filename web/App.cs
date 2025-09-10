@@ -45,9 +45,34 @@ namespace web {
         }
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLogin(dynamic request)
+        public static async Task OnLogin(LCUser user)
+        {
+            AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
+            if (validateUser != null)
+            {
+                if (validateUser.ContainsKey("loginTime"))
+                {
+                    validateUser["loginTime"] = DateTime.Now.ToString();
+                }
+                else
+                {
+                    validateUser.Add("loginTime", DateTime.Now.ToString());
+                }
+                await validateUser.SaveAsync();
+                LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
+            }
+            else
+            {
+                LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
+            }
+        }
+
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
+        public static async Task<object> ClientOnLine(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
+            LCLogger.Debug($"客户端上线: {request}");
             try
             {
                 var dic = request;
@@ -61,35 +86,14 @@ namespace web {
             {
                 LCLogger.Error(ex.Message);
             }
-
-            //AVUser validateUser = await ValidateSenderAsync(user.ObjectId);
-            //if (validateUser != null)
-            //{
-            //    if (validateUser.ContainsKey("loginTime"))
-            //    {
-            //        validateUser["loginTime"] = DateTime.Now.ToString();
-            //    }
-            //    else
-            //    {
-            //        validateUser.Add("loginTime", DateTime.Now.ToString());
-            //    }
-            //    await validateUser.SaveAsync();
-            //    LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
-            //}
-            //else
-            //{
-            //    LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
-            //}
+            return new { success = true };
         }
+
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static async Task<object> ClientOffLine(dynamic request)
         {
-            // 打印整个request对象（转换为JSON字符串以便查看）
-            //Console.WriteLine($"收到_clientOnline请求: {requestJson}");
-
-            // 您也可以访问request中的具体属性
             string data = JsonConvert.SerializeObject(request);
             LCLogger.Debug($"客户端下线: {request}");
             try
@@ -110,24 +114,52 @@ namespace web {
             return new { success = true };
         }
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async Task<object> ClientOnLine(dynamic request)
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
+        public static async Task<object> OnMessageReceived(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端上线: {request}");
+            LCLogger.Debug($"OnMessageReceived: {request}");
             try
             {
                 var dic = request;
-                foreach (KeyValuePair<string,object> item in dic) 
+                foreach (KeyValuePair<string, object> item in dic)
                 {
-                    LCLogger.Debug(item.Key+":"+item.Value);
+                    LCLogger.Debug(item.Key + ":" + item.Value);
                 }
-                
+
             }
-            catch (LCException ex) {
+            catch (LCException ex)
+            {
                 LCLogger.Error(ex.Message);
             }
+            // 您的业务逻辑，比如更新用户状态等
+
             return new { success = true };
         }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
+        public static async Task<object> OnMessageSent(dynamic request)
+        {
+            string data = JsonConvert.SerializeObject(request);
+            LCLogger.Debug($"OnMessageSent: {request}");
+            try
+            {
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                }
+
+            }
+            catch (LCException ex)
+            {
+                LCLogger.Error(ex.Message);
+            }
+            // 您的业务逻辑，比如更新用户状态等
+
+            return new { success = true };
+        }
+
     }
 }
