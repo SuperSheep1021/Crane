@@ -139,23 +139,25 @@ namespace web {
                 //message.Conversation = dic["convId"];
                 //message.MessageType = dic["content"]["_lctype"];
                 AVObject saveMessage = new AVObject("customMessage");
-                saveMessage["data"] = dic["content"];
+                JObject jsonObject = JObject.Parse(dic["content"].ToString());
+                Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
+                saveMessage["data"] = content;
                 await saveMessage.SaveAsync();
 
                 foreach (KeyValuePair<string, object> item in dic)
                 {
                     LCLogger.Debug(item.Key + "______" + item.Value);
-                    if (item.Key == "content")
-                    {
-                        JObject jsonObject = JObject.Parse( item.Value.ToString() );
-                        Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
+                    //if (item.Key == "content")
+                    //{
+                    //    JObject jsonObject = JObject.Parse( item.Value.ToString() );
+                    //    Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
 
-                        foreach (KeyValuePair<string, object> contentItem in content)
-                        {
-                            //message.Data.Add(contentItem.Key, contentItem.Value);
-                            LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
-                        }
-                    }
+                    //    foreach (KeyValuePair<string, object> contentItem in content)
+                    //    {
+                    //        //message.Data.Add(contentItem.Key, contentItem.Value);
+                    //        LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
+                    //    }
+                    //}
                 }
 
             }
