@@ -124,6 +124,15 @@ namespace web {
             try
             {
                 var dic = request;
+
+                Dictionary<string,object> content = JsonConvert.DeserializeObject(dic["content"]);
+                LCLogger.Debug("content start");
+                foreach (KeyValuePair<string, object> item in content)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                }
+                LCLogger.Debug("content end");
+
                 foreach (KeyValuePair<string, object> item in dic)
                 {
                     LCLogger.Debug(item.Key + ":" + item.Value);
