@@ -1,4 +1,5 @@
 ﻿using LeanCloud;
+using LeanCloud.Common;
 using LeanCloud.Core.Internal;
 using LeanCloud.Engine;
 using LeanCloud.Push;
@@ -6,6 +7,7 @@ using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using LeanCloud.Storage.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -119,57 +121,110 @@ namespace web {
             return new { success = true };
         }
 
-        public class ClientMessage
+        public class ClientMessageBase:AVIMTypedMessage
         {
-            public string ClientId;
-            public string Conversation;
-            public int MessageType;
-            public Dictionary<string, object> Data = new Dictionary<string, object>();
+            
         }
+
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
-            LCLogger.Debug("OnMessageReceived Start");
+            LCLogger.Debug("开始处理消息并初始化AVIMTypedMessage");
+
             try
             {
-                var dic = request;
+                // 1. 提取消息基本信息
+                string conversationId = request.conversationId?.ToString();
+                string fromClientId = request.fromClientId?.ToString();
+                string messageId = request.id?.ToString();
+                string contentStr = request.content?.ToString();
 
-                //ClientMessage message = new ClientMessage();
-                //message.ClientId = dic["fromPeer"];
-                //message.Conversation = dic["convId"];
-                //message.MessageType = dic["content"]["_lctype"];
-                AVObject saveMessage = new AVObject("customMessage");
-                JObject jsonObject = JObject.Parse(dic["content"].ToString());
-                Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
-                saveMessage.Set("IsProcessed",false);
-                saveMessage.Set("content", content);
-                await saveMessage.SaveAsync();
-
-                foreach (KeyValuePair<string, object> item in dic)
+                // 验证必要参数
+                if (string.IsNullOrEmpty(conversationId) ||
+                    string.IsNullOrEmpty(fromClientId) ||
+                    string.IsNullOrEmpty(contentStr))
                 {
-                    LCLogger.Debug(item.Key + "______" + item.Value);
-                    //if (item.Key == "content")
-                    //{
-                    //    JObject jsonObject = JObject.Parse( item.Value.ToString() );
-                    //    Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
-
-                    //    foreach (KeyValuePair<string, object> contentItem in content)
-                    //    {
-                    //        //message.Data.Add(contentItem.Key, contentItem.Value);
-                    //        LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
-                    //    }
-                    //}
+                    LCLogger.Warn("消息缺少必要参数");
+                    return new { success = true };
                 }
 
+                //// 2. 解析接收者列表
+                //List<string> toClientIds = new List<string>();
+                //if (request.toClientIds != null)
+                //{
+                //    foreach (var id in request.toClientIds)
+                //    {
+                //        toClientIds.Add(id.ToString());
+                //    }
+                //}
+
+
+                // 3. 解析消息内容（_lctype等类型化消息字段）
+                //JObject contentObj = JObject.Parse(contentStr);
+                //Dictionary<string, object> contentDict = contentObj.ToObject<Dictionary<string, object>>();
+
+                // 4. 初始化AVIMTypedMessage（LCIMTypedMessage）
+                ClientMessageBase typedMessage = new ClientMessageBase
+                {
+                    Id = messageId,
+                    ConversationId = conversationId,
+                    FromClientId = fromClientId,
+                    //ToClientIds = toClientIds,
+                    Content = contentStr,
+                    // 可选：设置其他属性
+                    //SentTimestamp = request.sentAt != null ? Convert.ToInt64(request.sentAt) : 0
+                };
+
+                // 5. 使用初始化后的类型化消息进行业务处理
+                //await ProcessTypedMessage(typedMessage);
+
+                LCLogger.Debug($"成功初始化并处理消息: {messageId}");
             }
-            catch (LCException ex)
+            catch (Exception ex)
             {
-                LCLogger.Error(ex.Message);
+                LCLogger.Error($"处理消息失败: {ex.Message}");
             }
-            // 您的业务逻辑，比如更新用户状态等
-            LCLogger.Debug("OnMessageReceived end");
+
             return new { success = true };
+
+
+            //LCLogger.Debug("OnMessageReceived Start");
+            //try
+            //{
+            //    var dic = request;
+            //    JObject jsonObject = JObject.Parse(dic["content"].ToString());
+
+            //    var table = new AVObject("customMessage");
+            //    var content = jsonObject.ToObject<Dictionary<string, object>>();
+            //    table.Set("IsProcessed",false);
+            //    table.Set("content", content);
+            //    await table.SaveAsync();
+
+            //    foreach (KeyValuePair<string, object> item in dic)
+            //    {
+            //        LCLogger.Debug(item.Key + "______" + item.Value);
+            //        //if (item.Key == "content")
+            //        //{
+            //        //    JObject jsonObject = JObject.Parse( item.Value.ToString() );
+            //        //    Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
+
+            //        //    foreach (KeyValuePair<string, object> contentItem in content)
+            //        //    {
+            //        //        //message.Data.Add(contentItem.Key, contentItem.Value);
+            //        //        LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
+            //        //    }
+            //        //}
+            //    }
+
+            //}
+            //catch (LCException ex)
+            //{
+            //    LCLogger.Error(ex.Message);
+            //}
+            //// 您的业务逻辑，比如更新用户状态等
+            //LCLogger.Debug("OnMessageReceived end");
+            //return new { success = true };
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
