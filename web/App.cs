@@ -142,6 +142,7 @@ namespace web {
                 JObject jsonObject = JObject.Parse(dic["content"].ToString());
                 Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
                 saveMessage["data"] = content;
+                saveMessage["IsProcessed"] = false;
                 await saveMessage.SaveAsync();
 
                 foreach (KeyValuePair<string, object> item in dic)
