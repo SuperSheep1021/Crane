@@ -10,9 +10,29 @@ using System.Threading.Tasks;
 
 public class ClientMessageBase : AVIMTextMessage
 {
-    int m_messType = -1;
+    private async Task<bool> ValidateSenderAsync(string senderId)
+    {
+        try
+        {
+            AVQuery<AVUser> query = new AVQuery<AVUser>().WhereEqualTo("objectId", senderId);
+            AVUser user = await query.FirstAsync();
+            return user != null;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public async Task<string> SaveClientMessage()
     {
+        bool isVali = await ValidateSenderAsync(FromClientId);
+        if (isVali)
+        {
+            LCLogger.Debug("isValiSenderID false!!!");
+            return "";
+        }
+
         var table = new AVObject("customMessage");
         table.Set("IsProcessed", false);
 
@@ -21,17 +41,14 @@ public class ClientMessageBase : AVIMTextMessage
         table.Set("content", content);
         await table.SaveAsync();
 
-        m_messType = int.Parse( content["_lctype"].ToString() );
-
-        await ProcessTypedMessageAsync(table);
+        int messType = int.Parse( content["_lctype"].ToString() );
+        await ProcessTypedMessageAsync(table, messType);
 
         return table.ObjectId;
     }
-
-    // 处理初始化后的类型化消息
-    public async Task ProcessTypedMessageAsync(AVObject table)
+    public async Task ProcessTypedMessageAsync(AVObject table,int messType)
     {
-        switch (m_messType)
+        switch (messType)
         {
             case 1001:
                 LCLogger.Debug("1001");

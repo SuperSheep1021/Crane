@@ -153,8 +153,6 @@ namespace web {
 
                 string objectId = await typedMessage.SaveClientMessage();
 
-                // 5. 使用初始化后的类型化消息进行业务处理
-                //await ProcessTypedMessage(typedMessage);
 
                 LCLogger.Debug($"成功初始化并处理消息: {messageId}");
             }
