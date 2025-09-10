@@ -119,7 +119,8 @@ namespace web {
         public static async Task<object> OnMessageReceived(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"OnMessageReceived start: {request}");
+            LCLogger.Debug($"OnMessageReceived start: {data}");
+
             try
             {
                 var dic = request;
@@ -142,7 +143,7 @@ namespace web {
         public static async Task<object> OnMessageSent(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"OnMessageSent Start: {request}");
+            LCLogger.Debug($"OnMessageSent Start: {data}");
             try
             {
                 var dic = request;
@@ -157,7 +158,7 @@ namespace web {
                 LCLogger.Error(ex.Message);
             }
             // 您的业务逻辑，比如更新用户状态等
-            LCLogger.Debug("OnMessageSent Start");
+            LCLogger.Debug("OnMessageSent End");
             return new { success = true };
         }
 
