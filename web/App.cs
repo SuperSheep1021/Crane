@@ -134,11 +134,12 @@ namespace web {
 
             try
             {
+                var dic = request;
                 // 1. 提取消息基本信息
-                string conversationId = request.convId?.ToString();
-                string fromClientId = request.fromPeer?.ToString();
-                string messageId = request.msgId?.ToString();
-                string contentStr = request.content?.ToString();
+                string conversationId = dic["convId"].ToString();
+                string fromClientId = dic["fromPeer"].ToString();
+                string messageId = dic["msgId"].ToString();
+                string contentStr = dic["content"].ToString();
 
                 // 验证必要参数
                 if (string.IsNullOrEmpty(conversationId) ||
