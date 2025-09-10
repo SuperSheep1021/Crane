@@ -1,14 +1,17 @@
 ﻿using LeanCloud;
 using LeanCloud.Engine;
 using LeanCloud.Push;
-using LeanCloud.Storage;
 using LeanCloud.Realtime;
+using LeanCloud.Storage;
+using LeanCloud.Storage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -115,40 +118,38 @@ namespace web {
             return new { success = true };
         }
 
-        public class cMessage: AVIMTypedMessage
+        public class cMessage
         {
+            public string ClientId;
+            public string Conversation;
+            public int MessageType;
+            public Dictionary<string, object> Content = new Dictionary<string, object>();
         }
+        public class ClientMessage : AVIMTypedMessage
+        {
 
+        }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
-            string data = JsonConvert.SerializeObject(request);
-            cMessage mes = new cMessage();
-            mes.Deserialize(data);
-            
-            LCLogger.Debug($"OnMessageReceived start: {mes["aaaa"]}");
-            LCLogger.Debug($"OnMessageReceived start: {data}");
-            try
-            {
-                //Dictionary<string,object> content = JsonConvert.DeserializeObject(dic["content"]);
-                //LCLogger.Debug("content start");
-                //foreach (KeyValuePair<string, object> item in content)
-                //{
-                //    LCLogger.Debug(item.Key + ":" + item.Value);
-                //}
-                //LCLogger.Debug("content end");
+            ClientMessage message = JsonConvert.DeserializeObject<ClientMessage>(request);
+            //var  JsonConvert.DeserializeObject(data);
+            LCLogger.Debug(message.FromClientId);
+            LCLogger.Debug("OnMessageReceived Start");
+            //try
+            //{
+            //    var dic = request;
+            //    foreach (KeyValuePair<string, object> item in dic)
+            //    {
+            //        LCLogger.Debug(item.Key + ":" + item.Value);
+            //    }
 
-                //foreach (KeyValuePair<string, object> item in dic)
-                //{
-                //    LCLogger.Debug(item.Key + ":" + item.Value);
-                //}
-
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
+            //}
+            //catch (LCException ex)
+            //{
+            //    LCLogger.Error(ex.Message);
+            //}
             // 您的业务逻辑，比如更新用户状态等
             LCLogger.Debug("OnMessageReceived end");
             return new { success = true };
