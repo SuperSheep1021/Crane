@@ -11,6 +11,17 @@ namespace web.Models
 {
     public class MessageService
     {
+        static MessageService inst;
+        public static MessageService Inst {
+            get {
+                if (inst==null) {
+                    inst = new MessageService();
+                }
+                return inst;
+            }
+        }
+
+
         /// <summary>
         /// 处理客户端发送的消息
         /// </summary>
