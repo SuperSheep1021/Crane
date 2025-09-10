@@ -119,7 +119,7 @@ namespace web {
         public static async Task<object> OnMessageReceived(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"OnMessageReceived: {request}");
+            LCLogger.Debug($"OnMessageReceived start: {request}");
             try
             {
                 var dic = request;
@@ -134,7 +134,7 @@ namespace web {
                 LCLogger.Error(ex.Message);
             }
             // 您的业务逻辑，比如更新用户状态等
-
+            LCLogger.Debug("OnMessageReceived end");
             return new { success = true };
         }
 
@@ -142,7 +142,7 @@ namespace web {
         public static async Task<object> OnMessageSent(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"OnMessageSent: {request}");
+            LCLogger.Debug($"OnMessageSent Start: {request}");
             try
             {
                 var dic = request;
@@ -157,8 +157,34 @@ namespace web {
                 LCLogger.Error(ex.Message);
             }
             // 您的业务逻辑，比如更新用户状态等
-
+            LCLogger.Debug("OnMessageSent Start");
             return new { success = true };
+        }
+
+
+        [LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
+        public static LCObject ReviewBeforeSave(LCObject review)
+        {
+            if (string.IsNullOrEmpty(review["comment"].ToString() ))
+            {
+                throw new Exception("No comment provided!");
+            }
+            string comment = review["comment"] as string;
+            if (comment.Length > 140)
+            {
+                review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
+            }
+            return review;
+        }
+
+
+        [LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
+        public static async Task ReviewAfterSave(LCObject review)
+        {
+            LCObject post = review["post"] as LCObject;
+            await post.Fetch();
+            post.Increment("comments", 1);
+            await post.Save();
         }
 
     }
