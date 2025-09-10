@@ -135,13 +135,10 @@ namespace web {
                 var dic = request;
                 foreach (KeyValuePair<string, object> item in dic)
                 {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
+                    LCLogger.Debug(item.Key + "______" + item.Value);
                     if (item.Key == "content")
                     {
-                        // 将 JSON 字符串转换为 JObject
                         JObject jsonObject = JObject.Parse( item.Value.ToString() );
-
-                        // 将 JObject 转换为 Dictionary<string, object>
                         Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
 
                         foreach (KeyValuePair<string, object> contentItem in content)
