@@ -136,14 +136,19 @@ namespace web {
                 foreach (KeyValuePair<string, object> item in dic)
                 {
                     LCLogger.Debug(item.Key + ":" + item.Value);
-                    //if (item.Key == "content")
-                    //{
-                    //    var content = item.Value as Dictionary<string,object>;
-                    //    foreach (KeyValuePair<string, object> contentItem in content)
-                    //    {
-                    //        LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
-                    //    }
-                    //}
+                    if (item.Key == "content")
+                    {
+                        // 将 JSON 字符串转换为 JObject
+                        JObject jsonObject = JObject.Parse( item.Value.ToString() );
+
+                        // 将 JObject 转换为 Dictionary<string, object>
+                        Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
+
+                        foreach (KeyValuePair<string, object> contentItem in content)
+                        {
+                            LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
+                        }
+                    }
                 }
 
             }
