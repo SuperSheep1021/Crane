@@ -117,11 +117,13 @@ namespace web {
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
-        public static async Task<object> OnMessageReceived(AVIMTypedMessage request)
+        public static async Task<object> OnMessageReceived(dynamic request)
         {
+            AVIMTypedMessage message = new AVIMTypedMessage();
+            string data = JsonConvert.SerializeObject(request);
+            message.Deserialize(data);
+            LCLogger.Debug($"OnMessageReceived start: {message.Content}");
             
-            LCLogger.Debug($"OnMessageReceived start: {request.Content}");
-            //string data = JsonConvert.SerializeObject(request);
             //LCLogger.Debug($"OnMessageReceived start: {data}");
 
             //try
