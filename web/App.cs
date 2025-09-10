@@ -129,74 +129,28 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
+            LCLogger.Debug("OnMessageReceived Start");
             try
             {
-                Dictionary<string,object> message = request;
-                var content = request["content"] as Dictionary<string, object>;
-                int messageType = content.TryGetValue("_lctype", out var typeObj) ? Convert.ToInt32(typeObj) : 0;
-                string messageText = content.TryGetValue("_lctext", out var textObj) ? textObj.ToString() : "";
-                LCLogger.Debug("messageType:"+ messageType);
-                LCLogger.Debug("messageText:" + messageText);
-                //// 检查是否为类型化消息
-                //if (message is LCIMTypedMessage typedMessage)
-                //{
-                //    Console.WriteLine($"收到类型化消息 - 会话ID: {typedMessage.ConversationId}");
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                    if (item.Key =="content") 
+                    {
+                        Dictionary<string, object> content = dic["content"] as Dictionary<string, object>;
+                        foreach (KeyValuePair<string, object> contentItem in content)
+                        {
+                            LCLogger.Debug(contentItem.Key + ":" + contentItem.Value);
+                        }
+                    }
+                }
 
-                //    // 解析消息内容
-                //    var content = typedMessage.Content as Dictionary<string, object>;
-                //    if (content != null)
-                //    {
-                //        // 提取消息类型和文本内容
-                //        int messageType = content.TryGetValue("_lctype", out var typeObj) ? Convert.ToInt32(typeObj) : 0;
-                //        string messageText = content.TryGetValue("_lctext", out var textObj) ? textObj.ToString() : "";
-
-                //        Console.WriteLine($"消息类型: {messageType}, 发送者: {typedMessage.FromClientId}, 内容: {messageText}");
-
-                //        // 根据消息类型进行处理
-                //        switch (messageType)
-                //        {
-                //            case 1: // 文本消息
-                //                await ProcessTextMessage(typedMessage, messageText);
-                //                break;
-                //            case 2: // 图片消息
-                //                await ProcessImageMessage(typedMessage, content);
-                //                break;
-                //            default:
-                //                await ProcessUnknownMessage(typedMessage, messageType);
-                //                break;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    Console.WriteLine($"收到非类型化消息: {message.Id}");
-                //}
             }
             catch (LCException ex)
             {
-                Console.WriteLine($"处理消息出错: {ex.Message}");
+                LCLogger.Error(ex.Message);
             }
-
-            // 返回消息（可以修改后返回，或直接返回原消息）
-            //return message;
-
-
-            //var  JsonConvert.DeserializeObject(data);
-            //LCLogger.Debug(message.FromClientId);
-            //LCLogger.Debug("OnMessageReceived Start");
-            //try
-            //{
-            //    var dic = request;
-            //    foreach (KeyValuePair<string, object> item in dic)
-            //    {
-            //        LCLogger.Debug(item.Key + ":" + item.Value);
-            //    }
-
-            //}
-            //catch (LCException ex)
-            //{
-            //    LCLogger.Error(ex.Message);
-            //}
             // 您的业务逻辑，比如更新用户状态等
             LCLogger.Debug("OnMessageReceived end");
             return new { success = true };
