@@ -132,13 +132,16 @@ namespace web {
             LCLogger.Debug("OnMessageReceived Start");
             try
             {
-                //ClientMessage message = new ClientMessage();
+                var dic = request;
 
+                //ClientMessage message = new ClientMessage();
                 //message.ClientId = dic["fromPeer"];
                 //message.Conversation = dic["convId"];
                 //message.MessageType = dic["content"]["_lctype"];
+                AVObject saveMessage = new AVObject("customMessage");
+                saveMessage["data"] = dic["content"];
+                await saveMessage.SaveAsync();
 
-                var dic = request;
                 foreach (KeyValuePair<string, object> item in dic)
                 {
                     LCLogger.Debug(item.Key + "______" + item.Value);
