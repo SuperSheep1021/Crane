@@ -135,9 +135,9 @@ namespace web {
             try
             {
                 // 1. 提取消息基本信息
-                string conversationId = request.conversationId?.ToString();
-                string fromClientId = request.fromClientId?.ToString();
-                string messageId = request.id?.ToString();
+                string conversationId = request.convId?.ToString();
+                string fromClientId = request.fromPeer?.ToString();
+                string messageId = request.msgId?.ToString();
                 string contentStr = request.content?.ToString();
 
                 // 验证必要参数
