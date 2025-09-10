@@ -121,12 +121,6 @@ namespace web {
             return new { success = true };
         }
 
-        public class ClientMessageBase:AVIMTypedMessage
-        {
-            
-        }
-
-
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
@@ -171,12 +165,9 @@ namespace web {
                     Id = messageId,
                     ConversationId = conversationId,
                     FromClientId = fromClientId,
-                    //ToClientIds = toClientIds,
                     Content = contentStr,
-                    // 可选：设置其他属性
-                    //SentTimestamp = request.sentAt != null ? Convert.ToInt64(request.sentAt) : 0
                 };
-
+                await typedMessage.Save();
                 // 5. 使用初始化后的类型化消息进行业务处理
                 //await ProcessTypedMessage(typedMessage);
 
