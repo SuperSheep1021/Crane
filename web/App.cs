@@ -115,28 +115,34 @@ namespace web {
             return new { success = true };
         }
 
+        public class cMessage: AVIMTypedMessage
+        {
+        }
+
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
+            cMessage mes = new cMessage();
+            mes.Deserialize(data);
+            
+            LCLogger.Debug($"OnMessageReceived start: {mes["aaaa"]}");
             LCLogger.Debug($"OnMessageReceived start: {data}");
             try
             {
-                var dic = request;
+                //Dictionary<string,object> content = JsonConvert.DeserializeObject(dic["content"]);
+                //LCLogger.Debug("content start");
+                //foreach (KeyValuePair<string, object> item in content)
+                //{
+                //    LCLogger.Debug(item.Key + ":" + item.Value);
+                //}
+                //LCLogger.Debug("content end");
 
-                Dictionary<string,object> content = JsonConvert.DeserializeObject(dic["content"]);
-                LCLogger.Debug("content start");
-                foreach (KeyValuePair<string, object> item in content)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
-                LCLogger.Debug("content end");
-
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
+                //foreach (KeyValuePair<string, object> item in dic)
+                //{
+                //    LCLogger.Debug(item.Key + ":" + item.Value);
+                //}
 
             }
             catch (LCException ex)
