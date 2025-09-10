@@ -119,28 +119,23 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
-            AVIMTypedMessage message = new AVIMTypedMessage();
             string data = JsonConvert.SerializeObject(request);
-            message.Deserialize(data);
-            LCLogger.Debug($"OnMessageReceived start: {message.Content}");
-            
-            //LCLogger.Debug($"OnMessageReceived start: {data}");
+            LCLogger.Debug($"OnMessageReceived start: {data}");
+            try
+            {
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                }
 
-            //try
-            //{
-            //    var dic = request;
-            //    foreach (KeyValuePair<string, object> item in dic)
-            //    {
-            //        LCLogger.Debug(item.Key + ":" + item.Value);
-            //    }
-
-            //}
-            //catch (LCException ex)
-            //{
-            //    LCLogger.Error(ex.Message);
-            //}
-            //// 您的业务逻辑，比如更新用户状态等
-            //LCLogger.Debug("OnMessageReceived end");
+            }
+            catch (LCException ex)
+            {
+                LCLogger.Error(ex.Message);
+            }
+            // 您的业务逻辑，比如更新用户状态等
+            LCLogger.Debug("OnMessageReceived end");
             return new { success = true };
         }
 
