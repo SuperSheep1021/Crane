@@ -141,7 +141,7 @@ namespace web {
                 AVObject saveMessage = new AVObject("customMessage");
                 JObject jsonObject = JObject.Parse(dic["content"].ToString());
                 Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
-                saveMessage["data"] = content;
+                saveMessage["content"] = content;
                 saveMessage["IsProcessed"] = false;
                 await saveMessage.SaveAsync();
 
