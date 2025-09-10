@@ -124,51 +124,44 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static async Task<object> OnMessageReceived(dynamic request)
         {
-            LCLogger.Debug("开始处理消息并初始化AVIMTypedMessage");
-            AVIMTextMessage mmm = new AVIMTextMessage();
-            string json = JsonConvert.SerializeObject(request, Formatting.Indented);
-            mmm.Deserialize(json);
+            try
+            {
+                var dic = request;
+                // 1. 提取消息基本信息
+                string conversationId = dic["convId"].ToString();
+                string fromClientId = dic["fromPeer"].ToString();
+                string contentStr = dic["content"].ToString();
 
-            LCLogger.Debug(json);
+                string messageId = dic["msgId"].ToString();
 
-            //try
-            //{
-            //    var dic = request;
-            //    // 1. 提取消息基本信息
-            //    string conversationId = dic["convId"].ToString();
-            //    string fromClientId = dic["fromPeer"].ToString();
-            //    string contentStr = dic["content"].ToString();
+                // 验证必要参数
+                if (string.IsNullOrEmpty(conversationId) ||
+                    string.IsNullOrEmpty(fromClientId) ||
+                    string.IsNullOrEmpty(contentStr))
+                {
+                    LCLogger.Warn("消息缺少必要参数");
+                    return new { success = true };
+                }
 
-            //    string messageId = dic["msgId"].ToString();
+                ClientMessageBase typedMessage = new ClientMessageBase
+                {
+                    Id = messageId,
+                    ConversationId = conversationId,
+                    FromClientId = fromClientId,
+                    Content = contentStr,
+                };
 
-            //    // 验证必要参数
-            //    if (string.IsNullOrEmpty(conversationId) ||
-            //        string.IsNullOrEmpty(fromClientId) ||
-            //        string.IsNullOrEmpty(contentStr))
-            //    {
-            //        LCLogger.Warn("消息缺少必要参数");
-            //        return new { success = true };
-            //    }
+                string objectId = await typedMessage.SaveClientMessage();
 
-            //    ClientMessageBase typedMessage = new ClientMessageBase
-            //    {
-            //        Id = messageId,
-            //        ConversationId = conversationId,
-            //        FromClientId = fromClientId,
-            //        Content = contentStr,
-            //    };
+                // 5. 使用初始化后的类型化消息进行业务处理
+                //await ProcessTypedMessage(typedMessage);
 
-            //    string objectId = await typedMessage.SaveClientMessage();
-
-            //    // 5. 使用初始化后的类型化消息进行业务处理
-            //    //await ProcessTypedMessage(typedMessage);
-
-            //    LCLogger.Debug($"成功初始化并处理消息: {messageId}");
-            //}
-            //catch (Exception ex)
-            //{
-            //    LCLogger.Error($"处理消息失败: {ex.Message}");
-            //}
+                LCLogger.Debug($"成功初始化并处理消息: {messageId}");
+            }
+            catch (Exception ex)
+            {
+                LCLogger.Error($"处理消息失败: {ex.Message}");
+            }
 
             return new { success = true };
         }
