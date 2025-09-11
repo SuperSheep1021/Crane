@@ -36,39 +36,39 @@ namespace web
             LCLogger.Debug($"Config Success!!!{appUrl}");
         }
 
-        public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
-        {
-            if (m_StyRealtime==null) 
-            {
-                m_StyRealtime = new AVRealtime(m_appId, m_appKey);
-            }
-            if (m_SysClient == null)
-            {
-                m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
-            }
-            if ((m_StyRealtime == null || m_SysClient == null) )
-            {
-                return false;
-            }
+        //public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
+        //{
+        //    if (m_StyRealtime==null) 
+        //    {
+        //        m_StyRealtime = new AVRealtime(m_appId, m_appKey);
+        //    }
+        //    if (m_SysClient == null)
+        //    {
+        //        m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+        //    }
+        //    if ((m_StyRealtime == null || m_SysClient == null) )
+        //    {
+        //        return false;
+        //    }
 
-            try
-            {
-                //AVIMConversation conversation2 = await m_SysClient.GetConversationAsync(SystemConversationId);
-                AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+        //    try
+        //    {
+        //        //AVIMConversation conversation2 = await m_SysClient.GetConversationAsync(SystemConversationId);
+        //        AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
 
-                // 发送消息
-                var message = new AVIMTextMessage("StyMessage");
-                message.Content = Json.Encode(content);
+        //        // 发送消息
+        //        var message = new AVIMTextMessage("StyMessage");
+        //        message.Content = Json.Encode(content);
 
-                await conversation.SendAsync(message);
-                return true;
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
-                return false;
-            }
-        }
+        //        await conversation.SendAsync(message);
+        //        return true;
+        //    }
+        //    catch (LCException ex)
+        //    {
+        //        LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
+        //        return false;
+        //    }
+        //}
 
     }
 }
