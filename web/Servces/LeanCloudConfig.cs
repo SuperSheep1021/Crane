@@ -13,23 +13,13 @@ using System.Threading.Tasks;
 
 namespace web.Servces
 {
-    public class LeanCloudConfig
+    public static class LeanCloudConfig
     {
-        static LeanCloudConfig inst;
-        public static LeanCloudConfig Inst 
-        {
-            get {
-                if (inst == null) {
-                    inst = new LeanCloudConfig();
-                }
-                return inst; ;
-            }
-        }
-
+        
         const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
-        AVIMClient m_SysClient;
-        AVRealtime m_StyRealtime;
-        public async Task InitializeFromEnvironment()
+        static AVIMClient m_SysClient;
+        static AVRealtime m_StyRealtime;
+        public static void InitializeFromEnvironment()
         {
             ////// 从环境变量获取配置信息
             string appId = Environment.GetEnvironmentVariable("APP_ID");
@@ -48,7 +38,7 @@ namespace web.Servces
             LCLogger.Debug("Config Success!!!");
         }
 
-        public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
+        public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
         {
             try
             {
