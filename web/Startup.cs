@@ -50,9 +50,6 @@ namespace web {
             LCEngine.Initialize(services);
 
             services.AddControllersWithViews();
-
-            // 注册消息服务
-            services.AddSingleton<MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
