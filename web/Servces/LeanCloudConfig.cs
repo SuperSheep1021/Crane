@@ -42,8 +42,8 @@ namespace web.Servces
             AVClient.UseMasterKey = true;
 
             ////// ´´½¨RealtimeÊµÀý
-            m_StyRealtime = new AVRealtime(appId, appKey);
-            m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId,tag:"StyemBroadcast");
+            //m_StyRealtime = new AVRealtime(appId, appKey);
+            //m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId,tag:"StyemBroadcast");
             
             LCLogger.Debug("Config Success!!!");
         }
