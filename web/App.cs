@@ -89,7 +89,8 @@ namespace web {
             {
                 LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", senderId);
                 int count = await query.Count();
-                LCLogger.Debug(count.ToString()  );
+                LCLogger.Debug($"objectId:{senderId}");
+                LCLogger.Debug($"Query:{count.ToString()}"  );
                 LCUser user = await query.First();
                 return user;
             }
@@ -126,51 +127,51 @@ namespace web {
         }
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async Task<object> ClientOnLine(dynamic request)
-        {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端上线: {request}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
+        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
+        //public static async Task<object> ClientOnLine(dynamic request)
+        //{
+        //    string data = JsonConvert.SerializeObject(request);
+        //    LCLogger.Debug($"客户端上线: {request}");
+        //    try
+        //    {
+        //        var dic = request;
+        //        foreach (KeyValuePair<string, object> item in dic)
+        //        {
+        //            LCLogger.Debug(item.Key + ":" + item.Value);
+        //        }
 
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
-            return new { success = true };
-        }
+        //    }
+        //    catch (LCException ex)
+        //    {
+        //        LCLogger.Error(ex.Message);
+        //    }
+        //    return new { success = true };
+        //}
 
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static async Task<object> ClientOffLine(dynamic request)
-        {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端下线: {request}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
+        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
+        //public static async Task<object> ClientOffLine(dynamic request)
+        //{
+        //    string data = JsonConvert.SerializeObject(request);
+        //    LCLogger.Debug($"客户端下线: {request}");
+        //    try
+        //    {
+        //        var dic = request;
+        //        foreach (KeyValuePair<string, object> item in dic)
+        //        {
+        //            LCLogger.Debug(item.Key + ":" + item.Value);
+        //        }
 
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
-            // 您的业务逻辑，比如更新用户状态等
+        //    }
+        //    catch (LCException ex)
+        //    {
+        //        LCLogger.Error(ex.Message);
+        //    }
+        //    // 您的业务逻辑，比如更新用户状态等
 
-            return new { success = true };
-        }
+        //    return new { success = true };
+        //}
 
         //[LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         //public static async Task<object> OnMessageReceived(dynamic request)
