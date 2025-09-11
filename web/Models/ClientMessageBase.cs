@@ -23,7 +23,6 @@ public class ClientMessageBase : AVIMTextMessage
             return false;
         }
     }
-
     public async Task<string> SaveClientMessage()
     {
         bool isVali = await ValidateSenderAsync(FromClientId);

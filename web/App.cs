@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using web.Models;
+using web.Servces;
 
 namespace web {
     public class App
@@ -37,6 +38,27 @@ namespace web {
         {
             return "TestCloudFunc:" + name;
         }
+
+
+        [LCEngineFunction("SendMessageToTargetUserID")]
+        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
+        {
+            await LeanCloudConfig.Inst.SendToSingleUser(userid, new Dictionary<string, object>() 
+            {
+                { "service message key 1",1111},
+                { "service message key 2",2222},
+                { "service message key 3",3333}
+            });
+            LCLogger.Debug($"Send Message To TargetUserID:{userid} Final");
+        }
+
+
+
+
+
+
+
+
         private static async Task<AVUser> ValidateSenderAsync(string senderId)
         {
             try
@@ -50,7 +72,6 @@ namespace web {
                 return null;
             }
         }
-
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
@@ -196,6 +217,11 @@ namespace web {
             LCLogger.Debug("OnMessageSent End");
             return new { success = true };
         }
+
+
+
+
+
 
 
         [LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
