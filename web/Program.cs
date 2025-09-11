@@ -18,10 +18,9 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-
-            AVClient.Initialize(appId, appKey, appUrl);
-            AVClient.CurrentConfiguration.MasterKey = masterKey;
-            AVClient.UseMasterKey = true;
+            AVClient.Initialize(appId, appKey);
+            //AVClient.CurrentConfiguration.MasterKey = masterKey;
+            //AVClient.UseMasterKey = true;
 
 
             var host = CreateHostBuilder(args).Build();
