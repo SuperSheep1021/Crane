@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace web {
     public class Program 
