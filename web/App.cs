@@ -56,12 +56,12 @@ namespace web {
             //    LCLogger.Debug($"CreateImClientAsync:{userid} ");
             //}
 
-            const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
-            AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
-                LeanCloud.Engine.Cloud.Singleton.AppKey);
-            AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+            //const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
+            //AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+            //    LeanCloud.Engine.Cloud.Singleton.AppKey);
+            //AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
 
-            AVIMConversation conversation = await sysClient.CreateTemporaryConversationAsync(members: new List<string> { "targetUserId" });
+            //AVIMConversation conversation = await sysClient.CreateTemporaryConversationAsync(members: new List<string> { "targetUserId" });
 
 
             return;
