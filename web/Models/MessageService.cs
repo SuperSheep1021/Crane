@@ -25,11 +25,11 @@ namespace web.Models
 
         public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
         {
-            AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
-                LeanCloud.Engine.Cloud.Singleton.AppKey);
-            AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+            //AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+            //    LeanCloud.Engine.Cloud.Singleton.AppKey);
+            //AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
 
-            AVIMConversation conversation = await sysClient.CreateTemporaryConversationAsync(members: new List<string> { "targetUserId" });
+            //AVIMConversation conversation = await sysClient.CreateTemporaryConversationAsync(members: new List<string> { "targetUserId" });
 
 
 
