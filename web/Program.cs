@@ -14,7 +14,7 @@ namespace web {
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => 
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("https://q41tlvwp.lc-cn-n1-shared.com");
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
