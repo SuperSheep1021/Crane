@@ -20,20 +20,16 @@ namespace web.Models
                 return inst;
             }
         }
-        AVRealtime m_StyRealtime;
-        AVIMClient m_SysClient;
+        
         const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
 
-        public async Task<bool> CreateImClientAsync()
-        {
-            m_StyRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
-                LeanCloud.Engine.Cloud.Singleton.AppKey);
-            m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
-            return true;
-        }
         public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
         {
-            AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+            AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+                LeanCloud.Engine.Cloud.Singleton.AppKey);
+            AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+
+            AVIMConversation conversation = await sysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
 
             ////    // ·¢ËÍÏûÏ¢
             //var message = new AVIMTextMessage("StyMessage");
