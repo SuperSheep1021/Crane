@@ -104,6 +104,12 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
+            LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", user.ObjectId);
+            int count = await query.Count();
+            LCLogger.Debug($"objectId:{user.ObjectId}");
+            LCLogger.Debug($"Query:{count.ToString()}");
+
+            LCLogger.Debug("==================================");
             LCUser validateUser = await ValidateSenderAsync(user.ObjectId);
             if (validateUser != null)
             {
