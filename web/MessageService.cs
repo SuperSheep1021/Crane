@@ -21,8 +21,6 @@ public class MessageService
     // 连接到 LeanCloud 实时通信服务
     public async Task ConnectAsync()
     {
-        
-
         // 使用服务端签名或主密钥创建连接
         // 注意：生产环境中应使用安全的签名方式
         _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
@@ -33,22 +31,23 @@ public class MessageService
     // 向指定客户端发送消息
     public async Task<bool> SendMessageToClientAsync(string targetClientId, string messageContent)
     {
-        try
-        {
-            // 创建对话（如果不存在）
-            var conversation = await _client.CreateTemporaryConversationAsync(targetClientId);
+        return true;
+        //try
+        //{
+        //    // 创建对话（如果不存在）
+        //    var conversation = await _client.CreateTemporaryConversationAsync(targetClientId);
             
-            // 发送文本消息
-            var textMessage = new AVIMTextMessage(messageContent);
-            await conversation.SendMessageAsync(textMessage);
+        //    // 发送文本消息
+        //    var textMessage = new AVIMTextMessage(messageContent);
+        //    await conversation.SendMessageAsync(textMessage);
             
-            Console.WriteLine($"消息已发送至客户端 {targetClientId}");
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"发送消息时出错: {ex.Message}");
-            return false;
-        }
+        //    Console.WriteLine($"消息已发送至客户端 {targetClientId}");
+        //    return true;
+        //}
+        //catch (Exception ex)
+        //{
+        //    Console.WriteLine($"发送消息时出错: {ex.Message}");
+        //    return false;
+        //}
     }
 }

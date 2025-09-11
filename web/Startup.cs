@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
-using web.Models;
 
 namespace web {
     public class Startup {
@@ -63,6 +62,7 @@ namespace web {
             AVClient.Initialize(appId, appKey, appUrl);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
