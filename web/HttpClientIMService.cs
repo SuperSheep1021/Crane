@@ -37,7 +37,7 @@ public class HttpClientIMService
             string conversationId = await CreateConversation(serverClientId, targetClientId);
             if (string.IsNullOrEmpty(conversationId))
             {
-                Console.WriteLine("创建对话失败");
+                LCLogger.Debug("创建对话失败");
                 return;
             }
 
@@ -46,7 +46,7 @@ public class HttpClientIMService
         }
         catch (Exception ex)
         {
-            Console.WriteLine("发送 IM 消息失败: " + ex.Message);
+            LCLogger.Debug("发送 IM 消息失败: " + ex.Message);
         }
     }
 
@@ -94,7 +94,7 @@ public class HttpClientIMService
             content
         );
         response.EnsureSuccessStatusCode();
-        Console.WriteLine("IM 消息发送成功");
+        LCLogger.Debug("IM 消息发送成功");
     }
 
     // 设置认证头（复用之前的签名工具）
