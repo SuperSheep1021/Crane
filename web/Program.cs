@@ -27,18 +27,10 @@ namespace web {
             LCLogger.Debug("LCCore.Initialize Success");
 
 
-
+            await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
             var imService = new HttpClientIMService(appId, appKey, appUrl);
-            await imService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb","服务端消息发送");
-
-            var host = CreateHostBuilder(args).Build();
-            //// 获取消息服务并连接
-            //var messageService = host.Services.GetRequiredService<HttpClientIMService>();
-            //await messageService.ConnectAsync();
-
-
-            await host.RunAsync();
+            await imService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
