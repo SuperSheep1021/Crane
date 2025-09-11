@@ -32,9 +32,6 @@ namespace web
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
 
-            ////// ´´½¨RealtimeÊµÀý
-            //m_StyRealtime = new AVRealtime(appId, appKey);
-            //m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
 
             LCLogger.Debug($"Config Success!!!{appUrl}");
         }
@@ -49,7 +46,10 @@ namespace web
             {
                 m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
             }
-
+            if ((m_StyRealtime == null || m_SysClient == null) )
+            {
+                return false;
+            }
 
             try
             {
