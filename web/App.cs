@@ -89,8 +89,6 @@ namespace web {
             {
                 LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", senderId);
                 int count = await query.Count();
-                LCLogger.Debug($"objectId:{senderId}");
-                LCLogger.Debug($"Query:{count.ToString()}"  );
                 LCUser user = await query.First();
                 return user;
             }
@@ -104,13 +102,6 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
-            LCLogger.Debug("================Start==================");
-            LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", user.ObjectId);
-            int count = await query.Count();
-            LCLogger.Debug($"objectId:{user.ObjectId}");
-            LCLogger.Debug($"Query:{count.ToString()}");
-
-            LCLogger.Debug("==================================");
             LCUser validateUser = await ValidateSenderAsync(user.ObjectId);
             if (validateUser != null)
             {
