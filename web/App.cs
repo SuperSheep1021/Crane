@@ -30,6 +30,12 @@ namespace web {
         [LCEngineFunction("SendMessageToTargetUserID")]
         public static async void SendMessageToTargetUserID([LCEngineFunctionParam("name")] string name)
         {
+            string appId = Environment.GetEnvironmentVariable("APP_ID");
+            string appKey = Environment.GetEnvironmentVariable("APP_KEY");
+            string appUrl = Environment.GetEnvironmentVariable("APP_URL");
+            string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
+            _httpClient = new HttpClientIMService(appId, appKey, appUrl);
+
             await _httpClient.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
             LCLogger.Debug(name);
             //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
