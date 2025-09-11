@@ -28,9 +28,10 @@ namespace web {
 
 
         [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async void SendMessageToTargetUserID()
+        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("name")] string name)
         {
             await _httpClient.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
+            LCLogger.Debug(name);
             //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
             //if (succes)
             //{
