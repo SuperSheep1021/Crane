@@ -26,9 +26,13 @@ namespace web
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
 
-            m_StyRealtime = new AVRealtime(appId, appKey);
-
             LCLogger.Debug($"Config Success!!!{appUrl}");
+        }
+        public static async Task CreateImClientAsync()
+        {
+            m_StyRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId, 
+                LeanCloud.Engine.Cloud.Singleton.AppKey);
+            m_SysClient= await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
         }
 
         //public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
