@@ -1,51 +1,47 @@
 using LeanCloud;
-using LeanCloud.Core.Internal;
-using LeanCloud.Realtime;
 using LeanCloud.Storage;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-public class ClientMessageBase : AVIMTextMessage
+public class ClientMessageBase 
 {
-    private async Task<bool> ValidateSenderAsync(string senderId)
+    private static async Task<bool> ValidateSenderAsync(string senderId)
     {
         try
         {
-            AVQuery<AVUser> query = new AVQuery<AVUser>().WhereEqualTo("objectId", senderId);
-            AVUser user = await query.FirstAsync();
-            return user != null;
+            LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", senderId);
+            LCUser user = await query.First();
+            return true;
         }
         catch
         {
             return false;
         }
     }
-    public async Task<string> SaveClientMessage()
+    public async Task<string> SaveClientMessage(string senderId,string message)
     {
-        bool isVali = await ValidateSenderAsync(FromClientId);
+        bool isVali = await ValidateSenderAsync(senderId);
         if (isVali)
         {
             LCLogger.Debug("isValiSenderID false!!!");
             return "";
         }
 
-        var table = new AVObject("customMessage");
-        table.Set("IsProcessed", false);
+        var table = new LCObject("customMessage");
+        table.Add("IsProcessed", false);
 
-        JObject jsonObject = JObject.Parse(Content);
+        JObject jsonObject = JObject.Parse(message);
         Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();
-        table.Set("content", content);
-        await table.SaveAsync();
+        table.Add("content", content);
+        await table.Save();
 
-        int messType = int.Parse( content["_lctype"].ToString() );
+        int messType = int.Parse(content["_lctype"].ToString());
         await ProcessTypedMessageAsync(table, messType);
 
         return table.ObjectId;
     }
-    public async Task ProcessTypedMessageAsync(AVObject table,int messType)
+    public async Task ProcessTypedMessageAsync(LCObject table, int messType)
     {
         switch (messType)
         {
@@ -56,8 +52,8 @@ public class ClientMessageBase : AVIMTextMessage
                 LCLogger.Debug("default");
                 break;
         }
-        table.Set("IsProcessed", true);
-        await table.SaveAsync();
+        table.Add("IsProcessed", true);
+        await table.Save();
     }
 
 }

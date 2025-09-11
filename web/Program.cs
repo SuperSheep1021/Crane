@@ -21,11 +21,6 @@ namespace web {
 
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
 
-            //AVClient.Initialize(appId, appKey);
-            //AVClient.CurrentConfiguration.MasterKey = masterKey;
-            //AVClient.UseMasterKey = true;
-
-
             var host = CreateHostBuilder(args).Build();
             // 获取消息服务并连接
             var messageService = host.Services.GetRequiredService<MessageService>();
