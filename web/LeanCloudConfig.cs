@@ -45,9 +45,9 @@ namespace web
 
                 // ·¢ËÍÏûÏ¢
                 var message = new AVIMTextMessage("StyMessage");
-                message.Content = Json.Encode(content);
+                //message.Content = Json.Encode(content);
 
-                await conversation.SendAsync(message);
+                //await conversation.SendAsync(message);
                 return true;
             }
             catch (LCException ex)
