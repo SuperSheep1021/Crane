@@ -35,10 +35,10 @@ namespace web.Models
         {
             AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
 
-            //    // 发送消息
-            var message = new AVIMTextMessage("StyMessage");
-            message.Content = Json.Encode(content);
-            await conversation.SendAsync(message);
+            ////    // 发送消息
+            //var message = new AVIMTextMessage("StyMessage");
+            //message.Content = Json.Encode(content);
+            //await conversation.SendAsync(message);
 
             //try
             //{
