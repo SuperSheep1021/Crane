@@ -63,7 +63,6 @@ namespace web {
             AVClient.Initialize(appId, appKey, appUrl);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

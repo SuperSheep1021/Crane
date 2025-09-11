@@ -18,13 +18,17 @@ public class MessageService
         string appId = Environment.GetEnvironmentVariable("APP_ID");
         string appKey = Environment.GetEnvironmentVariable("APP_KEY");
         string appUrl = Environment.GetEnvironmentVariable("APP_URL");
+
         // 创建实时通信实例
-        _realtime = new AVRealtime(new AVRealtime.Configuration()
-        {
-            ApplicationId = appId,
-            ApplicationKey = appKey,
-            RealtimeServer = new Uri(appUrl)
-        });
+        //_realtime = new AVRealtime(new AVRealtime.Configuration()
+        //{
+        //    ApplicationId = appId,
+        //    ApplicationKey = appKey,
+        //    RealtimeServer = new Uri(appUrl)
+        //});
+
+        _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+            LeanCloud.Engine.Cloud.Singleton.AppKey);
 
 
         // 使用服务端签名或主密钥创建连接
