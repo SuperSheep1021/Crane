@@ -125,7 +125,7 @@ public class HttpClientIMService
         string conversationId = await CreateConversation(serverClientId, targetClientId);
         if (string.IsNullOrEmpty(conversationId))
         {
-            LCLogger.Debug("创建对话失败");
+            LCLogger.Debug($"创建对话失败{ conversationId}");
             return;
         }
 
