@@ -128,9 +128,10 @@ public class HttpClientIMService
             LCLogger.Debug($"创建对话失败{ conversationId}");
             return;
         }
+        else {
+            LCLogger.Debug($"创建对话成功{ conversationId}");
+        }
 
-        // 2. 向对话发送消息
-        await SendMessage(conversationId, serverClientId, message);
 
         //try
         //{
