@@ -19,10 +19,10 @@ public class MessageService
         //    ApplicationKey = appKey,
         //    RealtimeServer = new Uri(appUrl)
         //});
-        AVRealtime _realtime = default;
+        //AVRealtime _realtime = default;
         try
         {
-            _realtime = new AVRealtime(appId, appKey);
+            AVRealtime _realtime = new AVRealtime(appId, appKey);
             LCLogger.Debug($"AVRealtime Init Success");
         }
         catch (LCException ex) {
@@ -41,24 +41,24 @@ public class MessageService
         }
 
 
-        try
-        {
-            AVIMClient _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
-            LCLogger.Debug($"AVIMClient Init Success");
-        }
-        catch (LCException ex)
-        {
-            LCLogger.Debug(ex.Message);
-            LCLogger.Debug(ex.HelpLink);
-            LCLogger.Debug(ex.Source);
-            LCLogger.Debug(ex.Code.ToString());
-        }
-        catch (Exception ex)
-        {
-            LCLogger.Debug(ex.Message);
-            LCLogger.Debug(ex.HelpLink);
-            LCLogger.Debug(ex.Source);
-        }
+        //try
+        //{
+        //    AVIMClient _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
+        //    LCLogger.Debug($"AVIMClient Init Success");
+        //}
+        //catch (LCException ex)
+        //{
+        //    LCLogger.Debug(ex.Message);
+        //    LCLogger.Debug(ex.HelpLink);
+        //    LCLogger.Debug(ex.Source);
+        //    LCLogger.Debug(ex.Code.ToString());
+        //}
+        //catch (Exception ex)
+        //{
+        //    LCLogger.Debug(ex.Message);
+        //    LCLogger.Debug(ex.HelpLink);
+        //    LCLogger.Debug(ex.Source);
+        //}
 
 
         //// 使用服务端签名或主密钥创建连接
