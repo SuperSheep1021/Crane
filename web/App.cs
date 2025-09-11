@@ -38,25 +38,56 @@ namespace web {
         }
 
 
-        //[LCEngineFunction("SendMessageToTargetUserID")]
-        //public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
-        //{
-        //    //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
-        //    //if (succes)
-        //    //{
-        //    //    await MeeeageServicr.Inst.SendToSingleUser(userid, new Dictionary<string, object>()
-        //    //    {
-        //    //        { "service message key 1",1111},
-        //    //        { "service message key 2",2222},
-        //    //        { "service message key 3",3333}
-        //    //    });
-        //    //    LCLogger.Debug($"Send Message To TargetUserID:{userid} Final");
-        //    //}
-        //    //else {
-        //    //    LCLogger.Debug($"CreateImClientAsync:{userid} ");
-        //    //}
-            
-        //}
+        [LCEngineFunction("SendMessageToTargetUserID")]
+        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
+        {
+            //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
+            //if (succes)
+            //{
+            //    await MeeeageServicr.Inst.SendToSingleUser(userid, new Dictionary<string, object>()
+            //    {
+            //        { "service message key 1",1111},
+            //        { "service message key 2",2222},
+            //        { "service message key 3",3333}
+            //    });
+            //    LCLogger.Debug($"Send Message To TargetUserID:{userid} Final");
+            //}
+            //else {
+            //    LCLogger.Debug($"CreateImClientAsync:{userid} ");
+            //}
+
+            const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
+            AVRealtime styRealtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+                LeanCloud.Engine.Cloud.Singleton.AppKey);
+            AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+
+            AVIMConversation conversation = await sysClient.CreateTemporaryConversationAsync(members: new List<string> { "targetUserId" });
+
+
+            return;
+
+            ////    // 发送消息
+            //var message = new AVIMTextMessage("StyMessage");
+            //message.Content = Json.Encode(content);
+            //await conversation.SendAsync(message);
+
+            //try
+            //{
+            //    AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+
+            //    // 发送消息
+            //    var message = new AVIMTextMessage("StyMessage");
+            //    //message.Content = Json.Encode(content);
+
+            //    //await conversation.SendAsync(message);
+            //    return true;
+            //}
+            //catch (LCException ex)
+            //{
+            //    LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
+            //    return false;
+            //}
+        }
 
 
 
