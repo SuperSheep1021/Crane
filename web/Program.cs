@@ -14,10 +14,6 @@ namespace web {
             //LeanCloudConfig.InitializeFromEnvironment();
             //CreateHostBuilder(args).Build().Run();
 
-            
-
-            var host = CreateHostBuilder(args).Build();
-
             ////// 从环境变量获取配置信息
             string appId = Environment.GetEnvironmentVariable("APP_ID");
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
@@ -27,10 +23,11 @@ namespace web {
 
             LCCore.UseMasterKey = true;
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
-            
             LCLogger.Debug("LCCore.Initialize Success");
 
 
+
+            var host = CreateHostBuilder(args).Build();
             // 获取消息服务并连接
             var messageService = host.Services.GetRequiredService<MessageService>();
             await messageService.ConnectAsync();
