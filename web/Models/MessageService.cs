@@ -1,5 +1,6 @@
 using LeanCloud;
 using LeanCloud.Realtime;
+using LeanCloud.Storage.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,6 +33,13 @@ namespace web.Models
         }
         public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
         {
+            AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+
+            //    // ·¢ËÍÏûÏ¢
+            var message = new AVIMTextMessage("StyMessage");
+            message.Content = Json.Encode(content);
+            await conversation.SendAsync(message);
+
             //try
             //{
             //    AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
