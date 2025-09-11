@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 [Route("api/[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly MessageService _messageService;
+    private readonly HttpClientIMService _messageService;
     
-    public MessageController(MessageService messageService)
+    public MessageController(HttpClientIMService messageService)
     {
         _messageService = messageService;
     }

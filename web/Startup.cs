@@ -50,7 +50,7 @@ namespace web {
 
             services.AddControllersWithViews();
 
-            services.AddSingleton<MessageService>();
+            //services.AddSingleton<HttpClientIMService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
