@@ -20,6 +20,7 @@ namespace web {
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
+            LCLogger.Debug("LCCore.Initialize Success");
 
             var host = CreateHostBuilder(args).Build();
             // 获取消息服务并连接

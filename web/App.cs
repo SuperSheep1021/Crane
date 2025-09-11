@@ -88,6 +88,8 @@ namespace web {
             try
             {
                 LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", senderId);
+                int count = await query.Count();
+                LCLogger.Debug(count.ToString()  );
                 LCUser user = await query.First();
                 return user;
             }
@@ -96,6 +98,8 @@ namespace web {
                 return null;
             }
         }
+
+
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
