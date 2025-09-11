@@ -33,7 +33,6 @@
     <Content Remove="Libs\Engine.deps.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LeanCloud" Version="2017.10.15.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

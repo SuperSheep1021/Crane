@@ -1,4 +1,5 @@
 using LeanCloud;
+using LeanCloud.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +19,9 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-            AVClient.Initialize(appId, appKey);
+            LCCore.Initialize(appId, appKey, appUrl, masterKey);
+
+            //AVClient.Initialize(appId, appKey);
             //AVClient.CurrentConfiguration.MasterKey = masterKey;
             //AVClient.UseMasterKey = true;
 

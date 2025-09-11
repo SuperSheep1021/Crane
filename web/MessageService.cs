@@ -1,18 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using LeanCloud;
-using LeanCloud.Core;
-using LeanCloud.Realtime;
-
+using LeanCloud.Common;
 public class MessageService
 {
     // 连接到 LeanCloud 实时通信服务
     public async Task ConnectAsync()
     {
-        string appId = Environment.GetEnvironmentVariable("APP_ID");
-        string appKey = Environment.GetEnvironmentVariable("APP_KEY");
-        string appUrl = Environment.GetEnvironmentVariable("APP_URL");
-
         // 创建实时通信实例
         //_realtime = new AVRealtime(new AVRealtime.Configuration()
         //{
@@ -21,25 +15,26 @@ public class MessageService
         //    RealtimeServer = new Uri(appUrl)
         //});
         //AVRealtime _realtime = default;
-        try
-        {
-            AVRealtime _realtime = new AVRealtime(appId, appKey);
-            LCLogger.Debug($"AVRealtime Init Success");
-        }
-        catch (LCException ex) {
-            LCLogger.Debug(ex.Message);
-            LCLogger.Debug(ex.HelpLink);
-            LCLogger.Debug(ex.Source);
-            LCLogger.Debug(ex.Code.ToString() );
-            LCLogger.Debug($"{appId}_____{appKey}");
-        }
-        catch (Exception ex)
-        {
-            LCLogger.Debug(ex.Message);
-            LCLogger.Debug(ex.ToString() );
-            LCLogger.Debug(ex.Source);
-            LCLogger.Debug($"{appId}_____{appKey}");
-        }
+
+        //try
+        //{
+        //    AVRealtime _realtime = new AVRealtime(appId, appKey);
+        //    LCLogger.Debug($"AVRealtime Init Success");
+        //}
+        //catch (LCException ex) {
+        //    LCLogger.Debug(ex.Message);
+        //    LCLogger.Debug(ex.HelpLink);
+        //    LCLogger.Debug(ex.Source);
+        //    LCLogger.Debug(ex.Code.ToString() );
+        //    LCLogger.Debug($"{appId}_____{appKey}");
+        //}
+        //catch (Exception ex)
+        //{
+        //    LCLogger.Debug(ex.Message);
+        //    LCLogger.Debug(ex.ToString() );
+        //    LCLogger.Debug(ex.Source);
+        //    LCLogger.Debug($"{appId}_____{appKey}");
+        //}
 
 
         //try
