@@ -38,25 +38,25 @@ namespace web {
         }
 
 
-        [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
-        {
-            //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
-            //if (succes)
-            //{
-            //    await MeeeageServicr.Inst.SendToSingleUser(userid, new Dictionary<string, object>()
-            //    {
-            //        { "service message key 1",1111},
-            //        { "service message key 2",2222},
-            //        { "service message key 3",3333}
-            //    });
-            //    LCLogger.Debug($"Send Message To TargetUserID:{userid} Final");
-            //}
-            //else {
-            //    LCLogger.Debug($"CreateImClientAsync:{userid} ");
-            //}
+        //[LCEngineFunction("SendMessageToTargetUserID")]
+        //public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
+        //{
+        //    //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
+        //    //if (succes)
+        //    //{
+        //    //    await MeeeageServicr.Inst.SendToSingleUser(userid, new Dictionary<string, object>()
+        //    //    {
+        //    //        { "service message key 1",1111},
+        //    //        { "service message key 2",2222},
+        //    //        { "service message key 3",3333}
+        //    //    });
+        //    //    LCLogger.Debug($"Send Message To TargetUserID:{userid} Final");
+        //    //}
+        //    //else {
+        //    //    LCLogger.Debug($"CreateImClientAsync:{userid} ");
+        //    //}
             
-        }
+        //}
 
 
 
