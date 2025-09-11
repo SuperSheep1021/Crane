@@ -26,7 +26,7 @@ namespace web
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
 
-            //m_StyRealtime = new AVRealtime(appId, appKey);
+            m_StyRealtime = new AVRealtime(appId, appKey);
 
             LCLogger.Debug($"Config Success!!!{appUrl}");
         }
