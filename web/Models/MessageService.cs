@@ -29,7 +29,7 @@ namespace web.Models
                 LeanCloud.Engine.Cloud.Singleton.AppKey);
             AVIMClient sysClient = await styRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
 
-            AVIMConversation conversation = await sysClient.CreateConversationAsync(member: targetUserId, isSystem: true);
+            AVIMConversation conversation = await sysClient.GetConversationAsync("68bac17a54b6d33c28341de7");
 
             ////    // ·¢ËÍÏûÏ¢
             //var message = new AVIMTextMessage("StyMessage");
