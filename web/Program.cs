@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace web {
     public class Program {
@@ -23,9 +24,11 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-            LCCore.Initialize(appId, appKey, appUrl, masterKey);
-            LCLogger.Debug("LCCore.Initialize Success");
 
+            LCCore.UseMasterKey = true;
+            LCCore.Initialize(appId, appKey, appUrl, masterKey);
+            
+            LCLogger.Debug("LCCore.Initialize Success");
 
 
             // 获取消息服务并连接
