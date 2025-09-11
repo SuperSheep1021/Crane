@@ -22,8 +22,7 @@ public class MessageService
         AVRealtime _realtime = default;
         try
         {
-            _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
-                LeanCloud.Engine.Cloud.Singleton.AppKey);
+            _realtime = new AVRealtime(appId, appKey);
             LCLogger.Debug($"AVRealtime Init Success");
         }
         catch (LCException ex) {
