@@ -29,8 +29,8 @@ namespace web {
 
             await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
-            var imService = new HttpClientIMService(appId, appKey, appUrl);
-            await imService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
+            App._httpClient = new HttpClientIMService(appId, appKey, appUrl);
+            //await imService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

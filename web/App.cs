@@ -4,11 +4,13 @@ using LeanCloud.Storage;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace web {
     public class App
     {
+        public static HttpClientIMService _httpClient;
 
         // Function
         [LCEngineFunction("hello")]
@@ -28,6 +30,7 @@ namespace web {
         [LCEngineFunction("SendMessageToTargetUserID")]
         public static async void SendMessageToTargetUserID([LCEngineFunctionParam("UserID")] string userid)
         {
+            await _httpClient.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
             //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
             //if (succes)
             //{
