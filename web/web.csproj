@@ -34,8 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LeanCloud.Realtime" Version="2020.1.21.1" />
-    <PackageReference Include="LeanCloud.Core" Version="2.0.0.0" />
-    <PackageReference Include="LeanCloud.Engine" Version="2020.9.10.1" />
     <PackageReference Include="LeanCloud.Storage" Version="2020.1.16.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
