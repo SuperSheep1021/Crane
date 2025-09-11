@@ -15,22 +15,20 @@ namespace web
 {
     public static class LeanCloudConfig
     {
-        
         const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
+        static string m_appId = "";
+        static string m_appKey = "";
         static AVIMClient m_SysClient;
         static AVRealtime m_StyRealtime;
         public static void InitializeFromEnvironmentAsync()
         {
             ////// 从环境变量获取配置信息
-            string appId = Environment.GetEnvironmentVariable("APP_ID");
-            string appKey = Environment.GetEnvironmentVariable("APP_KEY");
+            m_appId  = Environment.GetEnvironmentVariable("APP_ID");
+            m_appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
-            string appUrl = Environment.GetEnvironmentVariable("APP_URL");
-            string port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
-            appUrl += $":{port}";
+            string appUrl    = Environment.GetEnvironmentVariable("APP_URL");
 
-            AVClient.Configuration config = new AVClient.Configuration();
-            AVClient.Initialize(appId, appKey, appUrl);
+            AVClient.Initialize(m_appId, m_appKey, appUrl);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
 
@@ -41,26 +39,36 @@ namespace web
             LCLogger.Debug($"Config Success!!!{appUrl}");
         }
 
-        //public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
-        //{
-        //    try
-        //    {
-        //        //AVIMConversation conversation2 = await m_SysClient.GetConversationAsync(SystemConversationId);
-        //        AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+        public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
+        {
+            if (m_StyRealtime==null) 
+            {
+                m_StyRealtime = new AVRealtime(m_appId, m_appKey);
+            }
+            if (m_SysClient == null)
+            {
+                m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
+            }
 
-        //        // 发送消息
-        //        var message = new AVIMTextMessage("StyMessage");
-        //        message.Content = Json.Encode(content);
 
-        //        await conversation.SendAsync(message);
-        //        return true;
-        //    }
-        //    catch (LCException ex)
-        //    {
-        //        LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
-        //        return false;
-        //    }
-        //}
+            try
+            {
+                //AVIMConversation conversation2 = await m_SysClient.GetConversationAsync(SystemConversationId);
+                AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+
+                // 发送消息
+                var message = new AVIMTextMessage("StyMessage");
+                message.Content = Json.Encode(content);
+
+                await conversation.SendAsync(message);
+                return true;
+            }
+            catch (LCException ex)
+            {
+                LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
+                return false;
+            }
+        }
 
     }
 }
