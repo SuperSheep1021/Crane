@@ -6,7 +6,7 @@ namespace web {
     public class Program {
         public static void Main(string[] args)
         {
-            LeanCloudConfig.InitializeFromEnvironmentAsync();
+            LeanCloudConfig.InitializeFromEnvironment();
             CreateHostBuilder(args).Build().Run();
         }
 

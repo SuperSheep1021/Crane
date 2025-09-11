@@ -20,7 +20,7 @@ namespace web
         static string m_appKey = "";
         static AVIMClient m_SysClient;
         static AVRealtime m_StyRealtime;
-        public static void InitializeFromEnvironmentAsync()
+        public static void InitializeFromEnvironment()
         {
             ////// 从环境变量获取配置信息
             m_appId  = Environment.GetEnvironmentVariable("APP_ID");
