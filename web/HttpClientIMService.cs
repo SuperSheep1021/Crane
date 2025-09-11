@@ -66,7 +66,7 @@ public class HttpClientIMService
 
         SetAuthHeaders();
 
-        var response = await httpClient.PostAsync($"{imServerUrl}/1.0/conversations", content);
+        var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/message0908", content);
         response.EnsureSuccessStatusCode();
 
         var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
@@ -106,9 +106,7 @@ public class HttpClientIMService
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         SetAuthHeaders();
-
-        var response = await httpClient.PostAsync(
-            $"{imServerUrl}/1.0/conversations/{conversationId}/messages",
+        var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/message0908",
             content
         );
         response.EnsureSuccessStatusCode();
