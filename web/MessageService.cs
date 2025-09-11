@@ -36,7 +36,7 @@ public class MessageService
         catch (Exception ex)
         {
             LCLogger.Debug(ex.Message);
-            LCLogger.Debug(ex.HelpLink);
+            LCLogger.Debug(ex.ToString() );
             LCLogger.Debug(ex.Source);
             LCLogger.Debug($"{appId}_____{appKey}");
         }
