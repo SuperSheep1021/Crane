@@ -50,7 +50,6 @@ namespace web {
             LCEngine.Initialize(services);
 
             services.AddControllersWithViews();
-
             services.AddSingleton<MeeeageServicr>();
         }
 
