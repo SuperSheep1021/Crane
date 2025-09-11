@@ -125,31 +125,30 @@ namespace web {
         }
 
 
-        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        //public static async Task<object> ClientOnLine(dynamic request)
-        //{
-        //    string data = JsonConvert.SerializeObject(request);
-        //    LCLogger.Debug($"客户端上线: {data}");
-        //    try
-        //    {
-        //        var dic = request;
-        //        foreach (KeyValuePair<string, object> item in dic)
-        //        {
-        //            LCLogger.Debug(item.Key + ":" + item.Value);
-        //        }
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
+        public static void ClientOnLine(dynamic request)
+        {
+            string data = JsonConvert.SerializeObject(request);
+            LCLogger.Debug($"客户端上线: {data}");
+            try
+            {
+                var dic = request;
+                foreach (KeyValuePair<string, object> item in dic)
+                {
+                    LCLogger.Debug(item.Key + ":" + item.Value);
+                }
 
-        //    }
-        //    catch (LCException ex)
-        //    {
-        //        LCLogger.Error(ex.Message);
-        //    }
-        //    return new { success = true };
-        //}
+            }
+            catch (LCException ex)
+            {
+                LCLogger.Error(ex.Message);
+            }
+        }
 
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static async Task<object> ClientOffLine(dynamic request)
+        public static void ClientOffLine(dynamic request)
         {
             string data = JsonConvert.SerializeObject(request);
             LCLogger.Debug($"客户端下线: {request}");
@@ -168,7 +167,6 @@ namespace web {
             }
             // 您的业务逻辑，比如更新用户状态等
 
-            return new { success = true };
         }
 
         //[LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
