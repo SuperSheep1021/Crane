@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LeanCloud;
+using LeanCloud.Core;
 using LeanCloud.Realtime;
 
 public class MessageService
