@@ -30,7 +30,12 @@ namespace web {
             await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
             App._httpClient = new HttpClientIMService(appId, appKey, appUrl);
-            //await imService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
+
+
+            //// 轮询指定对话的消息（替换为实际对话 ID）
+            //string conversationId = "对话ID"; // 可从创建对话时获取
+            //await poller.PollMessages(conversationId);
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
