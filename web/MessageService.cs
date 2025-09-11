@@ -28,10 +28,15 @@ public class MessageService
         }
         catch (LCException ex) {
             LCLogger.Debug(ex.Message);
+            LCLogger.Debug(ex.HelpLink);
+            LCLogger.Debug(ex.Source);
+            LCLogger.Debug(ex.Code.ToString() );
         }
         catch (Exception ex)
         {
             LCLogger.Debug(ex.Message);
+            LCLogger.Debug(ex.HelpLink);
+            LCLogger.Debug(ex.Source);
         }
 
 
@@ -43,10 +48,15 @@ public class MessageService
         catch (LCException ex)
         {
             LCLogger.Debug(ex.Message);
+            LCLogger.Debug(ex.HelpLink);
+            LCLogger.Debug(ex.Source);
+            LCLogger.Debug(ex.Code.ToString());
         }
         catch (Exception ex)
         {
             LCLogger.Debug(ex.Message);
+            LCLogger.Debug(ex.HelpLink);
+            LCLogger.Debug(ex.Source);
         }
 
 
