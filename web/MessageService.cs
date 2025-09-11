@@ -5,7 +5,7 @@ using LeanCloud.Realtime;
 
 public class MessageService
 {
-    private readonly AVRealtime _realtime;
+    private AVRealtime _realtime;
     private AVIMClient _client;
     public MessageService()
     {
