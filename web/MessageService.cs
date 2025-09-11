@@ -31,6 +31,7 @@ public class MessageService
             LCLogger.Debug(ex.HelpLink);
             LCLogger.Debug(ex.Source);
             LCLogger.Debug(ex.Code.ToString() );
+            LCLogger.Debug($"{LeanCloud.Engine.Cloud.Singleton.AppId}_____{LeanCloud.Engine.Cloud.Singleton.AppKey}");
         }
         catch (Exception ex)
         {
