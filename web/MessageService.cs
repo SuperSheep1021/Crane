@@ -5,13 +5,6 @@ using LeanCloud.Realtime;
 
 public class MessageService
 {
-    private AVRealtime _realtime;
-    private AVIMClient _client;
-    public MessageService()
-    {
-        
-    }
-    
     // 连接到 LeanCloud 实时通信服务
     public async Task ConnectAsync()
     {
@@ -27,13 +20,13 @@ public class MessageService
         //    RealtimeServer = new Uri(appUrl)
         //});
 
-        _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+        AVRealtime _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
             LeanCloud.Engine.Cloud.Singleton.AppKey);
 
 
         // 使用服务端签名或主密钥创建连接
         // 注意：生产环境中应使用安全的签名方式
-        _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
+        AVIMClient _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
         
         Console.WriteLine("已连接到 LeanCloud 实时通信服务");
     }
