@@ -8,7 +8,6 @@ namespace web {
         {
             LeanCloudConfig.InitializeFromEnvironment();
             CreateHostBuilder(args).Build().Run();
-            LeanCloudConfig.CreateImClientAsync().Wait();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
