@@ -28,7 +28,7 @@ namespace web {
 
             await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
-            App._httpClient = new HttpClientIMService(appId, appKey, appUrl);
+            //App._httpClient = new HttpClientIMService(appId, appKey, appUrl);
 
 
             //// 轮询指定对话的消息（替换为实际对话 ID）

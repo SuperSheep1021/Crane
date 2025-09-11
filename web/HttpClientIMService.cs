@@ -122,23 +122,33 @@ public class HttpClientIMService
     /// <param name="message">消息内容</param>
     public async Task SendToUser(string serverClientId, string targetClientId, string message)
     {
-        try
+        string conversationId = await CreateConversation(serverClientId, targetClientId);
+        if (string.IsNullOrEmpty(conversationId))
         {
-            // 1. 创建单聊对话（若不存在则自动创建）
-            string conversationId = await CreateConversation(serverClientId, targetClientId);
-            if (string.IsNullOrEmpty(conversationId))
-            {
-                LCLogger.Debug("创建对话失败");
-                return;
-            }
+            LCLogger.Debug("创建对话失败");
+            return;
+        }
 
-            // 2. 向对话发送消息
-            await SendMessage(conversationId, serverClientId, message);
-        }
-        catch (Exception ex)
-        {
-            LCLogger.Debug("发送 IM 消息失败: " + ex.Message);
-        }
+        // 2. 向对话发送消息
+        await SendMessage(conversationId, serverClientId, message);
+
+        //try
+        //{
+        //    // 1. 创建单聊对话（若不存在则自动创建）
+        //    string conversationId = await CreateConversation(serverClientId, targetClientId);
+        //    if (string.IsNullOrEmpty(conversationId))
+        //    {
+        //        LCLogger.Debug("创建对话失败");
+        //        return;
+        //    }
+
+        //    // 2. 向对话发送消息
+        //    await SendMessage(conversationId, serverClientId, message);
+        //}
+        //catch (Exception ex)
+        //{
+        //    LCLogger.Debug("发送 IM 消息失败: " + ex.Message);
+        //}
     }
 
 
