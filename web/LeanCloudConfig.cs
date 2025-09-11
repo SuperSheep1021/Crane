@@ -35,7 +35,7 @@ namespace web
             //m_StyRealtime = new AVRealtime(appId, appKey);
             //m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId,tag:"StyemBroadcast");
             
-            LCLogger.Debug("Config Success!!!");
+            LCLogger.Debug($"Config Success!!!{appUrl}");
         }
 
         public static async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
