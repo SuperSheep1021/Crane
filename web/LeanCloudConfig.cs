@@ -16,22 +16,21 @@ namespace web
     public static class LeanCloudConfig
     {
         const string SystemClientId = "68c22ec62f7ee809fcc9e7e6";
-        static string m_appId = "";
-        static string m_appKey = "";
-        static AVIMClient m_SysClient;
         static AVRealtime m_StyRealtime;
+        static AVIMClient m_SysClient;
         public static void InitializeFromEnvironment()
         {
             ////// 从环境变量获取配置信息
-            m_appId  = Environment.GetEnvironmentVariable("APP_ID");
-            m_appKey = Environment.GetEnvironmentVariable("APP_KEY");
+            string appId = Environment.GetEnvironmentVariable("APP_ID");
+            string appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
             string appUrl    = Environment.GetEnvironmentVariable("APP_URL");
 
-            AVClient.Initialize(m_appId, m_appKey, appUrl);
+            AVClient.Initialize(appId, appKey, appUrl);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
 
+            m_StyRealtime = new AVRealtime(appId, appKey);
 
             LCLogger.Debug($"Config Success!!!{appUrl}");
         }
