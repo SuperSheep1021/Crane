@@ -104,6 +104,7 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
+            LCLogger.Debug("================Start==================");
             LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", user.ObjectId);
             int count = await query.Count();
             LCLogger.Debug($"objectId:{user.ObjectId}");
