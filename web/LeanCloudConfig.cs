@@ -26,7 +26,10 @@ namespace web
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
+            string port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
+            appUrl += $":{port}";
 
+            AVClient.Configuration config = new AVClient.Configuration();
             AVClient.Initialize(appId, appKey, appUrl);
             AVClient.CurrentConfiguration.MasterKey = masterKey;
             AVClient.UseMasterKey = true;
