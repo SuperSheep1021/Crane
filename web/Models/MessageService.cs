@@ -30,25 +30,25 @@ namespace web.Models
             m_SysClient = await m_StyRealtime.CreateClientAsync(SystemClientId, tag: "StyemBroadcast");
             return true;
         }
-        //public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
-        //{
-        //    try
-        //    {
-        //        //AVIMConversation conversation2 = await m_SysClient.GetConversationAsync(SystemConversationId);
-        //        AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
+        public async Task<bool> SendToSingleUser(string targetUserId, Dictionary<string, object> content)
+        {
+            //try
+            //{
+            //    AVIMConversation conversation = await m_SysClient.CreateConversationAsync(member: targetUserId, isSystem: true, isUnique: true);
 
-        //        // 发送消息
-        //        var message = new AVIMTextMessage("StyMessage");
-        //        //message.Content = Json.Encode(content);
+            //    // 发送消息
+            //    var message = new AVIMTextMessage("StyMessage");
+            //    //message.Content = Json.Encode(content);
 
-        //        //await conversation.SendAsync(message);
-        //        return true;
-        //    }
-        //    catch (LCException ex)
-        //    {
-        //        LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
-        //        return false;
-        //    }
-        //}
+            //    //await conversation.SendAsync(message);
+            //    return true;
+            //}
+            //catch (LCException ex)
+            //{
+            //    LCLogger.Debug($"给用户 {targetUserId} 发送消息失败: {ex.Message}");
+            //    return false;
+            //}
+            return false;
+        }
     }
 }
