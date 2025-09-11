@@ -20,13 +20,23 @@ public class MessageService
         //    RealtimeServer = new Uri(appUrl)
         //});
 
-        //AVRealtime _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
-        //    LeanCloud.Engine.Cloud.Singleton.AppKey);
+        try
+        {
+            AVRealtime _realtime = new AVRealtime(LeanCloud.Engine.Cloud.Singleton.AppId,
+                LeanCloud.Engine.Cloud.Singleton.AppKey);
+        }
+        catch (LCException ex) {
+            LCLogger.Debug(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            LCLogger.Debug(ex.Message);
+        }
 
         //// 使用服务端签名或主密钥创建连接
         //// 注意：生产环境中应使用安全的签名方式
         //AVIMClient _client = await _realtime.CreateClientAsync("68c22ec62f7ee809fcc9e7e6");
-        
+
         Console.WriteLine("已连接到 LeanCloud 实时通信服务");
     }
     
