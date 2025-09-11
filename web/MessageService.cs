@@ -5,16 +5,19 @@ using LeanCloud.Realtime;
 
 public class MessageService
 {
-    private AVRealtime _realtime;
+    private readonly AVRealtime _realtime;
     private AVIMClient _client;
     public MessageService()
     {
+        string appId = Environment.GetEnvironmentVariable("APP_ID");
+        string appKey = Environment.GetEnvironmentVariable("APP_KEY");
+        string appUrl = Environment.GetEnvironmentVariable("APP_URL");
         // 创建实时通信实例
         _realtime = new AVRealtime(new AVRealtime.Configuration()
         {
-            ApplicationId = "你的AppId",
-            ApplicationKey = "你的AppKey",
-            RealtimeServer = new Uri("你的服务器地址")
+            ApplicationId = appId,
+            ApplicationKey = appKey,
+            RealtimeServer = new Uri(appUrl)
         });
     }
     
