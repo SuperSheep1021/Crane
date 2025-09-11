@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using web.Servces;
 
 namespace web {
     public class Program {
@@ -13,7 +12,8 @@ namespace web {
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => {
+                .ConfigureWebHostDefaults(webBuilder => 
+                {
                     webBuilder.UseStartup<Startup>();
                 });
     }

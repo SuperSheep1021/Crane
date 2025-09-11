@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace web.Servces
+namespace web
 {
     public static class LeanCloudConfig
     {
