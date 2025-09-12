@@ -73,7 +73,6 @@ public class HttpClientIMService
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             //SetAuthHeaders();
-
             var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
 
             // 获取详细响应内容用于调试
