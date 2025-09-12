@@ -114,23 +114,23 @@ public class HttpClientIMService
             //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
 
             // 获取详细响应内容用于调试
-            string responseContent = await response.Content.ReadAsStringAsync();
-            LCLogger.Debug($"responseContent==== {responseContent}");
+            //string responseContent = await response.Content.ReadAsStringAsync();
+            //LCLogger.Debug($"responseContent==== {responseContent}");
 
-            // 检查HTTP状态码
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new HttpRequestException(
-                    $"创建会话失败，状态码: {response.StatusCode}, 响应内容: {responseContent}");
-            }
+            //// 检查HTTP状态码
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    throw new HttpRequestException(
+            //        $"创建会话失败，状态码: {response.StatusCode}, 响应内容: {responseContent}");
+            //}
 
-            var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
+            //var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
 
             // 验证是否包含id字段
-            if (!result.TryGetValue("id", out object idObj) || idObj == null)
+            if (!response.TryGetValue("id", out object idObj) || idObj == null)
             {
                 throw new InvalidOperationException(
-                    $"创建会话返回结果不包含有效的id字段，响应内容: {responseContent}");
+                    $"创建会话返回结果不包含有效的id字段，响应内容: {response}");
             }
 
             return idObj.ToString();
