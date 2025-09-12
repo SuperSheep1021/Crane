@@ -110,7 +110,7 @@ public class HttpClientIMService
             {
                 members = new[] { senderId, targetId },
                 unique = true,
-                sty = true,
+                sys = true,
             };
 
             string json = JsonConvert.SerializeObject(requestData);
