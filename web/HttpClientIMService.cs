@@ -176,9 +176,10 @@ public class HttpClientIMService
             // 构建消息数据
             var messageData = new Dictionary<string, object>
             {
-                { "convId", conversationId },
-                { "from", senderId },
-                { "IsProcessed",false},
+                { "conv_Id", conversationId },
+                { "to_peer_ids",targetID },
+                { "from_peer", senderId },
+                { "processed",false},
                 { "msg", new Dictionary<string, object>
                     {
                         { "type", "text" },
@@ -192,7 +193,7 @@ public class HttpClientIMService
             var headers = new Dictionary<string, object>
             {
                 // 例如添加认证信息或其他必要头信息
-                 {"X-User-Id", targetID }
+                 {"X-User-Id", targetID },
             };
 
             // 发送消息
