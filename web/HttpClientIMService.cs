@@ -89,7 +89,7 @@ public class HttpClientIMService
 
             // 获取详细响应内容用于调试
             string responseContent = await response.Content.ReadAsStringAsync();
-            LCLogger.Debug(responseContent);
+            LCLogger.Debug($"responseContent==== {responseContent}");
 
             // 检查HTTP状态码
             if (!response.IsSuccessStatusCode)
