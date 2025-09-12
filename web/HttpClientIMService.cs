@@ -55,22 +55,78 @@ public class HttpClientIMService
     // 创建对话
     public async Task<string> CreateConversation(string senderId, string targetId)
     {
-        var requestData = new
+        if (string.IsNullOrEmpty(senderId))
+            throw new ArgumentNullException(nameof(senderId), "发送者ID不能为空");
+
+        if (string.IsNullOrEmpty(targetId))
+            throw new ArgumentNullException(nameof(targetId), "目标用户ID不能为空");
+
+        try
         {
-            members = new[] { senderId, targetId }, // 对话成员：服务端 + 目标用户
-            unique = true // 确保相同成员只创建一个对话
-        };
+            var requestData = new
+            {
+                members = new[] { senderId, targetId },
+                unique = true
+            };
 
-        string json = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string json = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        SetAuthHeaders();
+            SetAuthHeaders();
 
-        var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
-        response.EnsureSuccessStatusCode();
+            var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
 
-        var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
-        return result["id"].ToString();
+            // 获取详细响应内容用于调试
+            string responseContent = await response.Content.ReadAsStringAsync();
+
+            // 检查HTTP状态码
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException(
+                    $"创建会话失败，状态码: {response.StatusCode}, 响应内容: {responseContent}");
+            }
+
+            var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
+
+            // 验证是否包含id字段
+            if (!result.TryGetValue("id", out object idObj) || idObj == null)
+            {
+                throw new InvalidOperationException(
+                    $"创建会话返回结果不包含有效的id字段，响应内容: {responseContent}");
+            }
+
+            return idObj.ToString();
+        }
+        catch (JsonException ex)
+        {
+            throw new InvalidOperationException("解析会话创建响应失败", ex);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new InvalidOperationException("与服务器通信时发生错误", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("创建会话时发生意外错误", ex);
+        }
+
+
+        //var requestData = new
+        //{
+        //    members = new[] { senderId, targetId }, // 对话成员：服务端 + 目标用户
+        //    unique = true // 确保相同成员只创建一个对话
+        //};
+
+        //string json = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //SetAuthHeaders();
+
+        //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
+        //response.EnsureSuccessStatusCode();
+
+        //var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
+        //return result["id"].ToString();
     }
 
 
