@@ -66,49 +66,17 @@ namespace web {
             LCLogger.Debug(string.Format("{0} login", user["username"]));
         }
 
-
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static void ClientOnLine(dynamic request)
+        public static void OnClientOnline(Dictionary<string, object> parameters)
         {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端上线: {data}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
-
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
+            LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
         }
-
-
+        // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static void ClientOffLine(dynamic request)
+        public static void OnClientOffline(Dictionary<string, object> parameters)
         {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端下线: {request}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
-
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
-            // 您的业务逻辑，比如更新用户状态等
+            LCLogger.Debug($"客户端离线{parameters["peerId"]} offline");
         }
-
 
 
 
