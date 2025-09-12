@@ -72,7 +72,7 @@ public class HttpClientIMService
             string json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            SetAuthHeaders();
+            //SetAuthHeaders();
 
             var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
 
