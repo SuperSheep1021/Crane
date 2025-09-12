@@ -44,7 +44,7 @@ public class HttpClientIMService
     public static HttpClient httpClient;
 
 
-    public HttpClientIMService(string appId, string masterKey, string imServerUrl = "https://im-api.leancloud.cn")
+    public HttpClientIMService(string appId, string masterKey, string imServerUrl)
     {
         this.appId = appId;
         this.masterKey = masterKey;
@@ -53,7 +53,7 @@ public class HttpClientIMService
     }
 
     // 创建对话
-    private async Task<string> CreateConversation(string senderId, string targetId)
+    public async Task<string> CreateConversation(string senderId, string targetId)
     {
         var requestData = new
         {
@@ -122,34 +122,23 @@ public class HttpClientIMService
     /// <param name="message">消息内容</param>
     public async Task SendToUser(string serverClientId, string targetClientId, string message)
     {
-        string conversationId = await CreateConversation(serverClientId, targetClientId);
-        if (string.IsNullOrEmpty(conversationId))
+        try
         {
-            LCLogger.Debug($"创建对话失败{ conversationId}");
-            return;
+            // 1. 创建单聊对话（若不存在则自动创建）
+            string conversationId = await CreateConversation(serverClientId, targetClientId);
+            if (string.IsNullOrEmpty(conversationId))
+            {
+                LCLogger.Debug("创建对话失败");
+                return;
+            }
+
+            // 2. 向对话发送消息
+            await SendMessage(conversationId, serverClientId, message);
         }
-        else {
-            LCLogger.Debug($"创建对话成功{ conversationId}");
+        catch (Exception ex)
+        {
+            LCLogger.Debug("发送 IM 消息失败: " + ex.Message);
         }
-
-
-        //try
-        //{
-        //    // 1. 创建单聊对话（若不存在则自动创建）
-        //    string conversationId = await CreateConversation(serverClientId, targetClientId);
-        //    if (string.IsNullOrEmpty(conversationId))
-        //    {
-        //        LCLogger.Debug("创建对话失败");
-        //        return;
-        //    }
-
-        //    // 2. 向对话发送消息
-        //    await SendMessage(conversationId, serverClientId, message);
-        //}
-        //catch (Exception ex)
-        //{
-        //    LCLogger.Debug("发送 IM 消息失败: " + ex.Message);
-        //}
     }
 
 

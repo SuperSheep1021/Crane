@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace web {
     public class App
     {
-        public static HttpClientIMService _httpClient;
+        public static HttpClientIMService _httpClientService;
         
         //// Function
         //[LCEngineFunction("hello")]
@@ -34,9 +34,35 @@ namespace web {
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
-            _httpClient = new HttpClientIMService(appId, appKey, appUrl);
+            _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
+            string conversationId = "";
+            try
+            {
+                conversationId = await _httpClientService.CreateConversation("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb");
+                LCLogger.Debug("会话创建成功！！！！");
+            }
+            catch(Exception ex) 
+            {
+                LCLogger.Debug(ex.Message);
+            }
+            if (conversationId != "")
+            {
+                try
+                {
+                    await _httpClientService.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
+                    LCLogger.Debug("消息发送成功！！！！");
+                }
+                catch (Exception ex2)
+                {
+                    LCLogger.Debug(ex2.Message);
+                    LCLogger.Debug("消息发送失败！！！！");
+                }
+            }
+            else {
+                LCLogger.Debug("会话创建失败！！！！");
+            }
 
-            await _httpClient.SendToUser("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb", "服务端消息发送");
+            
             LCLogger.Debug(name);
             //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
             //if (succes)
