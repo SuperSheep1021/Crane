@@ -205,10 +205,13 @@ public class HttpClientIMService
                 true                      // 使用API版本
             );
 
-            if (response.TryGetValue("msgId", out var msgId))
-                return msgId.ToString();
+            // 验证是否包含id字段
+            if (!response.TryGetValue("objectId", out object objectId) || objectId == null)
+            {
+                throw new InvalidOperationException("发送消息失败，未返回有效的msgId");
+            }
 
-            throw new InvalidOperationException("发送消息失败，未返回有效的msgId");
+            return objectId.ToString();
         }
         catch (Exception ex)
         {

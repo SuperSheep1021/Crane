@@ -41,8 +41,6 @@ namespace web {
         }
 
 
-
-
         private static async Task<LCUser> ValidateSenderAsync(string senderId)
         {
             try
