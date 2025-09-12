@@ -28,7 +28,7 @@ namespace web {
 
 
         [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("name")] string name)
+        public static async void SendMessageToTargetUserID()
         {
             string appId = Environment.GetEnvironmentVariable("APP_ID");
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
