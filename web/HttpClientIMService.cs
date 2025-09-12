@@ -81,8 +81,13 @@ public class HttpClientIMService
             // 准备请求数据
             var requestData = new
             {
-                members = new[] { senderId, targetId },
-                unique = true
+                //members = new[] { senderId, targetId },
+                //unique = true
+                    IsProcessed = false,
+                content = new Dictionary<string, object>
+                    {
+                        {"aaa",123}
+                    }
             };
 
             string json = JsonConvert.SerializeObject(requestData);
@@ -95,7 +100,7 @@ public class HttpClientIMService
             var headers = new Dictionary<string, object>
             {
                 // 例如添加认证信息或其他必要头信息
-                // {"Authorization", "Bearer your_token_here"}
+                 {"customHeaders", "Authorization"}
             };
 
             // 调用Post方法发送请求
