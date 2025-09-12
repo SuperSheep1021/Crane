@@ -25,7 +25,6 @@ namespace web {
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
             LCLogger.Debug("LCCore.Initialize Success");
 
-
             await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
             //App._httpClient = new HttpClientIMService(appId, appKey, appUrl);

@@ -41,6 +41,7 @@ public class HttpClientIMService
     private readonly string appId;
     private readonly string masterKey;
     private readonly string imServerUrl;
+
     public static HttpClient httpClient;
 
 
@@ -72,8 +73,10 @@ public class HttpClientIMService
             string json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+            var response = await LCCore.HttpClient.Post<dynamic>($"{imServerUrl}/1.1/classes/customMessage");
             //SetAuthHeaders();
-            var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
+
+            //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
 
             // 获取详细响应内容用于调试
             string responseContent = await response.Content.ReadAsStringAsync();
