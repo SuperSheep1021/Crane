@@ -34,6 +34,7 @@ namespace web {
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
+            LCLogger.Debug($"URL {appUrl}");
             _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
             string conversationId = "";
             try
