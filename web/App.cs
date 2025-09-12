@@ -38,7 +38,7 @@ namespace web {
             LCLogger.Debug($"URL {appUrl}");
             _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
             string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
-            await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, "服务端消息发送");
+            await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
         }
 
 

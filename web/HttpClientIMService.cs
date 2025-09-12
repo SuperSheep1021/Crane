@@ -159,7 +159,7 @@ public class HttpClientIMService
         }
 
     }
-    public async Task<string> SendMessage(string conversationId, string senderId, string messageContent)
+    public async Task<string> SendMessage(string conversationId, string senderId,string targetID, string messageContent)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId));
@@ -192,7 +192,8 @@ public class HttpClientIMService
             var headers = new Dictionary<string, object>
             {
                 // 例如添加认证信息或其他必要头信息
-                 {"customHeaders", "Authorization"}
+                 {"customHeaders", "Authorization"},
+                 {"X-User-Id", targetID }
             };
 
             // 发送消息
@@ -258,7 +259,7 @@ public class HttpClientIMService
             }
 
             // 2. 向对话发送消息
-            await SendMessage(conversationId, serverClientId, message);
+            await SendMessage(conversationId, serverClientId, targetClientId, message);
         }
         catch (Exception ex)
         {
