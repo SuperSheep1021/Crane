@@ -23,7 +23,7 @@ namespace web {
 
             LCCore.UseMasterKey = true;
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
-            LCLogger.Debug("LCCore.Initialize Success");
+            LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
             await CreateHostBuilder(args).Build().RunAsync();
             // 初始化IM服务
