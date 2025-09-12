@@ -73,7 +73,7 @@ public class HttpClientIMService
             string json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await LCCore.HttpClient.Post<dynamic>("/classes/customMessage");
+            var response = await LCCore.HttpClient.Post<dynamic>("classes/customMessage");
             //SetAuthHeaders();
 
             //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
