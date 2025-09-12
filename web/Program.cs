@@ -1,5 +1,6 @@
 using LeanCloud;
 using LeanCloud.Common;
+using LeanCloud.Realtime;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace web {
     public class Program 
     {
+        static string StyClientID = "68c22ec62f7ee809fcc9e7e6";
         public static async Task Main(string[] args)
         {
             //LeanCloudConfig.InitializeFromEnvironment();
@@ -25,7 +27,11 @@ namespace web {
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
             LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
-            await CreateHostBuilder(args).Build().RunAsync();
+            var host = CreateHostBuilder(args).Build();
+            AVRealtime realtime = new AVRealtime(appId, appKey);
+            AVIMClient styClient = new AVIMClient(StyClientID,realtime);
+
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

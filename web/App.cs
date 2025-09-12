@@ -60,6 +60,7 @@ namespace web {
         }
 
 
+
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser user)
         {
@@ -69,15 +70,16 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static void OnClientOnline(Dictionary<string, object> parameters)
         {
+            LCLogger.Debug($"客户端上线");
             LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
         }
         // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static void OnClientOffline(Dictionary<string, object> parameters)
         {
+            LCLogger.Debug($"客户端离线");
             LCLogger.Debug($"客户端离线{parameters["peerId"]} offline");
         }
-
 
 
         //[LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
