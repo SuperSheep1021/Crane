@@ -53,6 +53,41 @@ public class HttpClientIMService
         httpClient = new HttpClient();
     }
 
+
+    public async Task<bool> SendMessageToTable()
+    {
+        var requestData = new
+        {
+            IsProcessed = false,
+            content = new Dictionary<string, object>
+                {
+                    {"aaa",123}
+                }
+        };
+
+        string json = JsonConvert.SerializeObject(requestData);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+            {
+                // 例如添加认证信息或其他必要头信息
+                 {"customHeaders", "Authorization"}
+            };
+
+        // 调用Post方法发送请求
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
+            "classes/customMessage",  // 路径
+            headers,                   // 请求头
+            requestData,               // 请求数据
+            null,                      // 查询参数
+            true                       // 使用API版本
+        );
+        return true;
+    }
+
+
     // 创建对话
     public async Task<string> CreateConversation(string senderId, string targetId)
     {
@@ -64,38 +99,16 @@ public class HttpClientIMService
 
         try
         {
-            //var requestData = new
-            //{
-            //    members = new[] { senderId, targetId },
-            //    unique = true
-            //};
-
-            //var requestData = new
-            //{
-            //    IsProcessed = false,
-            //    content =new Dictionary<string, object>
-            //    {
-            //        {"aaa",123}
-            //    }
-            //};
             // 准备请求数据
             var requestData = new
             {
-                //members = new[] { senderId, targetId },
-                //unique = true
-                    IsProcessed = false,
-                content = new Dictionary<string, object>
-                    {
-                        {"aaa",123}
-                    }
+                members = new[] { senderId, targetId },
+                unique = true
             };
 
             string json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            //var response = await LCCore.HttpClient.Post<dynamic>("classes/customMessage",);
-
-            
             // 可以添加额外的请求头（如果需要）
             var headers = new Dictionary<string, object>
             {
@@ -106,7 +119,7 @@ public class HttpClientIMService
             // 调用Post方法发送请求
             // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
             var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
-                "classes/customMessage",  // 路径
+                "classes/_Conversation",   // 路径
                 headers,                   // 请求头
                 requestData,               // 请求数据
                 null,                      // 查询参数
