@@ -176,17 +176,21 @@ public class HttpClientIMService
             // 构建消息数据
             var messageData = new Dictionary<string, object>
             {
-                { "conv_Id", conversationId },
-                { "to_peer_ids",targetID },
-                { "from_peer", senderId },
-                { "processed",false},
-                { "msg", new Dictionary<string, object>
+                { "fromPeer",targetID },
+                { "convId", conversationId },
+                { "toPeers", new List<string>(){ senderId } },
+                { "transient", true },
+                { "bin", false },
+                { "content", new Dictionary<string, object>
                     {
                         { "type", "text" },
                         { "text", messageContent }
                     }
                 },
-                { "timestamp", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
+                { "receipt", true },
+                { "timestamp", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() },
+                { "system", true },
+                { "sourceIP","127.0.0.1"},
             };
 
             // 可以添加额外的请求头（如果需要）
