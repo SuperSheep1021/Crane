@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using web;
@@ -91,11 +92,16 @@ public class HttpClientIMService
     // 创建对话
     public async Task<string> CreateConversation(string senderId, string targetId)
     {
-        if (string.IsNullOrEmpty(senderId))
+        if (string.IsNullOrEmpty(senderId)) 
+        {
             throw new ArgumentNullException(nameof(senderId), "发送者ID不能为空");
+        }
+            
 
-        if (string.IsNullOrEmpty(targetId))
-            throw new ArgumentNullException(nameof(targetId), "目标用户ID不能为空");
+        if (string.IsNullOrEmpty(targetId)) 
+        {
+            throw new ArgumentNullException(nameof(senderId), "目标用户ID不能为空");
+        }
 
         try
         {
@@ -103,7 +109,8 @@ public class HttpClientIMService
             var requestData = new
             {
                 members = new[] { senderId, targetId },
-                unique = true
+                unique = true,
+                sty = true,
             };
 
             string json = JsonConvert.SerializeObject(requestData);
@@ -126,32 +133,17 @@ public class HttpClientIMService
                 true                       // 使用API版本
             );
 
-
             //SetAuthHeaders();
 
-            //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
-
-            // 获取详细响应内容用于调试
-            //string responseContent = await response.Content.ReadAsStringAsync();
-            //LCLogger.Debug($"responseContent==== {responseContent}");
-
-            //// 检查HTTP状态码
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    throw new HttpRequestException(
-            //        $"创建会话失败，状态码: {response.StatusCode}, 响应内容: {responseContent}");
-            //}
-
-            //var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
-
             // 验证是否包含id字段
-            if (!response.TryGetValue("objectId", out object idObj) || idObj == null)
+            if (!response.TryGetValue("objectId", out object objectId) || objectId == null)
             {
                 throw new InvalidOperationException(
                     $"创建会话返回结果不包含有效的id字段，响应内容: {response}");
             }
 
-            return idObj.ToString();
+            return objectId.ToString();
+
         }
         catch (JsonException ex)
         {
@@ -166,25 +158,63 @@ public class HttpClientIMService
             throw new InvalidOperationException("创建会话时发生意外错误", ex);
         }
 
-
-        //var requestData = new
-        //{
-        //    members = new[] { senderId, targetId }, // 对话成员：服务端 + 目标用户
-        //    unique = true // 确保相同成员只创建一个对话
-        //};
-
-        //string json = JsonConvert.SerializeObject(requestData);
-        //var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        //SetAuthHeaders();
-
-        //var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage", content);
-        //response.EnsureSuccessStatusCode();
-
-        //var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
-        //return result["id"].ToString();
     }
+    public async Task<string> SendMessage(string conversationId, string senderId, string messageContent)
+    {
+        if (string.IsNullOrEmpty(conversationId))
+            throw new ArgumentNullException(nameof(conversationId));
 
+        if (string.IsNullOrEmpty(senderId))
+            throw new ArgumentNullException(nameof(senderId));
+
+        if (string.IsNullOrEmpty(messageContent))
+            throw new ArgumentNullException(nameof(messageContent));
+
+        try
+        {
+
+            // 构建消息数据
+            var messageData = new Dictionary<string, object>
+            {
+                { "convId", conversationId },
+                { "from", senderId },
+                { "IsProcessed",false},
+                { "msg", new Dictionary<string, object>
+                    {
+                        { "type", "text" },
+                        { "text", messageContent }
+                    }
+                },
+                { "timestamp", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
+            };
+
+            // 可以添加额外的请求头（如果需要）
+            var headers = new Dictionary<string, object>
+            {
+                // 例如添加认证信息或其他必要头信息
+                 {"customHeaders", "Authorization"}
+            };
+
+            // 发送消息
+            var response = await LCCore.HttpClient.Post<Dictionary<string, object>>
+            (
+                "classes/customMessages", // LeanCloud消息发送端点
+                headers: headers,         // 请求头
+                data: messageData,        // 请求数据
+                null,                     // 查询参数
+                true                      // 使用API版本
+            );
+
+            if (response.TryGetValue("msgId", out var msgId))
+                return msgId.ToString();
+
+            throw new InvalidOperationException("发送消息失败，未返回有效的msgId");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"发送消息时发生错误: {ex.Message}", ex);
+        }
+    }
 
     // 设置认证头（复用之前的签名工具）
     private void SetAuthHeaders()
@@ -201,29 +231,9 @@ public class HttpClientIMService
     }
 
 
-    // 发送消息
-    private async Task SendMessage(string conversationId, string senderId, string text)
-    {
-        var requestData = new
-        {
-            from_peer = senderId, // 发送方 clientId
-            message = new
-            {
-                _lctype = -1, // 文本消息类型
-                _lctext = text // 消息内容
-            }
-        };
+    
 
-        string json = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        SetAuthHeaders();
-        var response = await httpClient.PostAsync($"{imServerUrl}/1.1/classes/customMessage",
-            content
-        );
-        response.EnsureSuccessStatusCode();
-        LCLogger.Debug("IM 消息发送成功");
-    }
 
 
     /// <summary>
