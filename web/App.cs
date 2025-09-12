@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace web {
@@ -36,6 +37,7 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
             LCLogger.Debug($"URL {appUrl}");
+
             _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
             string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
             await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
@@ -216,5 +218,20 @@ namespace web {
         //    await post.Save();
         //}
 
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
+        public static object OnMessageReceived(Dictionary<string, object> parameters)
+        {
+            foreach (KeyValuePair<string,object> kv in parameters) 
+            {
+                LCLogger.Debug($"Key:{kv.Key}======Value:{kv.Value}");
+            }
+            if (parameters.ContainsKey("content") )
+            {
+                LCLogger.Warn(parameters["content"].ToString() );
+            }
+
+            return new Dictionary<string, object> {{ "content", parameters["content"] } };
+        }
     }
 }
