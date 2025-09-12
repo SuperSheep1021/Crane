@@ -192,7 +192,6 @@ public class HttpClientIMService
             var headers = new Dictionary<string, object>
             {
                 // 例如添加认证信息或其他必要头信息
-                 {"customHeaders", "Authorization"},
                  {"X-User-Id", targetID }
             };
 
@@ -220,7 +219,7 @@ public class HttpClientIMService
         }
     }
 
-    // 设置认证头（复用之前的签名工具）
+    // 设置认证头
     private void SetAuthHeaders()
     {
         httpClient.DefaultRequestHeaders.Clear();
@@ -233,9 +232,6 @@ public class HttpClientIMService
         httpClient.DefaultRequestHeaders.Add("X-LC-Id", appId);
         httpClient.DefaultRequestHeaders.Add("X-LC-Sign", $"{sign},{timestamp}");
     }
-
-
-    
 
 
 
