@@ -11,7 +11,8 @@ namespace web {
     public class App
     {
         public static HttpClientIMService _httpClientService;
-        
+        const string Styem_BroadcastUserID = "68c22ec62f7ee809fcc9e7e6";
+        const string TestTargetUserID = "68b9286c49adb47c41678afb";
         //// Function
         //[LCEngineFunction("hello")]
         //public static string Hello([LCEngineFunctionParam("name")] string name)
@@ -36,8 +37,8 @@ namespace web {
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
             LCLogger.Debug($"URL {appUrl}");
             _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
-            string conversationId = await _httpClientService.CreateConversation("68c22ec62f7ee809fcc9e7e6", "68b9286c49adb47c41678afb");
-            await _httpClientService.SendMessage(conversationId, "68c22ec62f7ee809fcc9e7e6","服务端消息发送");
+            string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
+            await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, "服务端消息发送");
         }
 
 
@@ -60,72 +61,53 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
-            LCUser validateUser = await ValidateSenderAsync(user.ObjectId);
-            if (validateUser != null)
-            {
-                bool containsKey = validateUser["loginTime"]!=null;
-
-                if (containsKey)
-                {
-                    validateUser["loginTime"] = DateTime.Now.ToString();
-                }
-                else
-                {
-                    validateUser.Add("loginTime", DateTime.Now.ToString());
-                }
-                await validateUser.Save();
-                LCLogger.Debug(string.Format("{0} login", validateUser["username"]));
-            }
-            else
-            {
-                LCLogger.Debug(string.Format("无效的登陆{0}", user.ObjectId));
-            }
+            LCLogger.Debug(string.Format("{0} login", user["username"]));
         }
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static void ClientOnLine(dynamic request)
-        {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端上线: {data}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
+        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
+        //public static void ClientOnLine(dynamic request)
+        //{
+        //    string data = JsonConvert.SerializeObject(request);
+        //    LCLogger.Debug($"客户端上线: {data}");
+        //    try
+        //    {
+        //        var dic = request;
+        //        foreach (KeyValuePair<string, object> item in dic)
+        //        {
+        //            LCLogger.Debug(item.Key + ":" + item.Value);
+        //        }
 
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
-        }
+        //    }
+        //    catch (LCException ex)
+        //    {
+        //        LCLogger.Error(ex.Message);
+        //    }
+        //}
 
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static void ClientOffLine(dynamic request)
-        {
-            string data = JsonConvert.SerializeObject(request);
-            LCLogger.Debug($"客户端下线: {request}");
-            try
-            {
-                var dic = request;
-                foreach (KeyValuePair<string, object> item in dic)
-                {
-                    LCLogger.Debug(item.Key + ":" + item.Value);
-                }
+        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
+        //public static void ClientOffLine(dynamic request)
+        //{
+        //    string data = JsonConvert.SerializeObject(request);
+        //    LCLogger.Debug($"客户端下线: {request}");
+        //    try
+        //    {
+        //        var dic = request;
+        //        foreach (KeyValuePair<string, object> item in dic)
+        //        {
+        //            LCLogger.Debug(item.Key + ":" + item.Value);
+        //        }
 
-            }
-            catch (LCException ex)
-            {
-                LCLogger.Error(ex.Message);
-            }
-            // 您的业务逻辑，比如更新用户状态等
+        //    }
+        //    catch (LCException ex)
+        //    {
+        //        LCLogger.Error(ex.Message);
+        //    }
+        //    // 您的业务逻辑，比如更新用户状态等
 
-        }
+        //}
 
         //[LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         //public static async Task<object> OnMessageReceived(dynamic request)

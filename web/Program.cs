@@ -26,14 +26,6 @@ namespace web {
             LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
             await CreateHostBuilder(args).Build().RunAsync();
-            // 初始化IM服务
-            //App._httpClient = new HttpClientIMService(appId, appKey, appUrl);
-
-
-            //// 轮询指定对话的消息（替换为实际对话 ID）
-            //string conversationId = "对话ID"; // 可从创建对话时获取
-            //await poller.PollMessages(conversationId);
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
