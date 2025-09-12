@@ -145,7 +145,7 @@ public class HttpClientIMService
             //var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
 
             // 验证是否包含id字段
-            if (!response.TryGetValue("id", out object idObj) || idObj == null)
+            if (!response.TryGetValue("objectId", out object idObj) || idObj == null)
             {
                 throw new InvalidOperationException(
                     $"创建会话返回结果不包含有效的id字段，响应内容: {response}");
