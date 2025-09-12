@@ -101,7 +101,7 @@ public class HttpClientIMService
             // 调用Post方法发送请求
             // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
             var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
-                "/classes/customMessage",  // 路径
+                "classes/customMessage",  // 路径
                 headers,                   // 请求头
                 requestData,               // 请求数据
                 null,                      // 查询参数
