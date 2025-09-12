@@ -64,10 +64,19 @@ public class HttpClientIMService
 
         try
         {
+            //var requestData = new
+            //{
+            //    members = new[] { senderId, targetId },
+            //    unique = true
+            //};
+
             var requestData = new
             {
-                members = new[] { senderId, targetId },
-                unique = true
+                IsProcessed = false,
+                content =new Dictionary<string, object>
+                {
+                    {"aaa",123}
+                }
             };
 
             string json = JsonConvert.SerializeObject(requestData);
