@@ -63,7 +63,7 @@ namespace web {
             }
 
             
-            LCLogger.Debug(name);
+            //LCLogger.Debug(name);
             //bool succes = await MeeeageServicr.Inst.CreateImClientAsync();
             //if (succes)
             //{
