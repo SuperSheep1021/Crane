@@ -30,6 +30,8 @@ public class IMService
     const string SysUserPassword = "123123";
     const string SysConversationID = "68c3e5ce16ec9e2c7d1396c0";
 
+    const string TestTargetUserID = "68b9286c49adb47c41678afb";
+
     LCUser m_SysUser;
     LCIMClient m_SysClient;
     LCIMConversation m_SysConversation;
@@ -44,13 +46,15 @@ public class IMService
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-        await m_SysConversation.Join();
-        LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
+        //await m_SysConversation.Join();
+        //LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
+        await m_SysConversation.AddMembers( new List<string>() { TestTargetUserID });
+        //await m_SysConversation.Join();
 
-        m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
-        {
-            LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
-        };
+        //m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
+        //{
+        //    LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
+        //};
 
         LCLogger.Debug($"创建系统会话完成:{m_SysConversation.Name}");
     }
