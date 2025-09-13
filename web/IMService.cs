@@ -40,6 +40,14 @@ public class IMService
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
+    public void AddMembers(string clientId) 
+    {
+        var memberids = m_SysConversation.MemberIds;
+        if (!memberids.Contains(clientId) )
+        {
+            m_SysConversation.AddMembers(new string[] { clientId });
+        }
+    }
     public async Task SendMessage(string text) 
     {
         LCIMTextMessage message = new LCIMTextMessage(text);
