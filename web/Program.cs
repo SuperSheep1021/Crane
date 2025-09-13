@@ -32,9 +32,10 @@ namespace web {
 
             var host = CreateHostBuilder(args).Build();
 
-            await host.RunAsync();
-
             await IMService.Inst.InitialtionIM();
+
+
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
