@@ -24,16 +24,18 @@ public class IMService
         }
     }
 
-
-    const string SysClientID = "68c22ec62f7ee809fcc9e7e6";
+    const string SysUserName = "System_Broadcast2";
+    const string SysUserPassword = "123123";
     const string SysConversationID = "68c3e5ce16ec9e2c7d1396c0";
 
+    LCUser m_SysUser;
     LCIMClient m_SysClient;
     LCIMConversation m_SysConversation;
 
     public async Task InitialtionIM()
     {
-        m_SysClient = new LCIMClient(SysClientID, tag: "sys");
+        m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+        m_SysClient = new LCIMClient(m_SysUser,tag:"sys");
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
         await m_SysClient.Open();
         LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
