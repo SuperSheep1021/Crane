@@ -67,21 +67,21 @@ public class IMService
     }
     public async Task SendMessage(string text) 
     {
-        LCIMTextMessage message = new LCIMTextMessage(text);
-        message["消息1"] = "asdasd";
-        message["消息2"] = "消息2";
-        message["消息3"] = 123123;
-        try
-        {
-            await m_SysConversation.Send(message);
-        }
-        catch (LCException ex) {
-            LCLogger.Debug(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            LCLogger.Debug(ex.Message);
-        }
+        //LCIMTextMessage message = new LCIMTextMessage(text);
+        //message["消息1"] = "asdasd";
+        //message["消息2"] = "消息2";
+        //message["消息3"] = 123123;
+        //try
+        //{
+        //    await m_SysConversation.Send(message);
+        //}
+        //catch (LCException ex) {
+        //    LCLogger.Debug(ex.Message);
+        //}
+        //catch (Exception ex)
+        //{
+        //    LCLogger.Debug(ex.Message);
+        //}
 
     }
 
