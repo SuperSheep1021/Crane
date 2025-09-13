@@ -30,7 +30,7 @@ namespace web {
 
 
         [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async void SendMessageToTargetUserID()
+        public static async void SendMessageToTargetUserID([LCEngineFunctionParam("message")] string text)
         {
             //string appId = Environment.GetEnvironmentVariable("APP_ID");
             //string appKey = Environment.GetEnvironmentVariable("APP_KEY");
@@ -42,7 +42,7 @@ namespace web {
             //string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
             //await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
 
-            await Program.SendMessage(TestTargetUserID);
+            await IMService.Inst.SendMessage(text);
         }
 
 

@@ -10,27 +10,7 @@ using System.Threading.Tasks;
 namespace web {
     public class Program 
     {
-        static string SysClientID = "68c22ec62f7ee809fcc9e7e6";
-        static string SysConversationID = "68c3e5ce16ec9e2c7d1396c0";
-
-        LCIMClient m_SysClient;
-        static LCIMConversation m_SysConversation;
-
-        async Task InitialtionIM() 
-        {
-            m_SysClient = new LCIMClient(SysClientID, tag: "sys");
-            LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
-            m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-            LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
-        }
-
-        public static async Task SendMessage(string targetID) 
-        {
-            LCIMTextMessage message = new LCIMTextMessage("服务端发送的消息");
-            await m_SysConversation.Send(message);
-        }
-
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //LeanCloudConfig.InitializeFromEnvironment();
             //CreateHostBuilder(args).Build().Run();
@@ -48,7 +28,6 @@ namespace web {
 
             var host = CreateHostBuilder(args).Build();
 
-            await InitialtionIM();
 
             await host.RunAsync();
         }
