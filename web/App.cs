@@ -32,15 +32,17 @@ namespace web {
         [LCEngineFunction("SendMessageToTargetUserID")]
         public static async void SendMessageToTargetUserID()
         {
-            string appId = Environment.GetEnvironmentVariable("APP_ID");
-            string appKey = Environment.GetEnvironmentVariable("APP_KEY");
-            string appUrl = Environment.GetEnvironmentVariable("APP_URL");
-            string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
-            LCLogger.Debug($"URL {appUrl}");
+            //string appId = Environment.GetEnvironmentVariable("APP_ID");
+            //string appKey = Environment.GetEnvironmentVariable("APP_KEY");
+            //string appUrl = Environment.GetEnvironmentVariable("APP_URL");
+            //string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
+            //LCLogger.Debug($"URL {appUrl}");
 
-            _httpClientService = new HttpClientIMService(appId, appKey, appUrl);
-            string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
-            await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
+            //_httpClientService = new HttpClientIMService(appId, appKey, appUrl);
+            //string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
+            //await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
+
+            await Program.SendMessage(TestTargetUserID);
         }
 
 
