@@ -1,6 +1,7 @@
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Realtime;
+using LeanCloud.Storage.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +25,9 @@ namespace web {
 
             LCCore.UseMasterKey = true;
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
+            LCStorage.Initialize(appId, appKey, appUrl, masterKey);
+            //LCCore.PersistenceController = new PersistenceController(new UnityPersistence());
+
             LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
             var host = CreateHostBuilder(args).Build();
