@@ -56,7 +56,7 @@ public class IMService
         LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
 
         
-        LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
+        LCLogger.Debug($"创建系统会话完成:{m_SysConversation.Name}");
     }
     public async Task AddMembers(string clientId) 
     {
