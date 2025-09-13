@@ -47,7 +47,7 @@ public class IMService
         await m_SysConversation.Join();
         LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
 
-        m_SysClient.OnMembersJoined += (conv, memberList, initBy) =>
+        m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
         {
             LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
         };
