@@ -1,7 +1,7 @@
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Storage;
-using Newtonsoft.Json;
+using LC.Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,28 +12,20 @@ using web;
 
 #region//接收http消息
 
-// 消息模型
-public class IMMessageResult
-{
-    public List<IMMessage> Results { get; set; }
-}
+//// 消息模型
+//public class IMMessageResult
+//{
+//    public List<IMMessage> Results { get; set; }
+//}
 
-public class IMMessage
-{
-    public string Id { get; set; } // 消息 ID
-    public string FromPeer { get; set; } // 发送者 clientId
-    public MessageContent Message { get; set; } // 消息内容
-    public long SentAt { get; set; } // 发送时间戳
-}
+//public class IMMessage
+//{
+//    public string Id { get; set; } // 消息 ID
+//    public string FromPeer { get; set; } // 发送者 clientId
+//    public MessageContent Message { get; set; } // 消息内容
+//    public long SentAt { get; set; } // 发送时间戳
+//}
 
-public class MessageContent
-{
-    [JsonProperty("_lctype")]
-    public int Type { get; set; } // -1 表示文本消息
-
-    [JsonProperty("_lctext")]
-    public string Text { get; set; } // 文本内容
-}
 
 #endregion
 
@@ -65,8 +57,8 @@ public class HttpClientIMService
                     {"aaa",123}
                 }
         };
-
-        string json = JsonConvert.SerializeObject(requestData);
+        
+        string json = await LCJsonUtils.SerializeAsync(requestData);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // 可以添加额外的请求头（如果需要）
@@ -113,7 +105,7 @@ public class HttpClientIMService
                 sys = true,
             };
 
-            string json = JsonConvert.SerializeObject(requestData);
+            string json = await LCJsonUtils.SerializeAsync(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             // 可以添加额外的请求头（如果需要）
@@ -144,10 +136,6 @@ public class HttpClientIMService
 
             return objectId.ToString();
 
-        }
-        catch (JsonException ex)
-        {
-            throw new InvalidOperationException("解析会话创建响应失败", ex);
         }
         catch (HttpRequestException ex)
         {
@@ -268,7 +256,22 @@ public class HttpClientIMService
         }
     }
 
+    public class TestObj 
+    {
+        [JsonProperty("reasonCode")]
+        public int Code
+        {
+            get; private set;
+        }
+        [JsonProperty("results")]
+        public string Results { get;private set; }
 
+        [JsonProperty("message")]
+        public string Message { get; private set; }
+
+        [JsonProperty("frompeer")]
+        public string FromPeer { get; private set; }
+    }
 
     /// <summary>
     /// 轮询拉取指定对话的新消息
@@ -295,14 +298,16 @@ public class HttpClientIMService
 
             // 解析消息
             string result = await response.Content.ReadAsStringAsync();
-            var messages = JsonConvert.DeserializeObject<IMMessageResult>(result);
+            await LCJsonUtils.DeserializeAsync<dynamic>(result);
+            var messages = JsonConvert.DeserializeObject<TestObj>(result);
 
+            Console.WriteLine($"收到消息：{messages.Message}（来自 {messages.FromPeer}）");
             // 处理消息
-            foreach (var msg in messages.Results)
-            {
-                Console.WriteLine($"收到消息：{msg.Message.Text}（来自 {msg.FromPeer}）");
-                // 业务逻辑处理（如存储、转发等）
-            }
+            //foreach (var msg in messages.Results)
+            //{
+            //    Console.WriteLine($"收到消息：{msg.Message.Text}（来自 {msg.FromPeer}）");
+            //    // 业务逻辑处理（如存储、转发等）
+            //}
         }
         catch (Exception ex)
         {

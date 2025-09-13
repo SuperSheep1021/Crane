@@ -1,6 +1,7 @@
 using LeanCloud;
+using LeanCloud.Common;
+using LC.Newtonsoft.Json.Linq;
 using LeanCloud.Storage;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ public class ClientMessageBase
 
         var table = new LCObject("customMessage");
         table.Add("IsProcessed", false);
+
 
         JObject jsonObject = JObject.Parse(message);
         Dictionary<string, object> content = jsonObject.ToObject<Dictionary<string, object>>();

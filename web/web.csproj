@@ -9,6 +9,9 @@
     <Reference Include="LC.Google.Protobuf">
       <HintPath>Libs\LC.Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="LC.Newtonsoft.Json">
+      <HintPath>Libs\LC.Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Realtime">
       <HintPath>Libs\Realtime.dll</HintPath>
     </Reference>
@@ -20,6 +23,9 @@
     </Reference>
     <Reference Include="Engine">
       <HintPath>Libs\Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="Storage.Standard">
+      <HintPath>Libs\Storage.Standard.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -37,8 +43,5 @@
     <Content Remove="Libs\Engine.deps.json" />
     <Content Remove="Libs\Engine.deps.json" />
     <Content Remove="Libs\Engine.deps.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>
