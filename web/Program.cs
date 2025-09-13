@@ -27,7 +27,7 @@ namespace web {
             LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
             var host = CreateHostBuilder(args).Build();
-
+            IMService.Inst.InitialtionIM();
 
             await host.RunAsync();
         }
