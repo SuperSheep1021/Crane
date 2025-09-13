@@ -28,8 +28,7 @@ namespace web {
             LCLogger.Debug($"LCCore.Initialize Success URL:{appUrl}");
 
             var host = CreateHostBuilder(args).Build();
-            AVRealtime realtime = new AVRealtime(appId, appKey);
-            AVIMClient styClient = new AVIMClient(StyClientID,realtime);
+            LCIMClient client = new LCIMClient(StyClientID, tag:"sys");
 
             await host.RunAsync();
         }

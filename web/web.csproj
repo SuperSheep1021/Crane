@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="Realtime">
+      <HintPath>Libs\Realtime.dll</HintPath>
+    </Reference>
     <Reference Include="Storage">
       <HintPath>Libs\Storage.dll</HintPath>
     </Reference>
@@ -33,7 +36,6 @@
     <Content Remove="Libs\Engine.deps.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LeanCloud.Realtime" Version="2020.1.21.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>
