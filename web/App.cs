@@ -12,7 +12,6 @@ namespace web {
     public class App
     {
         public static HttpClientIMService _httpClientService;
-        const string Styem_BroadcastUserID = "68c22ec62f7ee809fcc9e7e6";
         const string TestTargetUserID = "68b9286c49adb47c41678afb";
         //// Function
         //[LCEngineFunction("hello")]
@@ -41,7 +40,7 @@ namespace web {
             //_httpClientService = new HttpClientIMService(appId, appKey, appUrl);
             //string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
             //await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
-            await IMService.Inst.InitialtionIM();
+            
             await IMService.Inst.AddMembers(TestTargetUserID);
             await IMService.Inst.SendMessage(text);
         }
