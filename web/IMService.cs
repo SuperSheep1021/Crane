@@ -2,6 +2,7 @@ using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Realtime;
 using LeanCloud.Storage;
+using LeanCloud.Storage.Internal.Codec;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,10 +36,15 @@ public class IMService
     public async Task InitialtionIM()
     {
         m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+        LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
+
         m_SysClient = new LCIMClient(m_SysUser,tag:"sys");
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
+
         await m_SysClient.Open();
         LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
+
+
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
@@ -50,10 +56,10 @@ public class IMService
             LCIMPartiallySuccessResult result = await m_SysConversation.AddMembers(new string[] { clientId });
             if (result.IsSuccess)
             {
-                LCLogger.Debug("添加成员成功!");
+                LCLogger.Debug($"{m_SysConversation.Name}添加成员{clientId} 成功!");
             }
             else {
-                LCLogger.Debug("添加成员失败!");
+                LCLogger.Debug($"{m_SysConversation.Name}添加成员{clientId} 失败!");
             }
             await m_SysConversation.Fetch();
             LCLogger.Debug("刷新会话!");
@@ -65,7 +71,18 @@ public class IMService
         message["消息1"] = "asdasd";
         message["消息2"] = "消息2";
         message["消息3"] = 123123;
-        await m_SysConversation.Send(message);
+        try
+        {
+            await m_SysConversation.Send(message);
+        }
+        catch (LCException ex) {
+            LCLogger.Debug(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            LCLogger.Debug(ex.Message);
+        }
+
     }
 
 }
