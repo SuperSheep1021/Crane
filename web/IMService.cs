@@ -35,9 +35,9 @@ public class IMService
     {
         m_SysClient = new LCIMClient(SysClientID, tag: "sys");
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
-        LCIMConversationQuery conQuery= m_SysClient.GetQuery();
-        LCLogger.Debug($"客户端获取到会话查询");
-        m_SysConversation = await conQuery.Get(SysConversationID);
+        await m_SysClient.Open();
+        LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
+        m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
     public async Task SendMessage(string text) 
