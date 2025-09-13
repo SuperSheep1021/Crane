@@ -31,6 +31,7 @@ public class IMService
     const string SysConversationID = "68c3e5ce16ec9e2c7d1396c0";
 
     const string TestTargetUserID = "68b9286c49adb47c41678afb";
+    const string TestTargetUserID2 = "68c3ae722f7ee809fcc9f1c2";
 
     LCUser m_SysUser;
     LCIMClient m_SysClient;
@@ -48,7 +49,7 @@ public class IMService
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         //await m_SysConversation.Join();
         //LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
-        await m_SysConversation.AddMembers( new List<string>() { TestTargetUserID });
+        await m_SysConversation.AddMembers( new List<string>() { TestTargetUserID , TestTargetUserID2 });
         //await m_SysConversation.Join();
 
         //m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
