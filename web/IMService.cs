@@ -53,7 +53,7 @@ public class IMService
         var memberids = m_SysConversation.MemberIds;
         if (!memberids.Contains(clientId) )
         {
-            LCIMPartiallySuccessResult result = await m_SysConversation.AddMembers(new string[] { clientId });
+            LCIMPartiallySuccessResult result = await m_SysConversation.AddMembers(new string[] { m_SysUser.ObjectId, clientId });
             if (result.IsSuccess)
             {
                 LCLogger.Debug($"{m_SysConversation.Name}添加成员{clientId} 成功!");
@@ -65,7 +65,7 @@ public class IMService
             LCLogger.Debug("刷新会话!");
 
             int membersCount = await m_SysConversation.GetMembersCount();
-            LCLogger.Debug($"当前刷新Members Total{membersCount}!!!!!!");
+            LCLogger.Debug($"当前刷新Members Total = {membersCount}!!!!!!");
         }
     }
     public async Task SendMessage(string text) 
