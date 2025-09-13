@@ -11,6 +11,7 @@ namespace web {
     public class Program 
     {
         static string StyClientID = "68c22ec62f7ee809fcc9e7e6";
+        static string StyConversationID = "68c3e5ce16ec9e2c7d1396c0";
         public static async Task Main(string[] args)
         {
             //LeanCloudConfig.InitializeFromEnvironment();
@@ -29,7 +30,9 @@ namespace web {
 
             var host = CreateHostBuilder(args).Build();
             LCIMClient client = new LCIMClient(StyClientID, tag:"sys");
-
+            LCLogger.Debug($"创建系统客户端成功:{client.Tag}");
+            LCIMConversation conversation = await client.GetConversation(StyConversationID);
+            LCLogger.Debug($"创建系统会话成功:{conversation.Name}");
             await host.RunAsync();
         }
 
