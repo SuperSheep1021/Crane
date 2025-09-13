@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace web {
     public class Program 
@@ -20,7 +21,6 @@ namespace web {
             string appKey = Environment.GetEnvironmentVariable("APP_KEY");
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
-
 
             LCCore.UseMasterKey = true;
             LCCore.Initialize(appId, appKey, appUrl, masterKey);
