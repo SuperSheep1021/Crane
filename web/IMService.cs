@@ -63,6 +63,9 @@ public class IMService
             }
             await m_SysConversation.Fetch();
             LCLogger.Debug("刷新会话!");
+
+            int membersCount = await m_SysConversation.GetMembersCount();
+            LCLogger.Debug($"当前刷新Members Total{membersCount}!!!!!!");
         }
     }
     public async Task SendMessage(string text) 
