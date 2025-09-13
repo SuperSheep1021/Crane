@@ -47,6 +47,11 @@ public class IMService
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         await m_SysConversation.Join();
 
+        m_SysClient.OnMembersJoined += (conv, memberList, initBy) =>
+        {
+            LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
+        };
+
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
     public async Task AddMembers(string clientId) 
