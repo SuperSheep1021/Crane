@@ -3,6 +3,7 @@ using LeanCloud.Common;
 using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using LeanCloud.Storage.Internal.Codec;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -41,17 +42,20 @@ public class IMService
         m_SysClient = new LCIMClient(m_SysUser,tag:"sys");
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
-        await m_SysClient.Open();
-        LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
-
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         await m_SysConversation.Join();
+        LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
 
         m_SysClient.OnMembersJoined += (conv, memberList, initBy) =>
         {
             LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
         };
 
+
+        await m_SysClient.Open();
+        LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
+
+        
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
     public async Task AddMembers(string clientId) 
