@@ -40,6 +40,7 @@ public class IMService
         LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
 
         m_SysClient = new LCIMClient(m_SysUser,tag:"sys");
+        await m_SysClient.Open();
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
@@ -51,8 +52,6 @@ public class IMService
             LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
         };
 
-
-        await m_SysClient.Open();
         LCLogger.Debug($"连接系统客户端成功:{m_SysClient.Tag}");
 
         
