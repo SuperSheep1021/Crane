@@ -42,7 +42,7 @@ namespace web {
             //string conversationId = await _httpClientService.CreateConversation(Styem_BroadcastUserID, TestTargetUserID );
             //await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
             await IMService.Inst.InitialtionIM();
-            IMService.Inst.AddMembers(TestTargetUserID);
+            await IMService.Inst.AddMembers(TestTargetUserID);
             await IMService.Inst.SendMessage(text);
         }
 
