@@ -40,12 +40,21 @@ public class IMService
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
         LCLogger.Debug($"创建系统会话成功:{m_SysConversation.Name}");
     }
-    public void AddMembers(string clientId) 
+    public async Task AddMembers(string clientId) 
     {
         var memberids = m_SysConversation.MemberIds;
         if (!memberids.Contains(clientId) )
         {
-            m_SysConversation.AddMembers(new string[] { clientId });
+            LCIMPartiallySuccessResult result = await m_SysConversation.AddMembers(new string[] { clientId });
+            if (result.IsSuccess)
+            {
+                LCLogger.Debug("添加成员成功!");
+            }
+            else {
+                LCLogger.Debug("添加成员失败!");
+            }
+            await m_SysConversation.Fetch();
+            LCLogger.Debug("刷新会话!");
         }
     }
     public async Task SendMessage(string text) 
