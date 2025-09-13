@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="LC.Google.Protobuf">
+      <HintPath>Libs\LC.Google.Protobuf.dll</HintPath>
+    </Reference>
     <Reference Include="Realtime">
       <HintPath>Libs\Realtime.dll</HintPath>
     </Reference>
