@@ -20,11 +20,11 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-            //LCCore.UseMasterKey = true;
-            //LCCore.Initialize(appId, appKey, appUrl, masterKey);
+            LCCore.UseMasterKey = true;
+            LCCore.Initialize(appId, appKey, appUrl, masterKey);
             //LCStorage.Initialize(appId, appKey, appUrl, masterKey);
             //LCCore.PersistenceController = new PersistenceController(new UnityPersistence());
-            LCApplication.Initialize(appId, appKey, appUrl, masterKey);
+            //LCApplication.Initialize(appId, appKey, appUrl, masterKey);
             LCLogger.Debug($"LCApplication.Initialize Success URL:{appUrl}");
 
             CreateHostBuilder(args).Build().Run();
