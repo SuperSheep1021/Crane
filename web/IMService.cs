@@ -38,6 +38,7 @@ public class IMService
 
     public async Task InitialtionIM()
     {
+        LCLogger.Debug($"开始初始化IM");
         m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
         LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
 
@@ -46,9 +47,11 @@ public class IMService
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
         m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+        LCLogger.Debug($"获取系统会话 {SysConversationID} 成功");
         //await m_SysConversation.Join();
         //LCLogger.Debug($"服务端{SysUserName}加入 {m_SysConversation.Name} 会话成功");
         await m_SysConversation.AddMembers( new List<string>() { TestTargetUserID , TestTargetUserID2 });
+        LCLogger.Debug($"增加会话成员成功");
         //await m_SysConversation.Join();
 
         //m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
