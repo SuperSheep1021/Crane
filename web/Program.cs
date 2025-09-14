@@ -30,8 +30,9 @@ namespace web {
             LCApplication.Initialize(appId, appKey, appUrl, masterKey);
             LCLogger.Debug($"LCApplication.Initialize Success URL:{appUrl}");
 
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
             await IMService.Inst.InitialtionIM();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
