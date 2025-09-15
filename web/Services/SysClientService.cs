@@ -164,7 +164,8 @@ public class SysClientService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" }
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "Content-Type", "application/json; charset=utf-8" } // 明确指定UTF-8编码
         };
 
         // 调用Post方法发送请求
