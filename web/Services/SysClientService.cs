@@ -44,20 +44,20 @@ public class SysClientService
         if (m_SysUser ==null) 
         {
             m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
-            LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
+            LCLogger.Debug($"SysUserName Logined:{SysUserName}");
         }
         if (m_SysClient == null)
         {
             m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
             await m_SysClient.Open();
-            LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
+            LCLogger.Debug($"m_SysClient.Open():{m_SysClient.Tag}");
 
             m_SysClient.OnMessage += OnIMMessageReceived;
         }
         if (m_SysConversation ==null) 
         {
             m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-            LCLogger.Debug($"回去系统会话成功:{m_SysConversation.Name}");
+            LCLogger.Debug($"GetConversation:{m_SysConversation.Name}");
             //await m_SysConversation.Join();
         }
         
