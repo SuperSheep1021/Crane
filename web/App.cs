@@ -54,9 +54,10 @@ namespace web {
 
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser user)
+        public static async Task OnLogin(LCUser user)
         {
             LCLogger.Debug(string.Format("{0} login", user["username"]));
+            await SysClientService.Inst.AddMembers(user["objectId"].ToString() );
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]

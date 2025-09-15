@@ -59,6 +59,10 @@ public class SysClientService
         LCLogger.Debug($"{this}½áÊø³õÊ¼»¯");
     }
 
+    public async Task AddMembers(string clientId) 
+    {
+        await m_SysConversation.AddMembers(new List<string>() { clientId });
+    }
     public void Initialtion()
     {
         Task.Run(async () => 
