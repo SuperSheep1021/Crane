@@ -81,17 +81,17 @@ public class SysClientService
         var headers = new Dictionary<string, object>
             {
                 // 例如添加认证信息或其他必要头信息
-                 {"customHeaders", "Authorization"}
+                 //{"customHeaders", "Authorization"}
             };
 
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
-            "rtm/service-conversations",   // 路径
+            "1.2/rtm/service-conversations",   // 路径
             headers,                   // 请求头
             requestData,               // 请求数据
-            new Dictionary<string, object> { { "api_version", "1.2" } },  // 明确指定 API 版本,
-            true                       // 使用API版本
+            null,                      // 查询参数
+            false                       // 使用API版本
         );
 
 
