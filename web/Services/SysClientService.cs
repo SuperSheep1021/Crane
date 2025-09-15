@@ -56,7 +56,7 @@ public class SysClientService
             m_SysConversation = await m_SysClient.CreateConversation( new List<string>() { m_SysClient.Id},name:"系统会话",
                 unique: true, properties:new Dictionary<string, object>() 
                 {
-                    { "sys",true}
+                    { "customData",true}
                 });
 
             await m_SysConversation.Join();
