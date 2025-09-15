@@ -59,8 +59,7 @@ public class SysClientService
                     { "sys",true}
                 });
 
-            //await m_SysConversation.AddMembers( new List<string>() { m_SysClient.Id });
-            //await m_SysConversation.Join();
+            await m_SysConversation.Join();
         }
         LCLogger.Debug($"{this}Ω· ¯≥ı ºªØ");
     }
