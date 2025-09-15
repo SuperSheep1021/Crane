@@ -36,19 +36,26 @@ public class SysClientService
     LCIMClient m_SysClient;
     LCIMConversation m_SysConversation;
 
-    public async Task Initialtion()
+    async Task Initialtion()
     {
         LCLogger.Debug($"{this}开始初始化");
-        m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
-        LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
+        if (m_SysUser ==null) 
+        {
+            m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+            LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
+        }
+        if (m_SysClient == null)
+        {
+            m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
+            await m_SysClient.Open();
+            LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
+        }
 
-        m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
-        await m_SysClient.Open();
-        LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
-
-        m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-        await m_SysConversation.Join();
-
+        if (m_SysConversation ==null)
+        {
+            m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+            await m_SysConversation.Join();
+        }
         LCLogger.Debug($"{this}结束初始化");
     }
     public async Task<int> GetMembersCount() 
@@ -58,6 +65,8 @@ public class SysClientService
 
     public async Task SendTextMessage(string text,Dictionary<string,object> content = null) 
     {
+        await Initialtion();
+
         LCIMTextMessage message = new LCIMTextMessage(text);
         message["数据1"] = "asdasd";
         message["数据2"] = "消息2";

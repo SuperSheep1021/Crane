@@ -22,9 +22,6 @@ namespace web {
             LCLogger.Debug($"LCApplication.Initialize Success URL:{appUrl}");
 
             var host = CreateHostBuilder(args).Build();
-
-            await SysClientService.Inst.Initialtion();
-
             await host.RunAsync();
         }
 
