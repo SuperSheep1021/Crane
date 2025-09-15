@@ -99,6 +99,51 @@ public class SysClientService
         // 返回订阅结果
         return response.ToString();
     }
+
+
+    public async Task<string> SubscribeServiceConversationAsync(string conversationId, string userId)
+    {
+        if (string.IsNullOrEmpty(conversationId))
+            throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
+
+        if (string.IsNullOrEmpty(userId))
+            throw new ArgumentNullException(nameof(userId), "用户ID不能为空");
+
+
+        // 构建请求数据（添加用户到订阅者列表）
+        var requestData = new Dictionary<string, object>
+        {
+            { "client_ids", new List<string> { userId } }
+        };
+
+        var jsonData = JsonConvert.SerializeObject(requestData);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+
+        string json = await LCJsonUtils.SerializeAsync(requestData);
+
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" }
+        };
+
+        // 调用Post方法发送请求
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
+            $"1.2/rtm/service-conversations/{conversationId}/subscribers",   // 路径
+            headers,                   // 请求头
+            requestData,               // 请求数据
+            null,                      // 查询参数
+            false                       // 使用API版本
+        );
+
+        // 返回订阅结果
+        return response.ToString();
+    }
+
+
     public async Task AddMembers(string clientId) 
     {
         await m_SysConversation.AddMembers(new List<string>() { clientId });
