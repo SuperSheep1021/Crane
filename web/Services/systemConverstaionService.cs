@@ -108,11 +108,7 @@ public class SystemConverstaionService
            { "name", convName }
         };
         var whereJson = await LCJsonUtils.SerializeAsync(whereDic);
-        //string whereJson = $"{{\"name\":\"{convName}\"}}"; // 注意转义双引号
-        //LCLogger.Debug("==================");
-        //LCLogger.Debug(json);
-        //LCLogger.Debug(whereJson);
-        //LCLogger.Debug("==================");
+
         var queryParams = new Dictionary<string, object>() 
         {
             { "where", whereJson },
