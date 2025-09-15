@@ -94,7 +94,7 @@ public class SystemConverstaionService
     /// 查找服务号
     /// </summary>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> QuerySysConvAsync(int total, string convName) 
+    public async Task<IList<IDictionary<string, object>>> QuerySysConvAsync(int total, string convName) 
     {
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -115,13 +115,16 @@ public class SystemConverstaionService
         };
         
         // 使用 GET 方法（推荐）
-        var response = await LCCore.HttpClient.Get<Dictionary<string,object>>(
+        var response = await LCCore.HttpClient.Get<IList<IDictionary<string, object>>>(
             "1.2/rtm/service-conversations",   // 路径
             headers,                           // 请求头
             queryParams,                       // 请求数据
             false                              // 使用API版本
         );
+
+        var jsonsss = await LCJsonUtils.SerializeAsync(response[0]);
         // 返回订阅结果
+        LCLogger.Debug(jsonsss);
         return response;
     }
 
