@@ -151,11 +151,11 @@ public class SysClientService
         var requestData = new Dictionary<string, object>
         {
             { "from_client","68c22ec62f7ee809fcc9e7e6" },
-            { "message","服务端发送的订阅消息！！！" },
+            { "message","service send subscribe message！！！" },
         };
 
-        var jsonData = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        //var jsonData = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
         //string json = await LCJsonUtils.SerializeAsync(requestData);
@@ -165,15 +165,13 @@ public class SysClientService
         {
             // 例如添加认证信息或其他必要头信息
             { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
-            { "Content-Type", "application/json; charset=utf-8" } // 明确指定UTF-8编码
         };
-
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
             $"1.2/rtm/service-conversations/{conversationId}/broadcasts",   // 路径
             headers,                   // 请求头
-            content,               // 请求数据
+            requestData,               // 请求数据
             null,                      // 查询参数
             false                       // 使用API版本
         );
