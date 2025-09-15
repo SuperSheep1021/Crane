@@ -49,10 +49,9 @@ public class SysClientService
         if (m_SysClient == null)
         {
             m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
+            m_SysClient.OnMessage += OnIMMessageReceived;
             await m_SysClient.Open();
             LCLogger.Debug($"m_SysClient.Open():{m_SysClient.Tag}");
-
-            m_SysClient.OnMessage += OnIMMessageReceived;
         }
         if (m_SysConversation == null)
         {
