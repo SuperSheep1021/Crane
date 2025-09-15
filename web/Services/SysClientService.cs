@@ -53,7 +53,12 @@ public class SysClientService
 
         if (m_SysConversation ==null)
         {
-            m_SysConversation = await m_SysClient.CreateConversation( new List<string>() { m_SysClient.Id});
+            m_SysConversation = await m_SysClient.CreateConversation( new List<string>() { m_SysClient.Id},name:"系统会话",
+                unique: true, properties:new Dictionary<string, object>() 
+                {
+                    { "sys",true}
+                });
+
             //await m_SysConversation.AddMembers( new List<string>() { m_SysClient.Id });
             //await m_SysConversation.Join();
         }
