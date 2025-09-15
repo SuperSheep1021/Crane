@@ -87,7 +87,7 @@ public class SysClientService
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
-            "1.2/rtm/service-conversations",   // 路径
+            "rtm/service-conversations",   // 路径
             headers,                   // 请求头
             requestData,               // 请求数据
             null,                      // 查询参数
