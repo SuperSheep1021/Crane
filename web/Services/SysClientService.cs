@@ -125,7 +125,6 @@ public class SysClientService
         {
             // 例如添加认证信息或其他必要头信息
             { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
-            { "client_id", $"{userId}" }
         };
 
         // 调用Post方法发送请求
