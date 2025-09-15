@@ -12,14 +12,15 @@ namespace web {
     {
         public static void Main(string[] args)
         {
-            ////// 从环境变量获取配置信息
-            string appId = Environment.GetEnvironmentVariable("APP_ID");
-            string appKey = Environment.GetEnvironmentVariable("APP_KEY");
-            string appUrl = Environment.GetEnvironmentVariable("APP_URL");
-            string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
+            //////// 从环境变量获取配置信息
+            //string appId = Environment.GetEnvironmentVariable("APP_ID");
+            //string appKey = Environment.GetEnvironmentVariable("APP_KEY");
+            //string appUrl = Environment.GetEnvironmentVariable("APP_URL");
+            //string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-            LCApplication.Initialize(appId, appKey, appUrl, masterKey);
-            LCLogger.Debug($"=============LCApplication.Initialize=============");
+            //LCApplication.Initialize(appId, appKey, appUrl, masterKey);
+            //LCLogger.Debug($"=============LCApplication.Initialize=============");
+
             CreateHostBuilder(args).Build().Run();
         }
 
