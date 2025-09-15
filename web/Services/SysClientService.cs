@@ -133,7 +133,7 @@ public class SysClientService
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
             $"1.2/rtm/service-conversations/{conversationId}/subscribers",   // 路径
             headers,                   // 请求头
-            null,               // 请求数据
+            requestData,               // 请求数据
             null,                      // 查询参数
             false                       // 使用API版本
         );
