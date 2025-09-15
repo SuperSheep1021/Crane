@@ -118,7 +118,7 @@ public class SystemConverstaionService
         var response = await LCCore.HttpClient.Get<IList<IDictionary<string, object>>>(
             "1.2/rtm/service-conversations",   // 路径
             headers,                           // 请求头
-            queryParams,                       // 请求数据
+            null,                       // 请求数据
             false                              // 使用API版本
         );
 
