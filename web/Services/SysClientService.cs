@@ -70,7 +70,7 @@ public class SysClientService
 
     public async Task SendTextMessage(string text,Dictionary<string,object> content = null) 
     {
-
+        await Initialtion();
         LCIMTextMessage message = new LCIMTextMessage(text);
         message["数据1"] = "asdasd";
         message["数据2"] = "消息2";
