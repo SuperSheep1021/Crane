@@ -65,7 +65,7 @@ public class SysClientService
 
     public async Task SendTextMessage(string text,Dictionary<string,object> content = null) 
     {
-        await Initialtion();
+        //await Initialtion();
 
         LCIMTextMessage message = new LCIMTextMessage(text);
         message["Êý¾Ý1"] = "asdasd";

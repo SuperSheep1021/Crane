@@ -1,6 +1,7 @@
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Realtime;
+using LeanCloud.Storage.Internal.Codec;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -18,7 +19,7 @@ namespace web {
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
             LCApplication.Initialize(appId, appKey, appUrl, masterKey);
-
+            LCLogger.Debug($"=============LCApplication.Initialize=============");
             CreateHostBuilder(args).Build().Run();
         }
 
