@@ -103,10 +103,14 @@ public class SystemConverstaionService
             { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
         };
 
+        var whereDic = new Dictionary<string, object>() 
+        {
+           { "name", convName }
+        };
 
         var queryParams = new Dictionary<string, object>() 
         {
-             { "where", new Dictionary<string, object> { { "name", convName } } },
+             { "where", whereDic },
              { "skip", 1 },
              { "limit", total }
         };
