@@ -21,8 +21,7 @@ namespace web {
             LCApplication.Initialize(appId, appKey, appUrl, masterKey);
             LCLogger.Debug($"LCApplication.Initialize Success URL:{appUrl}");
 
-            var host = CreateHostBuilder(args).Build();
-            await host.RunAsync();
+            CreateHostBuilder(args).Build().Run();
 
             await Task.Delay(2000);
             await SysClientService.Inst.Initialtion();
