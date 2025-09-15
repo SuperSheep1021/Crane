@@ -142,7 +142,6 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
         public static Dictionary<string, object> OnMessageSent(Dictionary<string, object> parameters)
         {
-            LCLogger.Debug(JsonConvert.SerializeObject(parameters));
             return default;
         }
     }
