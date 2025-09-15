@@ -36,7 +36,7 @@ public class SysClientService
     LCIMClient m_SysClient;
     LCIMConversation m_SysConversation;
 
-    async Task Initialtion()
+    public async Task Initialtion()
     {
         LCLogger.Debug($"{this}开始初始化");
         if (m_SysUser ==null) 
@@ -70,7 +70,6 @@ public class SysClientService
 
     public async Task SendTextMessage(string text,Dictionary<string,object> content = null) 
     {
-        await Initialtion();
 
         LCIMTextMessage message = new LCIMTextMessage(text);
         message["数据1"] = "asdasd";
