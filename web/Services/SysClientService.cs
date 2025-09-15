@@ -113,7 +113,7 @@ public class SysClientService
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
-            { "client_ids", new List<string> { userId } }
+            { "client_ids", $"{userId}" }
         };
 
         //var jsonData = JsonConvert.SerializeObject(requestData);
@@ -125,7 +125,7 @@ public class SysClientService
         {
             // 例如添加认证信息或其他必要头信息
             { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
-            { "client_ids", new List<string> { userId } }
+            { "client_ids", $"{userId}" }
         };
 
         // 调用Post方法发送请求
