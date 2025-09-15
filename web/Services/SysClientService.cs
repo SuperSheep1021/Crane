@@ -51,19 +51,7 @@ public class SysClientService
             LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
         }
 
-        if (m_SysConversation == null)
-        {
-            m_SysConversation = await m_SysClient.GetQuery().WhereEqualTo("c", m_SysClient.Id).First();
-        }
-        else {
-            m_SysConversation = await m_SysClient.CreateConversation(new List<string>() { m_SysClient.Id }, name: "系统会话",
-                    unique: true, properties: new Dictionary<string, object>()
-                    {
-                    { "customData",true}
-                    });
-
-            await m_SysConversation.Join();
-        }
+        m_SysConversation = await m_SysClient.GetQuery().WhereEqualTo("c", m_SysClient.Id).First();
         LCLogger.Debug($"{this}结束初始化");
     }
     public async Task<int> GetMembersCount() 
