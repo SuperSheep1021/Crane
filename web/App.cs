@@ -74,30 +74,30 @@ namespace web {
         }
 
 
-        //[LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
-        //public static LCObject ReviewBeforeSave(LCObject review)
-        //{
-        //    if (string.IsNullOrEmpty(review["comment"].ToString() ))
-        //    {
-        //        throw new Exception("No comment provided!");
-        //    }
-        //    string comment = review["comment"] as string;
-        //    if (comment.Length > 140)
-        //    {
-        //        review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
-        //    }
-        //    return review;
-        //}
+        [LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
+        public static LCObject ReviewBeforeSave(LCObject review)
+        {
+            if (string.IsNullOrEmpty(review["comment"].ToString()))
+            {
+                throw new Exception("No comment provided!");
+            }
+            string comment = review["comment"] as string;
+            if (comment.Length > 140)
+            {
+                review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
+            }
+            return review;
+        }
 
 
-        //[LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
-        //public static async Task ReviewAfterSave(LCObject review)
-        //{
-        //    LCObject post = review["post"] as LCObject;
-        //    await post.Fetch();
-        //    post.Increment("comments", 1);
-        //    await post.Save();
-        //}
+        [LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
+        public static async Task ReviewAfterSave(LCObject review)
+        {
+            LCObject post = review["post"] as LCObject;
+            await post.Fetch();
+            post.Increment("comments", 1);
+            await post.Save();
+        }
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
