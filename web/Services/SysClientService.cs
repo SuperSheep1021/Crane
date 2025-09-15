@@ -150,7 +150,7 @@ public class SysClientService
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
-            { "from_client",null },
+            { "from_client","68c22ec62f7ee809fcc9e7e6" },
             { "message","服务端发送的订阅消息！！！" },
         };
 

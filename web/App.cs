@@ -45,7 +45,7 @@ namespace web {
         [LCEngineFunction("SubscribeServiceConversationAsync")]
         public static async Task<string> SubscribeServiceConversationAsync()
         {
-            string str = await SysClientService.Inst.SubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a", "SuperSheep");
+            string str = await SysClientService.Inst.SubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a", "68b9286c49adb47c41678afb");
             return str;
         }
         [LCEngineFunction("SendSubscribeServiceConversationAsync")]
