@@ -50,8 +50,8 @@ public class SysClientService
             await m_SysClient.Open();
             LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
         }
-
         m_SysConversation = await m_SysClient.GetQuery().WhereEqualTo("c", m_SysClient.Id).First();
+        await m_SysConversation.Join();
         LCLogger.Debug($"{this}结束初始化");
     }
     public async Task<int> GetMembersCount() 
