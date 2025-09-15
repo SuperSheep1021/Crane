@@ -108,9 +108,10 @@ public class SystemConverstaionService
            { "name", convName }
         };
         var json =await LCJsonUtils.SerializeAsync(whereDic);
+
         var queryParams = new Dictionary<string, object>() 
         {
-            { "where",new Dictionary<string, object> { { "name", convName } } },
+            { "where", json },
              { "skip", 0},
              { "limit", total }
         };
