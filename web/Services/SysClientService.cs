@@ -116,15 +116,16 @@ public class SysClientService
             { "client_ids", new List<string> { userId } }
         };
 
-        var jsonData = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        //var jsonData = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" }
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "client_ids", new List<string> { userId } }
         };
 
         // 调用Post方法发送请求
@@ -132,7 +133,7 @@ public class SysClientService
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
             $"1.2/rtm/service-conversations/{conversationId}/subscribers",   // 路径
             headers,                   // 请求头
-            content,               // 请求数据
+            null,               // 请求数据
             null,                      // 查询参数
             false                       // 使用API版本
         );
