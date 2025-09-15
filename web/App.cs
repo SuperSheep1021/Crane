@@ -26,8 +26,6 @@ namespace web {
         //{
         //    return "TestCloudFunc:" + name;
         //}
-
-
         //[LCEngineFunction("SendMessageToTargetUserID")]
         //public static async void SendMessageToTargetUserID()
         //{
@@ -51,6 +49,7 @@ namespace web {
         {
             return await SystemConverstaionService.Inst.SubscribeSysConvAsync(clientID);
         }
+
         [LCEngineFunction("SendSubscribeServiceConversationAsync")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message)
         {
