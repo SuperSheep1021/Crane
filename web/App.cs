@@ -41,7 +41,7 @@ namespace web {
         }
 
         [LCEngineFunction("QuerySysConvAsync")]
-        public static async Task<IDictionary<string, IDictionary<string, object>>> QuerySysConvAsync([LCEngineFunctionParam("total")] int total, [LCEngineFunctionParam("convName")] string convName)
+        public static async Task<IDictionary<string, object>> QuerySysConvAsync([LCEngineFunctionParam("total")] int total, [LCEngineFunctionParam("convName")] string convName)
         {
             return await SystemConverstaionService.Inst.QuerySysConvAsync(total, convName);
         }
