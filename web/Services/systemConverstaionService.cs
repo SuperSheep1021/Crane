@@ -122,7 +122,7 @@ public class SystemConverstaionService
             false                              // 使用API版本
         );
 
-        var jsonsss = await LCJsonUtils.SerializeAsync(response[0]);
+        var jsonsss = await LCJsonUtils.SerializeAsync(response);
         // 返回订阅结果
         LCLogger.Debug(jsonsss);
         return response;
