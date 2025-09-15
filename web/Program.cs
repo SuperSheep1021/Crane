@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace web {
     public class Program 
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             ////// 从环境变量获取配置信息
             string appId = Environment.GetEnvironmentVariable("APP_ID");
@@ -18,6 +18,7 @@ namespace web {
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
             LCApplication.Initialize(appId, appKey, appUrl, masterKey);
+            await SysClientService.Inst.Initialtion();
 
             CreateHostBuilder(args).Build().Run();
         }
