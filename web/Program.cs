@@ -32,7 +32,7 @@ namespace web {
 
             var host = CreateHostBuilder(args).Build();
             
-            await IMService.Inst.InitialtionIM();
+            
 
             await host.RunAsync();
         }

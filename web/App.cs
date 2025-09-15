@@ -43,6 +43,7 @@ namespace web {
             //await _httpClientService.SendMessage(conversationId, Styem_BroadcastUserID, TestTargetUserID, "服务端消息发送");
 
             //await IMService.Inst.AddMembers(TestTargetUserID);
+            await IMService.Inst.InitialtionIM();
             await IMService.Inst.SendMessage($"服务端发送的消息:{System.DateTime.Now}");
         }
 
