@@ -48,6 +48,9 @@ namespace web {
             };
             LCEngine.Initialize(services);
 
+
+            SysClientService.Inst.Initialtion();
+
             services.AddControllersWithViews();
         }
 

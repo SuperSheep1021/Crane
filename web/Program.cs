@@ -17,10 +17,7 @@ namespace web {
             string appUrl = Environment.GetEnvironmentVariable("APP_URL");
             string masterKey = Environment.GetEnvironmentVariable("MASTER_KEY");
 
-
             LCApplication.Initialize(appId, appKey, appUrl, masterKey);
-            LCLogger.Debug($"LCApplication.Initialize Success URL:{appUrl}");
-            SysClientService.Inst.Initialtion().Wait();
 
             CreateHostBuilder(args).Build().Run();
         }
