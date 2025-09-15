@@ -154,8 +154,8 @@ public class SysClientService
             { "message","服务端发送的订阅消息！！！" },
         };
 
-        //var jsonData = JsonConvert.SerializeObject(requestData);
-        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        var jsonData = JsonConvert.SerializeObject(requestData);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
         //string json = await LCJsonUtils.SerializeAsync(requestData);
@@ -172,7 +172,7 @@ public class SysClientService
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
             $"1.2/rtm/service-conversations/{conversationId}/broadcasts",   // 路径
             headers,                   // 请求头
-            requestData,               // 请求数据
+            content,               // 请求数据
             null,                      // 查询参数
             false                       // 使用API版本
         );
