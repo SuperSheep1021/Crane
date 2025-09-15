@@ -60,6 +60,7 @@ namespace web {
             LCLogger.Debug($"2 login client id is {user["objectId"]} ");
             LCLogger.Debug($"3 login client name is {user.Username} ");
             LCLogger.Debug($"4 login client user.ObjectId is {user.ObjectId} ");
+            await SysClientService.Inst.AddMembers(user.ObjectId);
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
