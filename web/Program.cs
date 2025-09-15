@@ -23,6 +23,9 @@ namespace web {
 
             var host = CreateHostBuilder(args).Build();
             await host.RunAsync();
+
+            await Task.Delay(2000);
+            await SysClientService.Inst.Initialtion();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
