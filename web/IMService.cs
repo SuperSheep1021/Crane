@@ -39,31 +39,28 @@ public class IMService
     public async Task InitialtionIM()
     {
         LCLogger.Debug($"开始初始化IM");
-        m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
-        LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
+        if (m_SysUser==null)
+        {
+            m_SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+            LCLogger.Debug($"系统用户登录成功:{m_SysUser.ObjectId}");
 
-        m_SysClient = new LCIMClient(m_SysUser,tag:"sys");
-        await m_SysClient.Open();
-        LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
+            m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
+            await m_SysClient.Open();
+            LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
-        m_SysConversation = await m_SysClient.CreateConversation(new List<string>() { m_SysClient.Id }, "系统会话2");
-        LCLogger.Debug($"获取系统会话 {SysConversationID} 成功");
+            m_SysConversation = await m_SysClient.CreateConversation(new List<string>() { m_SysClient.Id }, "系统会话2");
+            LCLogger.Debug($"获取系统会话 {SysConversationID} 成功");
 
-        await m_SysConversation.Join();
-        LCLogger.Debug($"增加会话成员成功");
+            await m_SysConversation.Join();
+            LCLogger.Debug($"增加会话成员成功");
 
-        int conTotal = await m_SysConversation.GetMembersCount();
-        LCLogger.Debug($"系统会话订阅数量 === {conTotal}");
+            int conTotal = await m_SysConversation.GetMembersCount();
+            LCLogger.Debug($"系统会话订阅数量 === {conTotal}");
 
+            LCLogger.Debug($"创建系统会话完成:{m_SysConversation.Name}");
+        }
+        
 
-        //await m_SysConversation.Join();
-
-        //m_SysClient.OnMembersJoined = (conv, memberList, initBy) =>
-        //{
-        //    LCLogger.Debug($"{memberList} 加入了 {conv.Id} 对话；操作者为：{initBy}");
-        //};
-
-        LCLogger.Debug($"创建系统会话完成:{m_SysConversation.Name}");
     }
     public async Task AddMembers(string clientId) 
     {
