@@ -31,7 +31,7 @@ public class SysClientService
 
     const string SysUserName = "System_Broadcast";
     const string SysUserPassword = "123123";
-    const string SysConversationID = "68c77b00cb7fbfc7a4ddb31e";
+    const string SysConversationID = "68c7cab316ec9e2c7d13b42a";
 
 
     LCUser m_SysUser;
@@ -52,15 +52,15 @@ public class SysClientService
             await m_SysClient.Open();
             LCLogger.Debug($"m_SysClient.Open():{m_SysClient.Tag}");
 
-            //m_SysClient.OnMessage += OnIMMessageReceived;
+            m_SysClient.OnMessage += OnIMMessageReceived;
         }
-        //if (m_SysConversation ==null) 
-        //{
-        //    m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-        //    LCLogger.Debug($"GetConversation:{m_SysConversation.Name}");
-        //    //await m_SysConversation.Join();
-        //}
-        
+        if (m_SysConversation == null)
+        {
+            m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+            LCLogger.Debug($"GetConversation:{m_SysConversation.Name}");
+            //await m_SysConversation.Join();
+        }
+
         LCLogger.Debug($"{this}Ω· ¯≥ı ºªØ");
 
     }
