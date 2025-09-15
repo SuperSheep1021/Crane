@@ -90,7 +90,7 @@ public class SysClientService
             "rtm/service-conversations",   // 路径
             headers,                   // 请求头
             requestData,               // 请求数据
-            null,                      // 查询参数
+            new Dictionary<string, object> { { "api_version", "1.2" } },  // 明确指定 API 版本,
             true                       // 使用API版本
         );
 
