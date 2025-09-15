@@ -46,8 +46,8 @@ public class IMService
         await m_SysClient.Open();
         LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
 
-        //m_SysConversation =await m_SysClient.CreateConversation(new List<string>() { m_SysClient.Id }, "系统会话2");
-        m_SysConversation = await m_SysClient.GetConversation("68c77b00cb7fbfc7a4ddb31e");
+        m_SysConversation = await m_SysClient.CreateConversation(new List<string>() { m_SysClient.Id }, "系统会话2");
+        //m_SysConversation = await m_SysClient.GetConversation("68c77b00cb7fbfc7a4ddb31e");
         LCLogger.Debug($"获取系统会话 {SysConversationID} 成功");
 
         await m_SysConversation.Join();
