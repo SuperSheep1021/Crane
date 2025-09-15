@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace web {
     public class Program 
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             ////// 从环境变量获取配置信息
             string appId = Environment.GetEnvironmentVariable("APP_ID");
