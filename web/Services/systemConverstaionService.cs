@@ -94,7 +94,7 @@ public class SystemConverstaionService
     /// 查找服务号
     /// </summary>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> QuerySysConvAsync(int total = 1, string convName = "") 
+    public async Task<IDictionary<string, object>> QuerySysConvAsync(int total, string convName) 
     {
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -106,13 +106,10 @@ public class SystemConverstaionService
 
         var queryParams = new Dictionary<string, object>() 
         {
+             { "where", new Dictionary<string, object> { { "name", convName } } },
              { "skip", 1 },
-              { "limit", total }
+             { "limit", total }
         };
-        if (convName != "")
-        {
-            queryParams.Add("where", new Dictionary<string, object> { { "name", convName } } );
-        }
         
         // 使用 GET 方法（推荐）
         var response = await LCCore.HttpClient.Get<Dictionary<string,object>>(
