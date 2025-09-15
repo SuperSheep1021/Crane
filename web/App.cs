@@ -56,10 +56,10 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
         {
-            LCLogger.Debug(string.Format("{0} login", user["username"]));
-            LCLogger.Debug($"login client id is {user["objectId"]} ");
-            LCLogger.Debug($"login client id is {user.Username} ");
-            LCLogger.Debug($"login client id is {user.ObjectId} ");
+            LCLogger.Debug(string.Format("1 {0} login", user["username"]));
+            LCLogger.Debug($"2 login client id is {user["objectId"]} ");
+            LCLogger.Debug($"3 login client name is {user.Username} ");
+            LCLogger.Debug($"4 login client user.ObjectId is {user.ObjectId} ");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
