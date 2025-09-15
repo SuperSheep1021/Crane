@@ -44,7 +44,4 @@
     <Content Remove="Libs\Engine.deps.json" />
     <Content Remove="Libs\Engine.deps.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

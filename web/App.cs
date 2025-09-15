@@ -12,8 +12,7 @@ using LeanCloud.Common;
 namespace web {
     public class App
     {
-        public static HttpClientIMService _httpClientService;
-        const string TestTargetUserID = "68b9286c49adb47c41678afb";
+
         //// Function
         //[LCEngineFunction("hello")]
         //public static string Hello([LCEngineFunctionParam("name")] string name)
@@ -29,31 +28,36 @@ namespace web {
         //}
 
 
-        [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async void SendMessageToTargetUserID()
-        {
-            await SysClientService.Inst.SendTextMessage($"服务端发送的消息:{System.DateTime.Now}");
-        }
+        //[LCEngineFunction("SendMessageToTargetUserID")]
+        //public static async void SendMessageToTargetUserID()
+        //{
+        //    //await SystemConverstaionService.Inst.SendTextMessage($"服务端发送的消息:{System.DateTime.Now}");
+        //}
 
         [LCEngineFunction("CreateServiceConversationAsync")]
-        public static async Task<string> CreateServiceConversationAsync()
+        public static async Task<IDictionary<string,object>> CreateServiceConversationAsync([LCEngineFunctionParam("name")] string sysConversationName)
         {
-            string str = await SysClientService.Inst.CreateServiceConversationAsync();
-            return str;
+            return await SystemConverstaionService.Inst.CreateSysConvAsync(sysConversationName);
+        }
+
+        [LCEngineFunction("QuerySysConvAsync")]
+        public static async Task<IDictionary<string, object>> QuerySysConvAsync([LCEngineFunctionParam("total")] string total, [LCEngineFunctionParam("convName")] string convName)
+        {
+            return await SystemConverstaionService.Inst.QuerySysConvAsync(1, convName);
         }
 
         [LCEngineFunction("SubscribeServiceConversationAsync")]
-        public static async Task<string> SubscribeServiceConversationAsync()
+        public static async Task<IDictionary<string, object>> SubscribeSysConvAsync([LCEngineFunctionParam("clientID")] string clientID)
         {
-            string str = await SysClientService.Inst.SubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a", "68b9286c49adb47c41678afb");
-            return str;
+            return await SystemConverstaionService.Inst.SubscribeSysConvAsync(clientID);
         }
         [LCEngineFunction("SendSubscribeServiceConversationAsync")]
-        public static async Task<string> SendSubscribeServiceConversationAsync()
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message)
         {
-            string str = await SysClientService.Inst.SendSubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a");
-            return str;
+            return await SystemConverstaionService.Inst.SendMessageToSubscribesAsync(message);
         }
+
+
         private static async Task<LCUser> ValidateSenderAsync(string senderId)
         {
             try
@@ -68,8 +72,6 @@ namespace web {
                 return null;
             }
         }
-
-
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLogin(LCUser user)
