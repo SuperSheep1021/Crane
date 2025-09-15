@@ -48,7 +48,12 @@ namespace web {
             string str = await SysClientService.Inst.SubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a", "68b9286c49adb47c41678afb");
             return str;
         }
-
+        [LCEngineFunction("SendSubscribeServiceConversationAsync")]
+        public static async Task<string> SendSubscribeServiceConversationAsync()
+        {
+            string str = await SysClientService.Inst.SendSubscribeServiceConversationAsync("68c7cab316ec9e2c7d13b42a");
+            return str;
+        }
         private static async Task<LCUser> ValidateSenderAsync(string senderId)
         {
             try
