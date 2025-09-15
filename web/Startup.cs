@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace web {
     public class Startup {
@@ -21,7 +20,7 @@ namespace web {
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public async Task ConfigureServices(IServiceCollection services) 
+        public void ConfigureServices(IServiceCollection services) 
         {
             services.AddLogging(builder => 
             {
@@ -48,7 +47,6 @@ namespace web {
                 }
             };
             LCEngine.Initialize(services);
-
             services.AddControllersWithViews();
         }
 
