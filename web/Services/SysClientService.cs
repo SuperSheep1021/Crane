@@ -113,7 +113,7 @@ public class SysClientService
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
-            { "client_id", new List<string> { userId } }
+            { "client_ids", new List<string> { userId } }
         };
 
         //var jsonData = JsonConvert.SerializeObject(requestData);
