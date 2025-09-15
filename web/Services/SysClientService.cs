@@ -36,7 +36,7 @@ public class SysClientService
     LCIMClient m_SysClient;
     LCIMConversation m_SysConversation;
 
-    public async Task Initialtion()
+    async Task Init()
     {
         LCLogger.Debug($"{this}开始初始化");
         if (m_SysUser ==null) 
@@ -52,18 +52,18 @@ public class SysClientService
         }
         if (m_SysConversation ==null) 
         {
-            m_SysConversation = await m_SysClient.GetQuery().WhereEqualTo("c", m_SysClient.Id).First();
+            m_SysConversation = await m_SysClient.CreateConversation( new List<string>() { m_SysClient.Id });
             await m_SysConversation.Join();
         }
         
         LCLogger.Debug($"{this}结束初始化");
     }
 
-    public void Init()
+    public void Initialtion()
     {
         Task.Run(async () => 
         {
-            await Initialtion();
+            await Init();
         });
     }
     public async Task<int> GetMembersCount() 
