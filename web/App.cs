@@ -35,6 +35,14 @@ namespace web {
             await SysClientService.Inst.SendTextMessage($"服务端发送的消息:{System.DateTime.Now}");
         }
 
+        [LCEngineFunction("CreateServiceConversationAsync")]
+        public static async Task<string> CreateServiceConversationAsync()
+        {
+            string str = await SysClientService.Inst.CreateServiceConversationAsync();
+            return str;
+        }
+
+
 
         private static async Task<LCUser> ValidateSenderAsync(string senderId)
         {

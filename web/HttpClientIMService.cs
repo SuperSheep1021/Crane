@@ -79,8 +79,6 @@ public class HttpClientIMService
         );
         return true;
     }
-
-
     // 创建对话
     public async Task<string> CreateConversation(string senderId, string targetId)
     {
@@ -147,6 +145,9 @@ public class HttpClientIMService
         }
 
     }
+
+
+
     public async Task<string> SendMessage(string conversationId, string senderId,string targetID, string messageContent)
     {
         if (string.IsNullOrEmpty(conversationId))
