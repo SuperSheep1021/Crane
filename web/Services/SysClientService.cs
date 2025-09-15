@@ -7,6 +7,7 @@ using LeanCloud.Storage.Internal.Codec;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -50,17 +51,24 @@ public class SysClientService
             m_SysClient = new LCIMClient(m_SysUser, tag: "sys");
             await m_SysClient.Open();
             LCLogger.Debug($"创建系统客户端成功:{m_SysClient.Tag}");
+
+            m_SysClient.OnMessage += OnIMMessageReceived;
         }
         if (m_SysConversation ==null) 
         {
-            m_SysConversation = await m_SysClient.CreateConversation( new List<string>() { m_SysClient.Id });
+            m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+            LCLogger.Debug($"回去系统会话成功:{m_SysConversation.Name}");
             //await m_SysConversation.Join();
         }
         
         LCLogger.Debug($"{this}结束初始化");
 
     }
+    private void OnIMMessageReceived(LCIMConversation conversation, LCIMMessage message)
+    {
+        LCLogger.Warn($"收到来自对话 [{conversation.Name}] 的消息");
 
+    }
     public async Task<string> CreateServiceConversationAsync()
     {
         // 构建请求URL
@@ -151,7 +159,7 @@ public class SysClientService
         var requestData = new Dictionary<string, object>
         {
             { "from_client","68c22ec62f7ee809fcc9e7e6" },
-            { "message","service send subscribe message！！！" },
+            { "message","service send subscribe message!!!!" },
         };
 
         //var jsonData = JsonConvert.SerializeObject(requestData);

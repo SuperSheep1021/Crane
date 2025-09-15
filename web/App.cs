@@ -96,47 +96,47 @@ namespace web {
         }
 
 
-        [LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
-        public static LCObject ReviewBeforeSave(LCObject review)
-        {
-            if (string.IsNullOrEmpty(review["comment"].ToString()))
-            {
-                throw new Exception("No comment provided!");
-            }
-            string comment = review["comment"] as string;
-            if (comment.Length > 140)
-            {
-                review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
-            }
-            return review;
-        }
+        //[LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
+        //public static LCObject ReviewBeforeSave(LCObject review)
+        //{
+        //    if (string.IsNullOrEmpty(review["comment"].ToString()))
+        //    {
+        //        throw new Exception("No comment provided!");
+        //    }
+        //    string comment = review["comment"] as string;
+        //    if (comment.Length > 140)
+        //    {
+        //        review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
+        //    }
+        //    return review;
+        //}
 
 
-        [LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
-        public static async Task ReviewAfterSave(LCObject review)
-        {
-            LCObject post = review["post"] as LCObject;
-            await post.Fetch();
-            post.Increment("comments", 1);
-            await post.Save();
-        }
+        //[LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
+        //public static async Task ReviewAfterSave(LCObject review)
+        //{
+        //    LCObject post = review["post"] as LCObject;
+        //    await post.Fetch();
+        //    post.Increment("comments", 1);
+        //    await post.Save();
+        //}
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
-        public static object OnMessageReceived(Dictionary<string, object> parameters)
-        {
-            LCLogger.Debug("OnMessageReceived");
-            foreach (KeyValuePair<string,object> kv in parameters) 
-            {
-                LCLogger.Debug($"Key:{kv.Key}======Value:{kv.Value}");
-            }
-            if (parameters.ContainsKey("content") )
-            {
-                LCLogger.Debug(parameters["content"].ToString() );
-            }
+        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
+        //public static object OnMessageReceived(Dictionary<string, object> parameters)
+        //{
+        //    LCLogger.Debug("OnMessageReceived");
+        //    foreach (KeyValuePair<string,object> kv in parameters) 
+        //    {
+        //        LCLogger.Debug($"Key:{kv.Key}======Value:{kv.Value}");
+        //    }
+        //    if (parameters.ContainsKey("content") )
+        //    {
+        //        LCLogger.Debug(parameters["content"].ToString() );
+        //    }
 
-            return new Dictionary<string, object> {{ "content", parameters["content"] } };
-        }
+        //    return new Dictionary<string, object> {{ "content", parameters["content"] } };
+        //}
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
