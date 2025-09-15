@@ -54,6 +54,7 @@ public class SysClientService
         if (m_SysConversation ==null)
         {
             m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+            await m_SysConversation.AddMembers( new List<string>() { m_SysClient.Id });
             await m_SysConversation.Join();
         }
         LCLogger.Debug($"{this}Ω· ¯≥ı ºªØ");
