@@ -79,10 +79,10 @@ public class SysClientService
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
-            {
-                // 例如添加认证信息或其他必要头信息
-                 //{"customHeaders", "Authorization"}
-            };
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" }
+        };
 
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
