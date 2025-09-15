@@ -122,21 +122,21 @@ namespace web {
         //}
 
 
-        //[LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
-        //public static object OnMessageReceived(Dictionary<string, object> parameters)
-        //{
-        //    LCLogger.Debug("OnMessageReceived");
-        //    foreach (KeyValuePair<string,object> kv in parameters) 
-        //    {
-        //        LCLogger.Debug($"Key:{kv.Key}======Value:{kv.Value}");
-        //    }
-        //    if (parameters.ContainsKey("content") )
-        //    {
-        //        LCLogger.Debug(parameters["content"].ToString() );
-        //    }
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
+        public static object OnMessageReceived(Dictionary<string, object> parameters)
+        {
+            LCLogger.Debug("OnMessageReceived");
+            foreach (KeyValuePair<string, object> kv in parameters)
+            {
+                LCLogger.Debug($"Key:{kv.Key}======Value:{kv.Value}");
+            }
+            if (parameters.ContainsKey("content"))
+            {
+                LCLogger.Debug(parameters["content"].ToString());
+            }
 
-        //    return new Dictionary<string, object> {{ "content", parameters["content"] } };
-        //}
+            return new Dictionary<string, object> { { "content", parameters["content"] } };
+        }
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
