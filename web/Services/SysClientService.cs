@@ -116,8 +116,8 @@ public class SysClientService
             { "client_ids", new List<string> { userId } }
         };
 
-        //var jsonData = JsonConvert.SerializeObject(requestData);
-        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        var jsonData = JsonConvert.SerializeObject(requestData);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
         // 可以添加额外的请求头（如果需要）
@@ -132,7 +132,7 @@ public class SysClientService
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
             $"1.2/rtm/service-conversations/{conversationId}/subscribers",   // 路径
             headers,                   // 请求头
-            requestData,               // 请求数据
+            content,               // 请求数据
             null,                      // 查询参数
             false                       // 使用API版本
         );
