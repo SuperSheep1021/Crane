@@ -68,14 +68,14 @@ public class SysClientService
 
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
-            {
-                { "name","My First Service-conversation"}
-            };
-        var jsonData = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        {
+            { "name","My First Service-conversation"}
+        };
+        //var jsonData = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
-        string json = await LCJsonUtils.SerializeAsync(requestData);
+        //string json = await LCJsonUtils.SerializeAsync(requestData);
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -116,11 +116,9 @@ public class SysClientService
             { "client_ids", new List<string> { userId } }
         };
 
-        var jsonData = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        //var jsonData = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-
-        string json = await LCJsonUtils.SerializeAsync(requestData);
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -156,11 +154,11 @@ public class SysClientService
             { "message","服务端发送的订阅消息！！！" },
         };
 
-        var jsonData = JsonConvert.SerializeObject(requestData);
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        //var jsonData = JsonConvert.SerializeObject(requestData);
+        //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
 
-        string json = await LCJsonUtils.SerializeAsync(requestData);
+        //string json = await LCJsonUtils.SerializeAsync(requestData);
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
