@@ -52,14 +52,14 @@ public class SysClientService
             await m_SysClient.Open();
             LCLogger.Debug($"m_SysClient.Open():{m_SysClient.Tag}");
 
-            m_SysClient.OnMessage += OnIMMessageReceived;
+            //m_SysClient.OnMessage += OnIMMessageReceived;
         }
-        if (m_SysConversation ==null) 
-        {
-            m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
-            LCLogger.Debug($"GetConversation:{m_SysConversation.Name}");
-            //await m_SysConversation.Join();
-        }
+        //if (m_SysConversation ==null) 
+        //{
+        //    m_SysConversation = await m_SysClient.GetConversation(SysConversationID);
+        //    LCLogger.Debug($"GetConversation:{m_SysConversation.Name}");
+        //    //await m_SysConversation.Join();
+        //}
         
         LCLogger.Debug($"{this}Ω· ¯≥ı ºªØ");
 
