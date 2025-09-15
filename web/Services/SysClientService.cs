@@ -58,6 +58,14 @@ public class SysClientService
         
         LCLogger.Debug($"{this}½áÊø³õÊ¼»¯");
     }
+
+    public void Init()
+    {
+        Task.Run(async () => 
+        {
+            await Initialtion();
+        });
+    }
     public async Task<int> GetMembersCount() 
     {
         return await m_SysConversation.GetMembersCount();
