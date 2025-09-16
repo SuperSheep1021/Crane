@@ -192,10 +192,10 @@ public class RESTAPIService
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
 
         if (string.IsNullOrEmpty(fromClientId))
-            throw new ArgumentNullException(nameof(conversationId), "发送客户端ID不能为空");
+            throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
         if (string.IsNullOrEmpty(message))
-            throw new ArgumentNullException(nameof(conversationId), "消息不能为空");
+            throw new ArgumentNullException(nameof(message), "消息不能为空");
 
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
