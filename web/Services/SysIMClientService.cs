@@ -69,7 +69,7 @@ public class SysIMClientService
         //如果设置为唯一对话，云端会根据完整的成员列表先进行一次查询，如果已经有正好包含这些成员的对话存在，那么就返回已经存在的对话，否则才创建一个新的对话。
         LCIMConversation con = await SysIMClient.CreateConversation(new List<string>()
         {
-            SysIMClient.Id,targetClientId
+            SysIMClient.Id, targetClientId
         }, $"sys to targetClient conv for {targetClientId}", true, new Dictionary<string, object>() 
         {
             { "sys",false}

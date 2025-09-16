@@ -29,10 +29,10 @@ namespace web {
 
 
         [LCEngineFunction("SendIMMessageToTargetUserID")]
-        public static async Task SendIMMessageToTargetUserID([LCEngineFunctionParam("targetClientID")] string targetClientID,
+        public static async Task SendIMMessageToTargetUserID([LCEngineFunctionParam("targetClientId")] string targetClientId,
            [LCEngineFunctionParam("text")] string text)
         {
-            await SysIMClientService.Inst.SendMessageToClientId(targetClientID, text,new Dictionary<string, object>()
+            await SysIMClientService.Inst.SendMessageToClientId(targetClientId, text,new Dictionary<string, object>()
             {
                 {"service send message",  1},
                 {"service send message2", 2 },
