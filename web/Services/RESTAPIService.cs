@@ -234,13 +234,20 @@ public class RESTAPIService
         return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
     }
 
+    /// <summary>
+    /// 查询服务号给某用户发的消息(查询结果包含服务号发送的订阅广播消息也包含单独发送的消息。)
+    /// </summary>
+    /// <param name="conversationId"></param>
+    /// <param name="clientId"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     async Task<Dictionary<string, object>> QuerySendFormClientId(string conversationId, string clientId)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
 
         if (string.IsNullOrEmpty(clientId))
-            throw new ArgumentNullException(nameof(conversationId), "客户端ID不能为空");
+            throw new ArgumentNullException(nameof(clientId), "客户端ID不能为空");
 
 
         // 可以添加额外的请求头（如果需要）
@@ -260,6 +267,11 @@ public class RESTAPIService
 
         return response;
     }
+    /// <summary>
+    /// 查询服务号给某用户发的消息(查询结果包含服务号发送的订阅广播消息也包含单独发送的消息。)
+    /// </summary>
+    /// <param name="clientId"></param>
+    /// <returns></returns>
     public async Task<Dictionary<string, object>> QuerySendFormClientId(string clientId)
     {
         return await QuerySendFormClientId(SysConvId, clientId);
