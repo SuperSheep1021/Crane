@@ -70,7 +70,10 @@ public class SysIMClientService
         LCIMConversation con = await SysIMClient.CreateConversation(new List<string>()
         {
             SysIMClient.Id,targetClientId
-        }, $"sys to targetClient conv for {targetClientId}", true);
+        }, $"sys to targetClient conv for {targetClientId}", true, new Dictionary<string, object>() 
+        {
+            { "sys",false}
+        });
         return con;
     }
     public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,Dictionary<string,object> content) 
