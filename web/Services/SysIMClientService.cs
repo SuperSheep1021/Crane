@@ -22,14 +22,7 @@ public class CustomIMMessageBase : LCIMTextMessage
     }
     public void SetupContent(string key, object value)
     {
-        if (!data.ContainsKey(key))
-        {
-            data.Add(key, value);
-        }
-        else
-        {
-            data[key] = value;
-        }
+        this[key] = value;
     }
 }
 public class SysIMClientService 
@@ -73,7 +66,6 @@ public class SysIMClientService
         {
             { "sys",false}
         });
-        await con.Join();
         return con;
     }
     public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,bool transient, Dictionary<string,object> content) 
