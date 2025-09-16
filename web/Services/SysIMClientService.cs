@@ -73,6 +73,7 @@ public class SysIMClientService
         {
             { "sys",false}
         });
+        await con.Join();
         return con;
     }
     public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,bool transient, Dictionary<string,object> content) 
