@@ -66,18 +66,18 @@ namespace web {
 
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLoginAsync(LCUser user)
+        public static async Task OnLoginAsync(LCUser loginUser)
         {
-            await SysIMClientService.Inst.SendMessageToClientId(user.ObjectId, "login", new Dictionary<string, object>()
+            await SysIMClientService.Inst.SendMessageToClientId(loginUser.ObjectId, "login",false, new Dictionary<string, object>()
             {
                 {"service send message",  1},
                 {"service send message2", 2 },
             });
 
-            LCLogger.Debug(string.Format("1 {0} login", user["username"]));
-            LCLogger.Debug($"2 login client id is {user["objectId"]} ");
-            LCLogger.Debug($"3 login client name is {user.Username} ");
-            LCLogger.Debug($"4 login client user.ObjectId is {user.ObjectId} ");
+            LCLogger.Debug(string.Format("1 {0} login", loginUser["username"]));
+            LCLogger.Debug($"2 login client id is {loginUser["objectId"]} ");
+            LCLogger.Debug($"3 login client name is {loginUser.Username} ");
+            LCLogger.Debug($"4 login client user.ObjectId is {loginUser.ObjectId} ");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]

@@ -75,7 +75,7 @@ public class SysIMClientService
         });
         return con;
     }
-    public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,Dictionary<string,object> content) 
+    public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,bool transient, Dictionary<string,object> content) 
     {
         LCIMConversation con =await CreateOrGetConv(targetClientId);
         CustomIMMessageBase message = new CustomIMMessageBase(text);
@@ -85,7 +85,7 @@ public class SysIMClientService
         }
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
-        sendOptions.Transient = true;
+        sendOptions.Transient = transient;
         //需要回读
         sendOptions.Receipt = true;
         return (CustomIMMessageBase)await con.Send(message,sendOptions);
