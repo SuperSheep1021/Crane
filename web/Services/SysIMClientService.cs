@@ -40,11 +40,16 @@ public class SysIMClientService
         }
     }
     public LCIMClient SysIMClient { get; private set; }
+    public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
     {
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+
         LCLogger.Debug($"{this} Initialtion start!!");
         SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
+
+        await SysIMClient.GetConversation(SysConvId);
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
         LCLogger.Debug($"{this} Initialtion end!!");
