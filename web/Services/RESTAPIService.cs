@@ -32,8 +32,8 @@ public class RESTAPIService
     const string SysUserName = "systemAccount";
     const string SysUserPassword = "123123";
 
-    const string SysConvID = "68c7cab316ec9e2c7d13b42a";
-
+    const string SysConvName = "sysConv";
+    public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
     private async Task Init()
@@ -45,6 +45,14 @@ public class RESTAPIService
 
         await SysIMClientService.Inst.Initialtion(SysUser);
 
+        Dictionary<string,object> results =await QuerySysConvAsync(1, SysConvName);
+        if (results.ContainsKey("results"))
+        {
+            string str = await LCJsonUtils.SerializeObjectAsync(results["results"]);
+            LCLogger.Debug($"QuerySysConvAsync:{str}");
+        }
+        
+
         LCLogger.Debug($"{this} Initialtion end!!");
     }
     public void Initialtion()
@@ -55,13 +63,15 @@ public class RESTAPIService
         });
     }
 
+
+
     #region//服务号
     /// <summary>
     /// 创建服务号
     /// </summary>
     /// <param name="sysConversationName"></param>
     /// <returns></returns>
-    public async Task<IDictionary<string,object>> CreateSysConvAsync(string sysConversationName)
+    public async Task<Dictionary<string,object>> CreateSysConvAsync(string sysConversationName)
     {
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
@@ -92,7 +102,7 @@ public class RESTAPIService
     /// 查找服务号
     /// </summary>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> QuerySysConvAsync(int total, string convName) 
+    public async Task<Dictionary<string, object>> QuerySysConvAsync(int total, string convName) 
     {
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -115,7 +125,7 @@ public class RESTAPIService
         };
         
         // 使用 GET 方法（推荐）
-        var response = await LCCore.HttpClient.Get<IDictionary<string, object>>(
+        var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
             "1.2/rtm/service-conversations",   // 路径
             headers,                           // 请求头
             queryParams,                       // 请求数据
@@ -131,7 +141,7 @@ public class RESTAPIService
     /// <param name="conversationId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    private async Task<IDictionary<string,object>> SubscribeSysConvAsync(string conversationId, string subscribeUserId)
+    private async Task<Dictionary<string,object>> SubscribeSysConvAsync(string conversationId, string subscribeUserId)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -171,7 +181,7 @@ public class RESTAPIService
     /// </summary>
     /// <param name="subscribeUserId"></param>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> SubscribeSysConvAsync(string subscribeUserId)
+    public async Task<Dictionary<string, object>> SubscribeSysConvAsync(string subscribeUserId)
     {
         return await SubscribeSysConvAsync(SysConvID,subscribeUserId);
     }
@@ -183,7 +193,7 @@ public class RESTAPIService
     /// <param name="fromClientId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    async Task<IDictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId, string message)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId, string message)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -226,7 +236,7 @@ public class RESTAPIService
     /// <param name="conversationId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> SendMessageToSubscribesAsync(string message)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string message)
     {
         return await SendMessageToSubscribesAsync(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message);
     }
@@ -237,7 +247,7 @@ public class RESTAPIService
     ///  查询用户数量
     /// </summary>
     /// <returns> { "result": { "online_user_count": 10212, "user_count_today": 1002324 } } </returns>
-    public async Task<IDictionary<string, object>> QueryUserTCount()
+    public async Task<Dictionary<string, object>> QueryUserTCount()
     {
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -261,7 +271,7 @@ public class RESTAPIService
     /// 查询所有会话
     /// </summary>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> QueryAllConversation()
+    public async Task<Dictionary<string, object>> QueryAllConversation()
     {
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -289,7 +299,7 @@ public class RESTAPIService
     /// <param name="convName"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Task<IDictionary<string, object>> QueryAllConversation(int total,string convName)
+    public async Task<Dictionary<string, object>> QueryAllConversation(int total,string convName)
     {
         if (string.IsNullOrEmpty(convName))
             throw new ArgumentNullException(nameof(convName), "服务号对话ID不能为空");
@@ -336,7 +346,7 @@ public class RESTAPIService
     /// <param name="transient">（可选）默认为 false。该字段用于表示广播消息是否为暂态消息，暂态消息只会被当前在线的用户收到，不在线的用户再次上线后也收不到该消息。</param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    async Task<IDictionary<string, object>> Broadcast(string fromClientId, string conversationId,string message,
+    async Task<Dictionary<string, object>> Broadcast(string fromClientId, string conversationId,string message,
         float valid_till,bool transient)
     {
         if (string.IsNullOrEmpty(conversationId))
@@ -383,7 +393,7 @@ public class RESTAPIService
     /// <param name="valid_till">（可选）过期时间，UTC 时间戳（毫秒），最长为 1 个月之后。默认值为 1 个月后。</param>
     /// <param name="transient">（可选）默认为 false。该字段用于表示广播消息是否为暂态消息，暂态消息只会被当前在线的用户收到，不在线的用户再次上线后也收不到该消息。</param>
     /// <returns></returns>
-    public async Task<IDictionary<string, object>> Broadcast(string message, float valid_till, bool transient)
+    public async Task<Dictionary<string, object>> Broadcast(string message, float valid_till, bool transient)
     { 
         return await Broadcast(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
     }
@@ -488,7 +498,7 @@ public class RESTAPIService
     /// <param name="targetClientId"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Task<IDictionary<string, object>> QueryUserSentMessages(string targetClientId)
+    public async Task<Dictionary<string, object>> QueryUserSentMessages(string targetClientId)
     {
         if (string.IsNullOrEmpty(targetClientId))
             throw new ArgumentNullException(nameof(targetClientId), "目标客户端ID不能为空");
@@ -515,7 +525,7 @@ public class RESTAPIService
     /// <param name="logout"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Task<IDictionary<string, object>> ForceLogout(string targetClientId,string logout) 
+    public async Task<Dictionary<string, object>> ForceLogout(string targetClientId,string logout) 
     {
         if (string.IsNullOrEmpty(targetClientId))
             throw new ArgumentNullException(nameof(targetClientId), "目标客户端ID不能为空");
