@@ -70,7 +70,7 @@ public class SysIMClientService
         LCIMConversation con = await SysIMClient.CreateConversation(new List<string>()
         {
             SysIMClient.Id, targetClientId
-        }, $"sys to targetClient conv for {targetClientId}", true, new Dictionary<string, object>() 
+        }, $"{SysIMClient.Id} and {targetClientId} conv!", true, new Dictionary<string, object>() 
         {
             { "sys",false}
         });
