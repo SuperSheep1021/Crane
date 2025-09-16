@@ -32,7 +32,6 @@ public class RESTAPIService
     const string SysUserName = "systemAccount";
     const string SysUserPassword = "123123";
 
-    const string SysConvName = "sysConv";
     public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
@@ -45,20 +44,7 @@ public class RESTAPIService
 
         await SysIMClientService.Inst.Initialtion(SysUser);
 
-        Dictionary<string,object> results = await QuerySysConvAsync(1, SysConvName);
-        if (results.ContainsKey("results"))
-        {
-            string str = await LCJsonUtils.SerializeObjectAsync(results["results"]);
-            LCLogger.Debug($"QuerySysConvAsync:{str}");
-
-            //var dic = await LCJsonUtils.DeserializeAsync<Dictionary<string, object>>(str);
-            //foreach (KeyValuePair<string,object> kv in dic)
-            //{ 
-            
-            //}
-            
-        }
-        
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
 
         LCLogger.Debug($"{this} Initialtion end!!");
     }
@@ -69,7 +55,6 @@ public class RESTAPIService
             await Init();
         });
     }
-
 
 
     #region//·þÎñºÅ
