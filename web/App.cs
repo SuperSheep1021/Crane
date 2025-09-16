@@ -69,11 +69,7 @@ namespace web {
         public static async Task OnLoginAsync(LCUser loginUser)
         {
             //await Task.Delay(2000);
-            //await SysIMClientService.Inst.SendMessageToClientId(loginUser.ObjectId, "login",false, new Dictionary<string, object>()
-            //{
-            //    {"service send message",  1},
-            //    {"service send message2", 2 },
-            //});
+            
 
             LCLogger.Debug(string.Format("1 {0} login", loginUser["username"]));
             LCLogger.Debug($"2 login client id is {loginUser["objectId"]} ");
@@ -82,10 +78,16 @@ namespace web {
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static void OnClientOnline(Dictionary<string, object> parameters)
+        public static async Task OnClientOnlineAsync(Dictionary<string, object> parameters)
         {
             LCLogger.Debug($"客户端上线");
             LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
+
+            await SysIMClientService.Inst.SendMessageToClientId( parameters["peerId"].ToString(), "login", false, new Dictionary<string, object>()
+            {
+                {"service send message",  1},
+                {"service send message2", 2 },
+            });
         }
         // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
