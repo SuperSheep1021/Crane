@@ -483,4 +483,63 @@ public class RESTAPIService
     }
 
     #endregion
+
+    #region//用户
+
+    public async Task<IDictionary<string, object>> SendToClientId(string targetClientId)
+    {
+        if (string.IsNullOrEmpty(targetClientId))
+            throw new ArgumentNullException(nameof(targetClientId), "目标客户端ID不能为空");
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+        };
+
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
+            $"1.2/rtm/clients/{targetClientId}/messages",    // 路径
+            headers,                   // 请求头
+            null,                      // 查询参数
+            false                      // 使用API版本
+        );
+
+        return response;
+    }
+    /// <summary>
+    /// 强制目标用户下线下线
+    /// </summary>
+    /// <param name="logout"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public async Task<IDictionary<string, object>> ForceLogout(string logout) 
+    {
+        if (string.IsNullOrEmpty(logout))
+            throw new ArgumentNullException(nameof(logout), "下线原因");
+        
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+        };
+
+        var requestData = new Dictionary<string, object>
+        {
+            { "reason",logout}
+        };
+
+        // 调用Post方法发送请求
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
+            "1.2/rtm/service-conversations",   // 路径
+            headers,                           // 请求头
+            requestData,                       // 请求数据
+            null,                              // 查询参数
+            false                              // 使用API版本
+        );
+        return response;
+    }
+    #endregion
 }
