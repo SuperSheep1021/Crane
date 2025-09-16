@@ -485,8 +485,13 @@ public class RESTAPIService
     #endregion
 
     #region//用户
-
-    public async Task<IDictionary<string, object>> SendToClientId(string targetClientId)
+    /// <summary>
+    /// 查询用户已经发送的消息
+    /// </summary>
+    /// <param name="targetClientId"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public async Task<IDictionary<string, object>> QueryUserSentMessages(string targetClientId)
     {
         if (string.IsNullOrEmpty(targetClientId))
             throw new ArgumentNullException(nameof(targetClientId), "目标客户端ID不能为空");
@@ -513,8 +518,11 @@ public class RESTAPIService
     /// <param name="logout"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public async Task<IDictionary<string, object>> ForceLogout(string logout) 
+    public async Task<IDictionary<string, object>> ForceLogout(string targetClientId,string logout) 
     {
+        if (string.IsNullOrEmpty(targetClientId))
+            throw new ArgumentNullException(nameof(targetClientId), "目标客户端ID不能为空");
+
         if (string.IsNullOrEmpty(logout))
             throw new ArgumentNullException(nameof(logout), "下线原因");
         
@@ -533,7 +541,7 @@ public class RESTAPIService
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
         var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
-            "1.2/rtm/service-conversations",   // 路径
+            $"1.2/rtm/clients/{targetClientId}/kick",   // 路径
             headers,                           // 请求头
             requestData,                       // 请求数据
             null,                              // 查询参数

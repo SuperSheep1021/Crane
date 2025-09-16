@@ -29,9 +29,8 @@ namespace web {
 
 
         [LCEngineFunction("SendMessageToTargetUserID")]
-        public static async Task<IDictionary<string,object>> SendMessageToTargetUserID([LCEngineFunctionParam("targetClientID")] string targetClientID)
+        public static void SendMessageToTargetUserID([LCEngineFunctionParam("targetClientID")] string targetClientID)
         {
-            return await RESTAPIService.Inst.SendToClientId(targetClientID);
             //await SystemConverstaionService.Inst.SendTextMessage($"服务端发送的消息:{System.DateTime.Now}");
         }
 
