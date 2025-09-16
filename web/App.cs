@@ -1,13 +1,14 @@
-﻿using LeanCloud;
+﻿using LC.Newtonsoft.Json;
+using LeanCloud;
+using LeanCloud.Common;
 using LeanCloud.Engine;
 using LeanCloud.Storage;
-using LC.Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
-using LeanCloud.Common;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace web {
     public class App
@@ -64,24 +65,15 @@ namespace web {
         }
 
 
-        private static async Task<LCUser> ValidateSenderAsync(string senderId)
-        {
-            try
-            {
-                LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", senderId);
-                int count = await query.Count();
-                LCUser user = await query.First();
-                return user;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser user)
+        public static async Task OnLoginAsync(LCUser user)
         {
+            await SysIMClientService.Inst.SendMessageToClientId(user.ObjectId, "login", new Dictionary<string, object>()
+            {
+                {"service send message",  1},
+                {"service send message2", 2 },
+            });
+
             LCLogger.Debug(string.Format("1 {0} login", user["username"]));
             LCLogger.Debug($"2 login client id is {user["objectId"]} ");
             LCLogger.Debug($"3 login client name is {user.Username} ");
