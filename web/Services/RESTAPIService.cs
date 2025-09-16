@@ -45,11 +45,18 @@ public class RESTAPIService
 
         await SysIMClientService.Inst.Initialtion(SysUser);
 
-        Dictionary<string,object> results =await QuerySysConvAsync(1, SysConvName);
+        Dictionary<string,object> results = await QuerySysConvAsync(1, SysConvName);
         if (results.ContainsKey("results"))
         {
             string str = await LCJsonUtils.SerializeObjectAsync(results["results"]);
             LCLogger.Debug($"QuerySysConvAsync:{str}");
+
+            //var dic = await LCJsonUtils.DeserializeAsync<Dictionary<string, object>>(str);
+            //foreach (KeyValuePair<string,object> kv in dic)
+            //{ 
+            
+            //}
+            
         }
         
 
@@ -183,7 +190,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> SubscribeSysConvAsync(string subscribeUserId)
     {
-        return await SubscribeSysConvAsync(SysConvID,subscribeUserId);
+        return await SubscribeSysConvAsync(SysConvId, subscribeUserId);
     }
 
     /// <summary>
@@ -238,7 +245,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string message)
     {
-        return await SendMessageToSubscribesAsync(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message);
+        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
     }
     #endregion
 
@@ -395,7 +402,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> Broadcast(string message, float valid_till, bool transient)
     { 
-        return await Broadcast(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
+        return await Broadcast(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
     }
     /// <summary>
     /// 广播消息修改仅对当前还未收到该广播消息的设备生效，如果目标设备已经收到了该广播消息则无法修改。请慎重发送广播消息。
@@ -458,7 +465,7 @@ public class RESTAPIService
     /// <returns>成功则返回状态码 200 OK</returns>
     public async Task<string> UpdateBroadcast(int timestamp, string message,string messageId)
     {
-        return await UpdateBroadcast(SysIMClientService.Inst.SysIMClient.Id, timestamp, message, SysConvID, messageId);
+        return await UpdateBroadcast(SysIMClientService.Inst.SysIMClient.Id, timestamp, message, SysConvId, messageId);
     }
 
     /// <summary>
