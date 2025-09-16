@@ -233,6 +233,38 @@ public class RESTAPIService
     {
         return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
     }
+
+    async Task<Dictionary<string, object>> QuerySendFormClientId(string conversationId, string clientId)
+    {
+        if (string.IsNullOrEmpty(conversationId))
+            throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
+
+        if (string.IsNullOrEmpty(clientId))
+            throw new ArgumentNullException(nameof(conversationId), "客户端ID不能为空");
+
+
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+        };
+
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
+            $"1.2/rtm/service-conversations/{conversationId}/subscribers/{clientId}/messages",   // 路径
+            headers,                   // 请求头
+            null,                      // 查询参数
+            false                      // 使用API版本
+        );
+
+        return response;
+    }
+    public async Task<Dictionary<string, object>> QuerySendFormClientId(string clientId)
+    {
+        return await QuerySendFormClientId(SysConvId, clientId);
+    }
+
     #endregion
 
     #region//广播

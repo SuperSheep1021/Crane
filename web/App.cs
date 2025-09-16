@@ -64,6 +64,12 @@ namespace web {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
         }
 
+        [LCEngineFunction("QuerySendFormClientId")]
+        public static async Task<IDictionary<string, object>> QuerySendFormClientId([LCEngineFunctionParam("targetClientId")] string targetClientId)
+        {
+            return await RESTAPIService.Inst.QuerySendFormClientId(targetClientId);
+        }
+
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLoginAsync(LCUser loginUser)
