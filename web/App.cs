@@ -88,6 +88,8 @@ namespace web {
                 {"service send message",  1},
                 {"service send message2", 2 },
             });
+
+            await RESTAPIService.Inst.SubscribeSysConvAsync(parameters["peerId"].ToString());
         }
         // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
