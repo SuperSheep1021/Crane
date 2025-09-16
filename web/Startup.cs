@@ -47,7 +47,7 @@ namespace web {
                 }
             };
             LCEngine.Initialize(services);
-            SystemConverstaionService.Inst.Initialtion();
+            RESTAPIService.Inst.Initialtion();
             services.AddControllersWithViews();
         }
 

@@ -35,25 +35,25 @@ namespace web {
         [LCEngineFunction("CreateServiceConversationAsync")]
         public static async Task<IDictionary<string,object>> CreateServiceConversationAsync([LCEngineFunctionParam("name")] string sysConversationName)
         {
-            return await SystemConverstaionService.Inst.CreateSysConvAsync(sysConversationName);
+            return await RESTAPIService.Inst.CreateSysConvAsync(sysConversationName);
         }
 
         [LCEngineFunction("QuerySysConvAsync")]
         public static async Task<IDictionary<string, object>> QuerySysConvAsync([LCEngineFunctionParam("total")] int total, [LCEngineFunctionParam("convName")] string convName)
         {
-            return await SystemConverstaionService.Inst.QuerySysConvAsync(total, convName);
+            return await RESTAPIService.Inst.QuerySysConvAsync(total, convName);
         }
 
         [LCEngineFunction("SubscribeServiceConversationAsync")]
         public static async Task<IDictionary<string, object>> SubscribeSysConvAsync([LCEngineFunctionParam("clientID")] string clientID)
         {
-            return await SystemConverstaionService.Inst.SubscribeSysConvAsync(clientID);
+            return await RESTAPIService.Inst.SubscribeSysConvAsync(clientID);
         }
 
         [LCEngineFunction("SendSubscribeServiceConversationAsync")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message)
         {
-            return await SystemConverstaionService.Inst.SendMessageToSubscribesAsync(message);
+            return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
         }
 
 
@@ -73,13 +73,12 @@ namespace web {
         }
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLogin(LCUser user)
+        public static void OnLogin(LCUser user)
         {
             LCLogger.Debug(string.Format("1 {0} login", user["username"]));
             LCLogger.Debug($"2 login client id is {user["objectId"]} ");
             LCLogger.Debug($"3 login client name is {user.Username} ");
             LCLogger.Debug($"4 login client user.ObjectId is {user.ObjectId} ");
-            //await SysClientService.Inst.AddMembers(user.ObjectId);
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
