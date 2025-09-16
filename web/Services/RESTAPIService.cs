@@ -35,7 +35,6 @@ public class RESTAPIService
     const string SysConvID = "68c7cab316ec9e2c7d13b42a";
 
     public LCUser SysUser { get;private set; }
-    public LCIMClient SysClient { get; private set; }
 
     private async Task Init()
     {
@@ -44,9 +43,7 @@ public class RESTAPIService
         SysUser = await LCUser.Login(SysUserName, SysUserPassword);
         LCLogger.Debug($"SysUserName Logined:{SysUserName}");
 
-        SysClient = new LCIMClient(SysUser, tag: "sys");
-        await SysClient.Open();
-        LCLogger.Debug($"m_SysClient.Open():{SysClient.Tag}");
+        await SysIMClientService.Inst.Initialtion(SysUser);
 
         LCLogger.Debug($"{this} Initialtion end!!");
     }
@@ -231,7 +228,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<IDictionary<string, object>> SendMessageToSubscribesAsync(string message)
     {
-        return await SendMessageToSubscribesAsync(SysConvID, SysClient.Id, message);
+        return await SendMessageToSubscribesAsync(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message);
     }
     #endregion
 
@@ -388,7 +385,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<IDictionary<string, object>> Broadcast(string message, float valid_till, bool transient)
     { 
-        return await Broadcast(SysConvID, SysClient.Id, message, valid_till,transient);
+        return await Broadcast(SysConvID, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
     }
     /// <summary>
     /// 广播消息修改仅对当前还未收到该广播消息的设备生效，如果目标设备已经收到了该广播消息则无法修改。请慎重发送广播消息。
@@ -451,7 +448,7 @@ public class RESTAPIService
     /// <returns>成功则返回状态码 200 OK</returns>
     public async Task<string> UpdateBroadcast(int timestamp, string message,string messageId)
     {
-        return await UpdateBroadcast(SysClient.Id, timestamp, message, SysConvID, messageId);
+        return await UpdateBroadcast(SysIMClientService.Inst.SysIMClient.Id, timestamp, message, SysConvID, messageId);
     }
 
     /// <summary>

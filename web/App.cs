@@ -28,10 +28,15 @@ namespace web {
         //}
 
 
-        [LCEngineFunction("SendMessageToTargetUserID")]
-        public static void SendMessageToTargetUserID([LCEngineFunctionParam("targetClientID")] string targetClientID)
+        [LCEngineFunction("SendIMMessageToTargetUserID")]
+        public static async Task SendIMMessageToTargetUserID([LCEngineFunctionParam("targetClientID")] string targetClientID,
+           [LCEngineFunctionParam("text")] string text)
         {
-            //await SystemConverstaionService.Inst.SendTextMessage($"服务端发送的消息:{System.DateTime.Now}");
+            await SysIMClientService.Inst.SendMessageToClientId(targetClientID, text,new Dictionary<string, object>()
+            {
+                {"service send message",  1},
+                {"service send message2", 2 },
+            });
         }
 
         [LCEngineFunction("CreateServiceConversationAsync")]
