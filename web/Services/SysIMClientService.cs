@@ -47,7 +47,6 @@ public class SysIMClientService
         }
     }
     public LCIMClient SysIMClient { get; private set; }
-
     public async Task Initialtion(LCUser sysUser)
     {
         LCLogger.Debug($"{this} Initialtion start!!");
