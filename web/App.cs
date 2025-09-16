@@ -68,12 +68,12 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLoginAsync(LCUser loginUser)
         {
-            await Task.Delay(2000);
-            await SysIMClientService.Inst.SendMessageToClientId(loginUser.ObjectId, "login",false, new Dictionary<string, object>()
-            {
-                {"service send message",  1},
-                {"service send message2", 2 },
-            });
+            //await Task.Delay(2000);
+            //await SysIMClientService.Inst.SendMessageToClientId(loginUser.ObjectId, "login",false, new Dictionary<string, object>()
+            //{
+            //    {"service send message",  1},
+            //    {"service send message2", 2 },
+            //});
 
             LCLogger.Debug(string.Format("1 {0} login", loginUser["username"]));
             LCLogger.Debug($"2 login client id is {loginUser["objectId"]} ");
