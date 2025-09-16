@@ -68,6 +68,7 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static async Task OnLoginAsync(LCUser loginUser)
         {
+            await Task.Delay(2000);
             await SysIMClientService.Inst.SendMessageToClientId(loginUser.ObjectId, "login",false, new Dictionary<string, object>()
             {
                 {"service send message",  1},
