@@ -47,7 +47,7 @@ public class SysIMClientService
         }
     }
     public LCIMClient SysIMClient { get; private set; }
-    Dictionary<string, LCIMConversation> m_RealtimeConvs = new Dictionary<string, LCIMConversation>();
+
     public async Task Initialtion(LCUser sysUser)
     {
         LCLogger.Debug($"{this} Initialtion start!!");

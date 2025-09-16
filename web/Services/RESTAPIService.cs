@@ -29,22 +29,23 @@ public class RESTAPIService
         }
     }
 
-    const string SysUserName = "systemAccount";
-    const string SysUserPassword = "123123";
-
+    public string SysUserName { get; private set; }
+    public string SysUserPassword { get; private set; }
     public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
     private async Task Init()
     {
+        SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
+        SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+
         LCLogger.Debug($"{this} Initialtion start!!");
 
         SysUser = await LCUser.Login(SysUserName, SysUserPassword);
         LCLogger.Debug($"SysUserName Logined:{SysUserName}");
 
         await SysIMClientService.Inst.Initialtion(SysUser);
-
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
 
         LCLogger.Debug($"{this} Initialtion end!!");
     }
