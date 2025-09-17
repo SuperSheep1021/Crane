@@ -62,6 +62,7 @@ public class SysIMClientService
         await SysIMClient.Open();
 
         SysIMConversation = await SysIMClient.GetConversation(SysConvId);
+        await SysIMConversation.Join();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
         LCLogger.Debug($"{this} Initialtion end!!");
