@@ -69,7 +69,8 @@ public class RESTAPIService
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
-            { "name",sysConversationName}
+            { "name",sysConversationName},
+            { "c",SysUser.ObjectId}
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
