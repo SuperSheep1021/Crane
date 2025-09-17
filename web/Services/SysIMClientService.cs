@@ -106,8 +106,13 @@ public class SysIMClientService
     public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text,Dictionary<string,object> content)
     {
         CustomIMMessageBase message = new CustomIMMessageBase(text);
-        message.SetupContent("from_client", SysIMClient.Id);
-        message.SetupContent("message", "cccccccccccccccccccccccccccccc");
+        message.ConversationId = SysIMConversation.Id;
+        message.FromClientId = SysIMClient.Id;
+        message["from_client"] = SysIMClient.Id;
+        message["message"] = "ccccccccccccccccc";
+
+        //message.SetupContent("from_client", SysIMClient.Id);
+        //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
         foreach (KeyValuePair<string, object> kv in content)
         {
             message.SetupContent(kv.Key, kv.Value);
