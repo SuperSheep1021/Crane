@@ -62,9 +62,8 @@ namespace web {
         public static async Task<CustomIMMessageBase> SubscribeSysConvAsync222()
         {
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync("tttt",new Dictionary<string, object>() {
-                { "c",1},
-                { "c2",2},
-                { "c3",3}
+                { "dd",1},
+                { "dd2","xixixixixixixixixixixixixixixixi"},
             });
         }
 
