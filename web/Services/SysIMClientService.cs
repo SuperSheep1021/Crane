@@ -25,7 +25,7 @@ public class CustomIMMessageBase : LCIMTextMessage
 
     public void SetupContent(string key, object value)
     {
-        this[key] = data;
+        data.Add(key, value);
     }
     public object GetContent(string key)
     {
