@@ -9,9 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 
 public class CustomIMMessageBase : LCIMTextMessage
@@ -20,9 +22,18 @@ public class CustomIMMessageBase : LCIMTextMessage
     public CustomIMMessageBase(string text) : base(text)
     {
     }
+
     public void SetupContent(string key, object value)
     {
-        this[key] = value;
+        this[key] = data;
+    }
+    public object GetContent(string key)
+    {
+        return data[key];
+    }
+
+    public void DebugContent()
+    {
     }
 }
 public class SysIMClientService 
@@ -40,6 +51,7 @@ public class SysIMClientService
         }
     }
     public LCIMClient SysIMClient { get; private set; }
+    public LCIMConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
     {
@@ -49,7 +61,7 @@ public class SysIMClientService
         SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
 
-        await SysIMClient.GetConversation(SysConvId);
+        SysIMConversation = await SysIMClient.GetConversation(SysConvId);
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
         LCLogger.Debug($"{this} Initialtion end!!");
@@ -87,6 +99,22 @@ public class SysIMClientService
         //需要回读
         sendOptions.Receipt = true;
         return (CustomIMMessageBase)await con.Send(message,sendOptions);
+    }
+
+
+    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text,Dictionary<string,object> content)
+    {
+        CustomIMMessageBase message = new CustomIMMessageBase(text);
+        foreach (KeyValuePair<string, object> kv in content)
+        {
+            message.SetupContent(kv.Key, kv.Value);
+        }
+        LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
+        //在线才能收到消息
+        sendOptions.Transient = true;
+        //需要回读
+        sendOptions.Receipt = true;
+        return (CustomIMMessageBase)await SysIMConversation.Send(message, sendOptions);
     }
 
 }

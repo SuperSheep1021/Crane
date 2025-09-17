@@ -58,6 +58,16 @@ namespace web {
             return await RESTAPIService.Inst.SubscribeSysConvAsync(clientID);
         }
 
+        [LCEngineFunction("SubscribeSysConvAsync222")]
+        public static async Task<CustomIMMessageBase> SubscribeSysConvAsync222()
+        {
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync("tttt",new Dictionary<string, object>() {
+                { "c",1},
+                { "c2",2},
+                { "c3",3}
+            });
+        }
+
         [LCEngineFunction("SendSubscribeServiceConversationAsync")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message)
         {

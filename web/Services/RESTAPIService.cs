@@ -234,6 +234,7 @@ public class RESTAPIService
         return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
     }
 
+
     /// <summary>
     /// 查询服务号给某用户发的消息(查询结果包含服务号发送的订阅广播消息也包含单独发送的消息。)
     /// </summary>
