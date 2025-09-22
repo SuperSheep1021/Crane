@@ -29,31 +29,31 @@ namespace web {
         //}
 
 
-        [LCEngineFunction("通过REST API 创建系统会话(string name)")]
+        [LCEngineFunction("RA创建系统会话(string name)")]
         public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)
         {
             return await RESTAPIService.Inst.CreateSysConvAsync(sysConversationName);
         }
 
-        [LCEngineFunction("通过REST API 查询系统会话(int total,string convName)")]
+        [LCEngineFunction("RA查询系统会话(int total,string convName)")]
         public static async Task<IDictionary<string, object>> QuerySysConvAsync([LCEngineFunctionParam("total")] int total, [LCEngineFunctionParam("convName")] string convName)
         {
             return await RESTAPIService.Inst.QuerySysConvAsync(total, convName);
         }
 
-        [LCEngineFunction("通过REST API 订阅系统对话(string clientId)")]
+        [LCEngineFunction("RA订阅系统对话(string clientId)")]
         public static async Task<IDictionary<string, object>> SubscribeSysConv([LCEngineFunctionParam("clientId")] string clientId)
         {
             return await RESTAPIService.Inst.SubscribeSysConvAsync(clientId);
         }
 
-        [LCEngineFunction("通过REST API 发送消息给所有订阅者(string message)")]
+        [LCEngineFunction("RA发送消息给所有订阅者(string message)")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("message")] string message)
         {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
         }
 
-        [LCEngineFunction("通过REST API 查询服务号给客户端发送的消息(string targetClientId)")]
+        [LCEngineFunction("RA查询服务号给客户端发送的消息(string targetClientId)")]
         public static async Task<IDictionary<string, object>> QuerySendFormClientId([LCEngineFunctionParam("targetClientId")] string targetClientId)
         {
             return await RESTAPIService.Inst.QuerySendFormClientId(targetClientId);
