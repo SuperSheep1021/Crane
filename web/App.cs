@@ -67,9 +67,10 @@ namespace web {
 
 
         [LCEngineFunction("发送消息给指定订阅者(string message)")]
-        public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string[] clientIds)
+        public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
+            [LCEngineFunctionParam("clientIds")] string[] clientIds)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync("services imclient ", clientIds, new Dictionary<string, object>() {
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
             });
         }
@@ -86,7 +87,7 @@ namespace web {
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async Task OnClientOnline(Dictionary<string, object> parameters)
+        public static void OnClientOnline(Dictionary<string, object> parameters)
         {
             LCLogger.Debug($"客户端上线");
             LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
