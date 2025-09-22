@@ -66,9 +66,9 @@ namespace web {
         }
 
 
-        [LCEngineFunction("发送消息给指定订阅者(string message)")]
+        [LCEngineFunction("发送消息给指定订阅者")]
         public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] string[] clientIds)
+            [LCEngineFunctionParam("clientIds")] List<string> clientIds)
         {
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
@@ -93,7 +93,7 @@ namespace web {
             LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
         }
 
-        // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
+
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static void OnClientOffline(Dictionary<string, object> parameters)
         {

@@ -85,7 +85,7 @@ public class SysIMClientService
             LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
         };
     }
-    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
+    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
         CustomIMMessageBase message = new CustomIMMessageBase(text);
         message.ConversationId = SysIMConversation.Id;
