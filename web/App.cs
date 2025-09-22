@@ -68,7 +68,7 @@ namespace web {
 
         [LCEngineFunction("发送消息给指定订阅者")]
         public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] List<string> clientIds)
+            [LCEngineFunctionParam("clientIds")] string clientIds)
         {
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds, new Dictionary<string, object>() {
                 { "通过imclient send message",1}

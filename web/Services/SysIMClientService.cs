@@ -85,13 +85,13 @@ public class SysIMClientService
             LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
         };
     }
-    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
+    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string toClientIds, Dictionary<string,object> content)
     {
         CustomIMMessageBase message = new CustomIMMessageBase(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         message["from_client"] = SysIMClient.Id;
-        message["to_clients"] =await LCJsonUtils.SerializeAsync(toClientIds);
+        message["to_clients"] = toClientIds;
         message["message"] = text;
         message["no_sync"] = false;
 
