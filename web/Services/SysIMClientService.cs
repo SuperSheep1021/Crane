@@ -58,7 +58,7 @@ public class SysIMClientService
     public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
     {
-        SysIMClient = new LCIMClient(sysUser, tag: "sys");
+        SysIMClient = new LCIMClient(sysUser, tag: "sys" );
         await SysIMClient.Open();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
         
@@ -73,15 +73,15 @@ public class SysIMClientService
 
 
 
-        SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
-        {
-            LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
+        //SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
+        //{
+        //    LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
 
-            await SysIMClientService.Inst.SendMessageToSubscribesAsync("login", new string[1] { operatorId }, new Dictionary<string, object>()
-            {
-                {"service send login success callback!!!!!",  1}
-            });
-        };
+        //    await SendMessageToSubscribesAsync("login", new string[1] { operatorId }, new Dictionary<string, object>()
+        //    {
+        //        {"service send login success callback!!!!!",  1}
+        //    });
+        //};
     }
 
     public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
