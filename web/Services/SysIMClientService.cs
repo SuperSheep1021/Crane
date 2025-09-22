@@ -51,14 +51,17 @@ public class SysIMClientService
             return inst;
         }
     }
+
+
     public LCIMClient SysIMClient { get; private set; }
 
     const string SysConvName = "sysconv";
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
-    public async Task Initialtion(LCUser sysUser)
+    public async Task Initialtion()
     {
-        SysIMClient = new LCIMClient(sysUser, tag: "sys");
+        LCUser user = await LCUser.GetCurrent();
+        SysIMClient = new LCIMClient(user, tag: "sys");
         await SysIMClient.Open();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
@@ -81,7 +84,6 @@ public class SysIMClientService
         //    });
         //};
     }
-
     public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
     {
         CustomIMMessageBase message = new CustomIMMessageBase(text);

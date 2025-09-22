@@ -28,6 +28,12 @@ namespace web {
         //    return "TestCloudFunc:" + name;
         //}
 
+        [LCEngineFunction("初始化服务器")]
+        public static async Task TestCloudFuncAsync()
+        {
+            await RESTAPIService.Inst.Initialtion();
+            await SysIMClientService.Inst.Initialtion();
+        }
 
         [LCEngineFunction("RA创建系统会话(string name)")]
         public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)

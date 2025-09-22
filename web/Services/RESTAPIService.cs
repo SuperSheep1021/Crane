@@ -35,7 +35,7 @@ public class RESTAPIService
     public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
-    private async Task Init()
+    public async Task Initialtion()
     {
         LCLogger.Debug($"{this} Initialtion start!!");
 
@@ -46,17 +46,8 @@ public class RESTAPIService
         SysUser = await LCUser.Login(SysUserName, SysUserPassword);
         LCLogger.Debug($"SysUserName Logined:{SysUserName}");
 
-        await SysIMClientService.Inst.Initialtion(SysUser);
         LCLogger.Debug($"{this} Initialtion end!!");
     }
-    public void Initialtion()
-    {
-        Task.Run(async () =>
-        {
-            await Init();
-        });
-    }
-
 
     #region//·þÎñºÅ
     /// <summary>
