@@ -62,10 +62,10 @@ public class SysIMClientService
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         message["from_client"] = SysIMClient.Id;
-        message["to_clients"] = JsonConvert.SerializeObject(toClientIds);
+        message.MentionIdList.AddRange(toClientIds);
         message["message"] = text;
         message["no_sync"] = false;
-
+        
         //message.SetupContent("from_client", SysIMClient.Id);
         //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
         foreach (KeyValuePair<string, object> kv in content)
