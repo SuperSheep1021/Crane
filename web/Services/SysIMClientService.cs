@@ -53,7 +53,7 @@ public class SysIMClientService
     }
     public LCIMClient SysIMClient { get; private set; }
 
-    const string SysConvName = "sysconvname";
+    const string SysConvName = "sysconv";
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
@@ -67,7 +67,7 @@ public class SysIMClientService
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
         LCIMConversationQuery query = SysIMClient.GetQuery();
         query.WhereEqualTo("name", SysConvName);
-        query.WhereEqualTo("objectId", SysConvId);
+        query.WhereEqualTo("sys", true);
         SysIMConversation = (LCIMServiceConversation) await query.First();
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
