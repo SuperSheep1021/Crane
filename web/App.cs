@@ -6,6 +6,7 @@ using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
@@ -69,9 +70,14 @@ namespace web {
 
         [LCEngineFunction("发送消息给指定订阅者")]
         public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] List<string>  clientIds)
+            [LCEngineFunctionParam("clientIds")] List<object>  clientIds)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds, new Dictionary<string, object>() {
+            List<string> stringList = clientIds.Select(obj =>
+            {
+                // 其他类型直接调用ToString()
+                return obj.ToString();
+            }).ToList();
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, stringList, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
             });
         }
