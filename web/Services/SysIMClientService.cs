@@ -74,15 +74,15 @@ public class SysIMClientService
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
 
-        //SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
-        //{
-        //    LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
+        SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
+        {
+            LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
 
-        //    await SendMessageToSubscribesAsync("login", new string[1] { operatorId }, new Dictionary<string, object>()
-        //    {
-        //        {"service send login success callback!!!!!",  1}
-        //    });
-        //};
+            await SendMessageToSubscribesAsync("login", new string[1] { operatorId }, new Dictionary<string, object>()
+            {
+                {"service send login success callback!!!!!",  1}
+            });
+        };
     }
     public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
     {
