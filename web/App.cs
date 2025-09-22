@@ -29,63 +29,50 @@ namespace web {
         //}
 
 
-        [LCEngineFunction("SendIMMessageToTargetUserID")]
-        public static async Task SendIMMessageToTargetUserID([LCEngineFunctionParam("targetClientId")] string targetClientId,
-           [LCEngineFunctionParam("text")] string text)
-        {
-            await SysIMClientService.Inst.SendMessageToClientId(targetClientId, text,true,new Dictionary<string, object>()
-            {
-                {"service send message",  1},
-                {"service send message2", 2 },
-            });
-        }
-
-        [LCEngineFunction("CreateServiceConversationAsync")]
-        public static async Task<IDictionary<string,object>> CreateServiceConversationAsync([LCEngineFunctionParam("name")] string sysConversationName)
+        [LCEngineFunction("通过REST API 创建系统会话(string name)")]
+        public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)
         {
             return await RESTAPIService.Inst.CreateSysConvAsync(sysConversationName);
         }
 
-        [LCEngineFunction("QuerySysConvAsync")]
+        [LCEngineFunction("通过REST API 查询系统会话(int total,string convName)")]
         public static async Task<IDictionary<string, object>> QuerySysConvAsync([LCEngineFunctionParam("total")] int total, [LCEngineFunctionParam("convName")] string convName)
         {
             return await RESTAPIService.Inst.QuerySysConvAsync(total, convName);
         }
 
-        [LCEngineFunction("SubscribeServiceConversationAsync")]
-        public static async Task<IDictionary<string, object>> SubscribeSysConvAsync([LCEngineFunctionParam("clientID")] string clientID)
+        [LCEngineFunction("通过REST API 订阅系统对话(string clientId)")]
+        public static async Task<IDictionary<string, object>> SubscribeSysConv([LCEngineFunctionParam("clientId")] string clientId)
         {
-            return await RESTAPIService.Inst.SubscribeSysConvAsync(clientID);
+            return await RESTAPIService.Inst.SubscribeSysConvAsync(clientId);
         }
 
-        [LCEngineFunction("SubscribeSysConvAsync222")]
-        public static async Task<CustomIMMessageBase> SubscribeSysConvAsync222()
-        {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync("tttt",new Dictionary<string, object>() {
-                { "dd",1},
-                { "dd2","xixixixixixixixixixixixixixixixi"},
-            });
-        }
-
-        [LCEngineFunction("SendSubscribeServiceConversationAsync")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message)
+        [LCEngineFunction("通过REST API 发送消息给所有订阅者(string message)")]
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("message")] string message)
         {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
         }
 
-        [LCEngineFunction("QuerySendFormClientId")]
+        [LCEngineFunction("通过REST API 查询服务号给客户端发送的消息(string targetClientId)")]
         public static async Task<IDictionary<string, object>> QuerySendFormClientId([LCEngineFunctionParam("targetClientId")] string targetClientId)
         {
             return await RESTAPIService.Inst.QuerySendFormClientId(targetClientId);
         }
 
 
+        [LCEngineFunction("发送消息给指定订阅者(string message)")]
+        public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string[] clientIds)
+        {
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync("services imclient ", clientIds, new Dictionary<string, object>() {
+                { "通过imclient send message",1}
+            });
+        }
+
+
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLoginAsync(LCUser loginUser)
+        public static void OnLogin(LCUser loginUser)
         {
             //await Task.Delay(2000);
-            
-
             LCLogger.Debug(string.Format("1 {0} login", loginUser["username"]));
             LCLogger.Debug($"2 login client id is {loginUser["objectId"]} ");
             LCLogger.Debug($"3 login client name is {loginUser.Username} ");
@@ -93,20 +80,17 @@ namespace web {
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async Task OnClientOnlineAsync(Dictionary<string, object> parameters)
+        public static async Task OnClientOnline(Dictionary<string, object> parameters)
         {
             LCLogger.Debug($"客户端上线");
             LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
 
-            await SysIMClientService.Inst.SendMessageToClientId( parameters["peerId"].ToString(), "login", false, new Dictionary<string, object>()
+            await SysIMClientService.Inst.SendMessageToSubscribesAsync( "login",new string[1] {  parameters["peerId"].ToString() }, new Dictionary<string, object>()
             {
-                {"service send message",  1},
-                {"service send message2", 2 },
+                {"service send login success",  1}
             });
-
-            //await RESTAPIService.Inst.SubscribeSysConvAsync(parameters["peerId"].ToString());
-            //await RESTAPIService.Inst.SendMessageToSubscribesAsync("Subscribes Message");
         }
+
         // 注意，C# 代码示例中没有更新 LeanCache，仅仅输出了用户状态
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static void OnClientOffline(Dictionary<string, object> parameters)

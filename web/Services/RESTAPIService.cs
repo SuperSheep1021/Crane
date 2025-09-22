@@ -1,3 +1,4 @@
+using LC.Google.Protobuf;
 using LC.Newtonsoft.Json;
 using LeanCloud;
 using LeanCloud.Common;
@@ -135,18 +136,18 @@ public class RESTAPIService
     /// <param name="conversationId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    private async Task<Dictionary<string,object>> SubscribeSysConvAsync(string conversationId, string subscribeUserId)
+    private async Task<Dictionary<string,object>> SubscribeSysConvAsync(string conversationId, string client_id)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
 
-        if (string.IsNullOrEmpty(subscribeUserId))
-            throw new ArgumentNullException(nameof(subscribeUserId), "用户ID不能为空");
+        if (string.IsNullOrEmpty(client_id))
+            throw new ArgumentNullException(nameof(client_id), "用户ID不能为空");
 
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
-            { "client_id", $"{subscribeUserId}" }
+            { "client_id", $"{client_id}" }
         };
 
         // 可以添加额外的请求头（如果需要）
@@ -175,9 +176,9 @@ public class RESTAPIService
     /// </summary>
     /// <param name="subscribeUserId"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SubscribeSysConvAsync(string subscribeUserId)
+    public async Task<Dictionary<string, object>> SubscribeSysConvAsync(string client_id)
     {
-        return await SubscribeSysConvAsync(SysConvId, subscribeUserId);
+        return await SubscribeSysConvAsync(SysConvId, client_id);
     }
 
     /// <summary>
@@ -233,6 +234,67 @@ public class RESTAPIService
     public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string message)
     {
         return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
+    }
+
+    /// <summary>
+    /// 发送消息给指定客户端
+    /// </summary>
+    /// <param name="conversationId"></param>
+    /// <param name="fromClientId"></param>
+    /// <param name="toClientIds"></param>
+    /// <param name="transient"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,bool transient, string message)
+    {
+        if (string.IsNullOrEmpty(conversationId))
+            throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
+
+        if (string.IsNullOrEmpty(fromClientId))
+            throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
+
+        if (string.IsNullOrEmpty(message))
+            throw new ArgumentNullException(nameof(message), "消息不能为空");
+
+        // 可以添加额外的请求头（如果需要）
+        var headers = new Dictionary<string, object>
+        {
+            // 例如添加认证信息或其他必要头信息
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+        };
+
+        // 构建请求数据（添加用户到订阅者列表）
+        var requestData = new Dictionary<string, object>
+        {
+            { "from_client",fromClientId },
+            { "to_clients",toClientIds},
+            { "message",message },
+            { "no_sync",false}
+        };
+
+        
+        // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
+        var response = await LCCore.HttpClient.Post<Dictionary<string, object>>(
+            $"1.2/rtm/service-conversations/{conversationId}/messages",   // 路径
+            headers,                   // 请求头
+            requestData,               // 请求数据
+            null,                      // 查询参数
+            false                      // 使用API版本
+        );
+
+        return response;
+    }
+    /// <summary>
+    /// 发送消息给指定客户端
+    /// </summary>
+    /// <param name="toClientIds"></param>
+    /// <param name="transient"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string[] toClientIds, bool transient, string message)
+    {
+        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id,toClientIds,true,message);
     }
 
 

@@ -51,65 +51,35 @@ public class SysIMClientService
         }
     }
     public LCIMClient SysIMClient { get; private set; }
-    public LCIMConversation SysIMConversation { get; private set; }
+
+    const string SysConvName = "sysconvname";
+    public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
     {
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-
-        LCLogger.Debug($"{this} Initialtion start!!");
         SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
-
-        SysIMConversation = await SysIMClient.GetConversation(SysConvId);
-        await SysIMConversation.Join();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
-        LCLogger.Debug($"{this} Initialtion end!!");
+
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+        LCIMConversationQuery query = SysIMClient.GetQuery();
+        query.WhereEqualTo("name", SysConvName);
+        query.WhereEqualTo("objectId", SysConvId);
+        SysIMConversation = (LCIMServiceConversation) await query.First();
+
+        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
     }
 
-
-    /// <summary>
-    /// 创建会话
-    /// </summary>
-    /// <param name="targetClientId"></param>
-    /// <returns></returns>
-    private async Task<LCIMConversation> CreateOrGetConv(string targetClientId) 
-    {
-        //如果设置为唯一对话，云端会根据完整的成员列表先进行一次查询，如果已经有正好包含这些成员的对话存在，那么就返回已经存在的对话，否则才创建一个新的对话。
-        LCIMConversation con = await SysIMClient.CreateConversation(new List<string>()
-        {
-            SysIMClient.Id, targetClientId
-        }, $"{SysIMClient.Id} and {targetClientId} conv!", true, new Dictionary<string, object>() 
-        {
-            { "sys",false}
-        });
-        return con;
-    }
-    public async Task<CustomIMMessageBase> SendMessageToClientId(string targetClientId,string text,bool transient, Dictionary<string,object> content) 
-    {
-        LCIMConversation con =await CreateOrGetConv(targetClientId);
-        CustomIMMessageBase message = new CustomIMMessageBase(text);
-        foreach (KeyValuePair<string,object> kv in content) 
-        {
-            message.SetupContent(kv.Key,kv.Value);
-        }
-        LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
-        //在线才能收到消息
-        sendOptions.Transient = transient;
-        //需要回读
-        sendOptions.Receipt = true;
-        return (CustomIMMessageBase)await con.Send(message,sendOptions);
-    }
-
-
-    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text,Dictionary<string,object> content)
+    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
     {
         CustomIMMessageBase message = new CustomIMMessageBase(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         message["from_client"] = SysIMClient.Id;
-        message["message"] = "ccccccccccccccccc";
+        message["to_clients"] = toClientIds;
+        message["message"] = text;
+        message["no_sync"] = false;
 
         //message.SetupContent("from_client", SysIMClient.Id);
         //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
