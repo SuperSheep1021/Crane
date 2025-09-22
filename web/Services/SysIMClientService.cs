@@ -62,7 +62,7 @@ public class SysIMClientService
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         message["from_client"] = SysIMClient.Id;
-        message["to_clients"] = toClientIds;
+        message["to_clients"] = JsonConvert.SerializeObject(toClientIds);
         message["message"] = text;
         message["no_sync"] = false;
 
