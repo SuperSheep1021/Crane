@@ -37,17 +37,16 @@ public class RESTAPIService
 
     private async Task Init()
     {
+        LCLogger.Debug($"{this} Initialtion start!!");
+
         SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
         SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-
-        LCLogger.Debug($"{this} Initialtion start!!");
 
         SysUser = await LCUser.Login(SysUserName, SysUserPassword);
         LCLogger.Debug($"SysUserName Logined:{SysUserName}");
 
         await SysIMClientService.Inst.Initialtion(SysUser);
-
         LCLogger.Debug($"{this} Initialtion end!!");
     }
     public void Initialtion()

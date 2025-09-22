@@ -58,18 +58,18 @@ public class SysIMClientService
     public string SysConvId { get; private set; }
     public async Task Initialtion(LCUser sysUser)
     {
-        SysIMClient = new LCIMClient(sysUser, tag: "sys" );
+        SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
-        
 
 
-        //SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        //LCIMConversationQuery query = SysIMClient.GetQuery();
-        //query.WhereEqualTo("name", SysConvName);
-        //query.WhereEqualTo("sys", true);
-        //SysIMConversation = (LCIMServiceConversation) await query.First();
-        //LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+        LCIMConversationQuery query = SysIMClient.GetQuery();
+        query.WhereEqualTo("name", SysConvName);
+        query.WhereEqualTo("sys", true);
+        SysIMConversation = (LCIMServiceConversation)await query.First();
+        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
+
 
         //SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
         //{
