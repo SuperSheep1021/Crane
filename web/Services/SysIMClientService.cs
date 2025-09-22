@@ -61,6 +61,18 @@ public class SysIMClientService
         SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
+        
+
+
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+        LCIMConversationQuery query = SysIMClient.GetQuery();
+        query.WhereEqualTo("name", SysConvName);
+        query.WhereEqualTo("objectId", SysConvId);
+        SysIMConversation = (LCIMServiceConversation) await query.First();
+        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
+
+
+
         SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
         {
             LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
@@ -70,16 +82,6 @@ public class SysIMClientService
                 {"service send login success callback!!!!!",  1}
             });
         };
-
-        
-
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery query = SysIMClient.GetQuery();
-        query.WhereEqualTo("name", SysConvName);
-        query.WhereEqualTo("objectId", SysConvId);
-        SysIMConversation = (LCIMServiceConversation) await query.First();
-
-        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
     }
 
     public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
