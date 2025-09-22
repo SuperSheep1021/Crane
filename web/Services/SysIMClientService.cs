@@ -7,6 +7,7 @@ using LeanCloud.Storage.Internal.Codec;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection.Metadata;
@@ -60,7 +61,17 @@ public class SysIMClientService
         SysIMClient = new LCIMClient(sysUser, tag: "sys");
         await SysIMClient.Open();
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
+        SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
+        {
+            LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
 
+            await SysIMClientService.Inst.SendMessageToSubscribesAsync("login", new string[1] { operatorId }, new Dictionary<string, object>()
+            {
+                {"service send login success callback!!!!!",  1}
+            });
+        };
+
+        
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
         LCIMConversationQuery query = SysIMClient.GetQuery();
