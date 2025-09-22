@@ -64,14 +64,12 @@ public class SysIMClientService
         
 
 
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery query = SysIMClient.GetQuery();
-        query.WhereEqualTo("name", SysConvName);
-        query.WhereEqualTo("sys", true);
-        SysIMConversation = (LCIMServiceConversation) await query.First();
-        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
-
-
+        //SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+        //LCIMConversationQuery query = SysIMClient.GetQuery();
+        //query.WhereEqualTo("name", SysConvName);
+        //query.WhereEqualTo("sys", true);
+        //SysIMConversation = (LCIMServiceConversation) await query.First();
+        //LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
         //SysIMClient.OnMembersJoined = async (conversation, newMembers, operatorId) =>
         //{
