@@ -3,40 +3,11 @@ using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Realtime;
 using LeanCloud.Storage;
-using LeanCloud.Storage.Internal.Codec;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 
-public class CustomIMMessageBase : LCIMTextMessage
-{
-    public override int MessageType => 1001;
-    public CustomIMMessageBase(string text) : base(text)
-    {
-    }
-
-    public void SetupContent(string key, object value)
-    {
-        data.Add(key, value);
-    }
-    public object GetContent(string key)
-    {
-        return data[key];
-    }
-
-    public void DebugContent()
-    {
-    }
-}
 public class SysIMClientService 
 {
     static SysIMClientService inst;
@@ -85,9 +56,9 @@ public class SysIMClientService
             LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
         };
     }
-    public async Task<CustomIMMessageBase> SendMessageToSubscribesAsync(string text, string toClientIds, Dictionary<string,object> content)
+    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
-        CustomIMMessageBase message = new CustomIMMessageBase(text);
+        LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         message["from_client"] = SysIMClient.Id;
@@ -99,14 +70,14 @@ public class SysIMClientService
         //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
         foreach (KeyValuePair<string, object> kv in content)
         {
-            message.SetupContent(kv.Key, kv.Value);
+            message[kv.Key] = kv.Value;
         }
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
         sendOptions.Transient = true;
         //需要回读
         sendOptions.Receipt = true;
-        return (CustomIMMessageBase)await SysIMConversation.Send(message, sendOptions);
+        return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
     }
 
 }

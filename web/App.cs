@@ -2,6 +2,7 @@
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Engine;
+using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,8 @@ namespace web {
 
 
         [LCEngineFunction("发送消息给指定订阅者")]
-        public static async Task<CustomIMMessageBase> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] string clientIds)
+        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
+            [LCEngineFunctionParam("clientIds")] List<string>  clientIds)
         {
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
