@@ -44,9 +44,6 @@ public class SysIMClientService
         //SysIMConversation = (LCIMServiceConversation)await convQuery.First();
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
-        bool checkSub = await SysIMConversation.CheckSubscription();
-        LCLogger.Debug($"SysIMConversation.CheckSubscription {checkSub}");
-
 
         SysIMClient.OnMembersJoined = (conversation, newMembers, operatorId) =>
         {
