@@ -62,37 +62,19 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
-        if (result.IsSuccess)
-
+        foreach (KeyValuePair<string, object> kv in content)
         {
-            foreach (string memberId in SysIMConversation.MemberIds)
-            {
-                LCLogger.Debug($"系统会话{SysIMConversation.Id} memberId: {memberId}");
-            }
-
-            //message.ConversationId = SysIMConversation.Id;
-            //message.FromClientId = SysIMClient.Id;
-            //message["from_client"] = SysIMClient.Id;
-            //message["message"] = text;
-            //message["no_sync"] = false;
-
-            //message.SetupContent("from_client", SysIMClient.Id);
-            //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
-            foreach (KeyValuePair<string, object> kv in content)
-            {
-                message[kv.Key] = kv.Value;
-            }
-            LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
-            //在线才能收到消息
-            sendOptions.Transient = true;
-            //需要回读
-            sendOptions.Receipt = true;
-            return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
+            message[kv.Key] = kv.Value;
         }
-        else {
-            return null;
-        }
-        
+        LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
+        //在线才能收到消息
+        sendOptions.Transient = true;
+        //需要回读
+        sendOptions.Receipt = true;
+
+        sendOptions.PushData.Add("toPeers", "68b9286c49adb47c41678afb");
+        return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
+
     }
 
     public async Task<int> SubscribesTotal() 
