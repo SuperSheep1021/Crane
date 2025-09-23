@@ -2,6 +2,7 @@ using LC.Newtonsoft.Json;
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Realtime;
+using LeanCloud.Realtime.Internal.Protocol;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
@@ -93,7 +94,7 @@ public class SysIMClientService
         //    "application/json"
         //);
 
-        message.Text = jsonData;
+        message.Text = "ssssssssssssssssssssss122ssssssssssssssssssssssssssss";
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
         //foreach (KeyValuePair<string, object> kv in content)
