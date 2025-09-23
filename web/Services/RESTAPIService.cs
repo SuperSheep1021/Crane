@@ -270,7 +270,7 @@ public class RESTAPIService
     /// <param name="message"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, List<string> toClientIds,bool transient, string message)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,bool transient, string message)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -324,7 +324,7 @@ public class RESTAPIService
     /// <param name="transient"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(List<string> toClientIds, string message)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string[] toClientIds, string message)
     {
         return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id,toClientIds,true,message);
     }

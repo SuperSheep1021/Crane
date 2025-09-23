@@ -62,7 +62,7 @@ public class SysIMClientService
             LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
         };
     }
-    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
+    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
     {
         LCLogger.Debug($"conv id:{SysConvId}");
         //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;

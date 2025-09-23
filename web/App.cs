@@ -61,20 +61,10 @@ namespace web {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync();
         }
         [LCEngineFunction("RA发送消息给指定订阅者")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("clientIds")] List<object> clientIds,
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes(/*[LCEngineFunctionParam("clientIds")] List<object> clientIds,*/
             [LCEngineFunctionParam("message")] string message)
         {
-            List<string> stringList = clientIds.Select(obj =>
-            {
-                // 其他类型直接调用ToString()
-                return obj.ToString();
-            }).ToList();
-
-            foreach (string clientId in stringList)
-            {
-                LCLogger.Debug($"target client id: {clientId}");
-            }
-            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(stringList, message);
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { "68b9286c49adb47c41678afb" }, message);
         }
 
         [LCEngineFunction("RA查询服务号给客户端发送的消息(string targetClientId)")]
@@ -85,22 +75,10 @@ namespace web {
 
 
         [LCEngineFunction("发送消息给指定订阅者")]
-        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] List<object>  clientIds)
+        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message
+            /*,[LCEngineFunctionParam("clientIds")] List<object>  clientIds*/)
         {
-            List<string> stringList = clientIds.Select(obj =>
-            {
-                // 其他类型直接调用ToString()
-                return obj.ToString();
-            }).ToList();
-
-
-
-            foreach (string clientId in stringList) {
-                LCLogger.Debug($"target client id: {clientId}");
-            }
-
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, stringList, new Dictionary<string, object>() {
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb" }, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
             });
         }
@@ -188,7 +166,7 @@ namespace web {
             return parameters;
         }
 
-
+        #region//conversation
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStart)]
         public static object OnConversationStart(Dictionary<string, object> parameters)
         {
@@ -262,6 +240,9 @@ namespace web {
             }
             return default;
         }
+        #endregion
+
+
 
     }
 }
