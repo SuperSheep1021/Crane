@@ -77,6 +77,13 @@ namespace web {
                 // 其他类型直接调用ToString()
                 return obj.ToString();
             }).ToList();
+
+
+
+            foreach (string clientId in stringList) {
+                LCLogger.Debug($"target client id: {clientId}");
+            }
+
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, stringList, new Dictionary<string, object>() {
                 { "通过imclient send message",1}
             });

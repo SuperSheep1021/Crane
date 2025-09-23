@@ -68,12 +68,15 @@ public class SysIMClientService
         {
             message[kv.Key] = kv.Value;
         }
+
+
+
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
         sendOptions.Transient = true;
         //需要回读
         sendOptions.Receipt = true;
-        return await serConv.Send(message, sendOptions) as LCIMTextMessage;
+        return await serConv.Send(message) as LCIMTextMessage;
 
     }
 
