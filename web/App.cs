@@ -169,6 +169,7 @@ namespace web {
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
             LCLogger.Debug("OnMessageReceived");
+            parameters.Add("toPeers", new string[] { "68b9286c49adb47c41678afb" });
             return new Dictionary<string, object> { { "content", parameters["content"] } };
         }
 
@@ -176,13 +177,13 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
         public static Dictionary<string, object> OnMessageSent(Dictionary<string, object> parameters)
         {
-            LCLogger.Debug(JsonConvert.SerializeObject(parameters));
-            parameters["onlinePeers"] = new string[] { "68b9286c49adb47c41678afb" };
-            //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
-            //parameters.Remove("onlinePeers");
-            //parameters.Remove("offlinePeers");
-            LCLogger.Debug("=================setup=================");
-            LCLogger.Debug(JsonConvert.SerializeObject(parameters));
+            //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
+            //parameters["onlinePeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            ////parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            ////parameters.Remove("onlinePeers");
+            ////parameters.Remove("offlinePeers");
+            //LCLogger.Debug("=================setup=================");
+            //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
 
             return parameters;
         }
