@@ -38,10 +38,11 @@ public class SysIMClientService
 
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery query = SysIMClient.GetQuery();
-        query.WhereEqualTo("name", SysConvName);
-        query.WhereEqualTo("sys", true);
-        SysIMConversation = (LCIMServiceConversation)await query.First();
+        LCIMConversationQuery convQuery = SysIMClient.GetQuery();
+        convQuery.WhereEqualTo("name", SysConvName);
+        convQuery.WhereEqualTo("sys", true);
+        SysIMConversation = (LCIMServiceConversation)await convQuery.First();
+        await SysIMConversation.Join();
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
 
@@ -61,8 +62,6 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         //message.ConversationId = SysIMConversation.Id;
         //message.FromClientId = SysIMClient.Id;
-        message.MentionIdList = new List<string>();
-        message.MentionIdList.AddRange(toClientIds);
         //message["from_client"] = SysIMClient.Id;
         //message["message"] = text;
         //message["no_sync"] = false;
