@@ -74,7 +74,7 @@ public class SysIMClientService
         message.FromClientId = SysIMClient.Id;
         await SysIMConversation.AddMembers(toClientIds);
 
-        message["toPeers"] = "68b9286c49adb47c41678afb";
+        message["ids"] = "68b9286c49adb47c41678afb";
         message.Text = "ssssssssssssssssssssss122ssssssssssssssssssssssssssss";
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
