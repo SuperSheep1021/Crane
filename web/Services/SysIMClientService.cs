@@ -63,8 +63,8 @@ public class SysIMClientService
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
         LCLogger.Debug($"conv id:{SysConvId}");
-        LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
-        await serConv.AddMembers(toClientIds);
+        //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
+        //await serConv.AddMembers(toClientIds);
         LCIMTextMessage message = new LCIMTextMessage(text);
 
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
@@ -81,7 +81,7 @@ public class SysIMClientService
         sendOptions.Transient = true;
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
-        return await serConv.Send(message, sendOptions) as LCIMTextMessage;
+        return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }
 
