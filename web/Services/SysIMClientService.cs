@@ -68,15 +68,19 @@ public class SysIMClientService
         message.FromClientId = SysIMClient.Id;
 
         // 1. 构造要发送的数据对象
-        var mmmm = new MessageData
+        //var mmmm = new MessageData
+        //{
+        //    LcText = "ttttttttttt",
+        //    LcAttrs = new LcAttributes
+        //    {
+        //        A = "_lcattrs aaaaaaaaaaaaaaaaa"
+        //    }
+        //};
+        var mmmm = new Dictionary<string,object>
         {
-            LcText = "ttttttttttt",
-            LcAttrs = new LcAttributes
-            {
-                A = "_lcattrs aaaaaaaaaaaaaaaaa"
-            }
+            { "LcText" ,"ttttttttttt"},
+            { "LcType",-1},
         };
-
         // 2. 将对象序列化为JSON字符串
         string jsonData = JsonConvert.SerializeObject(mmmm, Formatting.Indented);
         Console.WriteLine("要发送的JSON数据:");

@@ -209,8 +209,6 @@ public class RESTAPIService
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
 
-        
-
 
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
@@ -249,7 +247,6 @@ public class RESTAPIService
         {
             { "gtgtgt",1111},
             { "gtgtgt32222",2222}
-
         });
     }
 
