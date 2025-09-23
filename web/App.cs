@@ -187,5 +187,81 @@ namespace web {
 
             return parameters;
         }
+
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStart)]
+        public static object OnConversationStart(Dictionary<string, object> parameters)
+        {
+            return parameters;
+        }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
+        public static object OnConversationStarted(Dictionary<string, object> parameters)
+        {
+            string convId = parameters["convId"] as string;
+            Console.WriteLine($"{convId} started");
+            return parameters;
+        }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdd)]
+        public static object OnConversationAdd(Dictionary<string, object> parameters)
+        {
+            return parameters;
+        }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemove)]
+        public static object OnConversationRemove(Dictionary<string, object> parameters)
+        {
+            List<string> supporters = new List<string> { "Bast", "Hypnos", "Kthanid" };
+            List<object> members = parameters["members"] as List<object>;
+            foreach (object member in members)
+            {
+                if (supporters.Contains(member as string))
+                {
+                    return new Dictionary<string, object> {
+                { "reject", true },
+                { "code", 1928 },
+                { "detail", $"不允许移除官方运营人员 {member}" }
+            };
+                }
+            }
+            return default;
+        }
+
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
+        public static async Task OnConversationAdded(Dictionary<string, object> parameters)
+        {
+
+        }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemoved)]
+        public static void OnConversationRemoved(Dictionary<string, object> parameters)
+        {
+            List<string> members = (parameters["members"] as List<object>)
+                .Cast<string>()
+                .ToList();
+            string initBy = parameters["initBy"] as string;
+            if (members.Count == 1 && members[0].Equals(initBy))
+            {
+                Console.WriteLine($"{parameters["convId"]} removed.");
+            }
+        }
+
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationUpdate)]
+        public static object OnConversationUpdate(Dictionary<string, object> parameters)
+        {
+            Dictionary<string, object> attr = parameters["attr"] as Dictionary<string, object>;
+            if (attr != null && attr.ContainsKey("name"))
+            {
+                return new Dictionary<string, object> {
+            { "reject", true },
+            { "code", 1949 },
+            { "detail", "对话名称不可修改" }
+        };
+            }
+            return default;
+        }
+
     }
 }
