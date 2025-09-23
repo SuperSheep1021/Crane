@@ -57,7 +57,9 @@ public class SysIMClientService
     }
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
+        LCIMConversation con = await SysIMClient.GetConversation(SysConvId);
         LCIMTextMessage message = new LCIMTextMessage(text);
+
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
         foreach (KeyValuePair<string, object> kv in content)
