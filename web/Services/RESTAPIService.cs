@@ -281,7 +281,7 @@ public class RESTAPIService
 
         var dddd = new Dictionary<string, object>()
         {
-            { "_lctext","sssssssssssssssssss"},
+            { "_lctext",message},
             { "_lctype",-1},
         };
         LCLogger.Debug("========================================");
