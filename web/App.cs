@@ -169,7 +169,7 @@ namespace web {
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
             LCLogger.Debug("OnMessageReceived");
-            //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             return parameters;
         }
 
