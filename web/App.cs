@@ -83,6 +83,13 @@ namespace web {
         }
 
 
+        [LCEngineFunction("打印订阅者数量")]
+        public static async Task<int> SendMessageToSubscribesAsync()
+        {
+            return await SysIMClientService.Inst.SubscribesTotal();
+        }
+
+
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser loginUser)
         {

@@ -34,15 +34,15 @@ public class SysIMClientService
         LCUser user = await LCUser.GetCurrent();
         SysIMClient = new LCIMClient(user, tag: "sys");
         await SysIMClient.Open(true);
-        LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
+        LCLogger.Debug($"SysIMClient Open ");
 
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery convQuery = SysIMClient.GetQuery();
-        convQuery.WhereEqualTo("name", SysConvName);
-        convQuery.WhereEqualTo("sys", true);
-        SysIMConversation = (LCIMServiceConversation)await convQuery.First();
-        await SysIMConversation.Subscribe();
+        SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
+        //LCIMConversationQuery convQuery = SysIMClient.GetQuery();
+        //convQuery.WhereEqualTo("name", SysConvName);
+        //convQuery.WhereEqualTo("sys", true);
+        //SysIMConversation = (LCIMServiceConversation)await convQuery.First();
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 
 
@@ -60,24 +60,45 @@ public class SysIMClientService
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
         LCIMTextMessage message = new LCIMTextMessage(text);
-        //message.ConversationId = SysIMConversation.Id;
-        //message.FromClientId = SysIMClient.Id;
-        //message["from_client"] = SysIMClient.Id;
-        //message["message"] = text;
-        //message["no_sync"] = false;
+        LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
-        //message.SetupContent("from_client", SysIMClient.Id);
-        //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
-        foreach (KeyValuePair<string, object> kv in content)
+        if (result.IsSuccess)
+
         {
-            message[kv.Key] = kv.Value;
+            foreach (string memberId in SysIMConversation.MemberIds)
+            {
+                LCLogger.Debug($"系统会话{SysIMConversation.Id} memberId: {memberId}");
+            }
+
+            //message.ConversationId = SysIMConversation.Id;
+            //message.FromClientId = SysIMClient.Id;
+            //message["from_client"] = SysIMClient.Id;
+            //message["message"] = text;
+            //message["no_sync"] = false;
+
+            //message.SetupContent("from_client", SysIMClient.Id);
+            //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
+            foreach (KeyValuePair<string, object> kv in content)
+            {
+                message[kv.Key] = kv.Value;
+            }
+            LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
+            //在线才能收到消息
+            sendOptions.Transient = true;
+            //需要回读
+            sendOptions.Receipt = true;
+            return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
         }
-        LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
-        //在线才能收到消息
-        sendOptions.Transient = true;
-        //需要回读
-        sendOptions.Receipt = true;
-        return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
+        else {
+            return null;
+        }
+        
+    }
+
+    public async Task<int> SubscribesTotal() 
+    { 
+        int total = await SysIMConversation.GetMembersCount();
+        return total;
     }
 
 }
