@@ -67,50 +67,15 @@ public class SysIMClientService
         LCLogger.Debug($"conv id:{SysConvId}");
         //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
         //await serConv.AddMembers(toClientIds);
+
+
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
         await SysIMConversation.AddMembers(toClientIds);
 
-
-        // 1. 构造要发送的数据对象
-        //var mmmm = new MessageData
-        //{
-        //    LcText = "ttttttttttt",
-        //    LcAttrs = new LcAttributes
-        //    {
-        //        A = "_lcattrs aaaaaaaaaaaaaaaaa"
-        //    }
-        //};
-        var mmmm = new Dictionary<string,object>
-        {
-            { "LcText" ,"ttttttttttt"},
-            { "LcType",-1},
-        };
-        // 2. 将对象序列化为JSON字符串
-        string jsonData = JsonConvert.SerializeObject(mmmm, Formatting.Indented);
-        Console.WriteLine("要发送的JSON数据:");
-        Console.WriteLine(jsonData);
-
-        // 3. 创建HTTP请求内容
-        //var ccccc = new StringContent(
-        //    jsonData,
-        //    Encoding.UTF8,
-        //    "application/json"
-        //);
-
+        message["toPeers"] = "68b9286c49adb47c41678afb";
         message.Text = "ssssssssssssssssssssss122ssssssssssssssssssssssssssss";
-        //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
-
-        //foreach (KeyValuePair<string, object> kv in content)
-        //{
-        //    message[kv.Key] = kv.Value;
-        //}
-
-
-        //message["toPeers"] = new string[1] { toClientIds[0] };
-
-        //LCLogger.Debug("sssssssssssssssssssssssssssssssssss"+message.ToString());
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
