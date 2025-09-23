@@ -72,6 +72,7 @@ public class SysIMClientService
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
 
+        sendOptions.PushData = new Dictionary<string, object>();
         sendOptions.PushData.Add("toPeers", "68b9286c49adb47c41678afb");
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
