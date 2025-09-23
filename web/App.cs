@@ -60,6 +60,22 @@ namespace web {
         {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
         }
+        [LCEngineFunction("RA发送消息给指定订阅者")]
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("clientIds")] List<object> clientIds,
+            [LCEngineFunctionParam("message")] string message)
+        {
+            List<string> stringList = clientIds.Select(obj =>
+            {
+                // 其他类型直接调用ToString()
+                return obj.ToString();
+            }).ToList();
+
+            foreach (string clientId in stringList)
+            {
+                LCLogger.Debug($"target client id: {clientId}");
+            }
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(stringList, message);
+        }
 
         [LCEngineFunction("RA查询服务号给客户端发送的消息(string targetClientId)")]
         public static async Task<IDictionary<string, object>> QuerySendFormClientId([LCEngineFunctionParam("targetClientId")] string targetClientId)
