@@ -36,6 +36,21 @@ public class SysIMClientService
     {
         LCUser user = await LCUser.GetCurrent();
         SysIMClient = new LCIMClient(user, tag: "sys");
+        
+        await SysIMClient.Open(true);
+        LCLogger.Debug($"SysIMClient Open ");
+
+
+        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+        LCIMConversationQuery convQuery = SysIMClient.GetQuery();
+        convQuery.WhereEqualTo("name", "sysconv");
+        convQuery.WhereEqualTo("sys", true);
+        SysIMConversation = (LCIMServiceConversation)await convQuery.First();
+        await SysIMConversation.Subscribe();
+
+        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
+
+
         SysIMClient.OnMembersJoined = (conversation, newMembers, operatorId) =>
         {
             LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
@@ -46,18 +61,6 @@ public class SysIMClientService
         {
             LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
         };
-        await SysIMClient.Open(true);
-        LCLogger.Debug($"SysIMClient Open ");
-
-
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery convQuery = SysIMClient.GetQuery();
-        convQuery.WhereEqualTo("name", "sysconv");
-        convQuery.WhereEqualTo("sys", true);
-        SysIMConversation = (LCIMServiceConversation)await convQuery.First();
-        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
-
-        
     }
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
