@@ -59,12 +59,12 @@ public class SysIMClientService
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
         LCIMTextMessage message = new LCIMTextMessage(text);
-        message.ConversationId = SysIMConversation.Id;
-        message.FromClientId = SysIMClient.Id;
-        message["from_client"] = SysIMClient.Id;
+        //message.ConversationId = SysIMConversation.Id;
+        //message.FromClientId = SysIMClient.Id;
         message.MentionIdList.AddRange(toClientIds);
-        message["message"] = text;
-        message["no_sync"] = false;
+        //message["from_client"] = SysIMClient.Id;
+        //message["message"] = text;
+        //message["no_sync"] = false;
         
         //message.SetupContent("from_client", SysIMClient.Id);
         //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
