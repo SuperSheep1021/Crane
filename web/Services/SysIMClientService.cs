@@ -25,8 +25,6 @@ public class SysIMClientService
 
 
     public LCIMClient SysIMClient { get; private set; }
-
-    const string SysConvName = "sysconv";
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
     public async Task Initialtion()
@@ -38,12 +36,16 @@ public class SysIMClientService
 
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
+        SysIMConversation = new LCIMServiceConversation(SysIMClient);
+        //SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
         //LCIMConversationQuery convQuery = SysIMClient.GetQuery();
         //convQuery.WhereEqualTo("name", SysConvName);
         //convQuery.WhereEqualTo("sys", true);
         //SysIMConversation = (LCIMServiceConversation)await convQuery.First();
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
+
+        bool checkSub = await SysIMConversation.CheckSubscription();
+        LCLogger.Debug($"SysIMConversation.CheckSubscription {checkSub}");
 
 
         SysIMClient.OnMembersJoined = (conversation, newMembers, operatorId) =>
@@ -60,7 +62,7 @@ public class SysIMClientService
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, List<string> toClientIds, Dictionary<string,object> content)
     {
         LCIMTextMessage message = new LCIMTextMessage(text);
-        LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
+        //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
         foreach (KeyValuePair<string, object> kv in content)
         {
@@ -71,9 +73,6 @@ public class SysIMClientService
         sendOptions.Transient = true;
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
-
-        sendOptions.PushData = new Dictionary<string, object>();
-        sendOptions.PushData.Add("toPeers", "68b9286c49adb47c41678afb");
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }
