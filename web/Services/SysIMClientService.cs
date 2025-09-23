@@ -67,6 +67,8 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
+        await SysIMConversation.AddMembers(toClientIds);
+
 
         // 1. 构造要发送的数据对象
         //var mmmm = new MessageData
