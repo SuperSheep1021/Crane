@@ -33,7 +33,7 @@ public class SysIMClientService
     {
         LCUser user = await LCUser.GetCurrent();
         SysIMClient = new LCIMClient(user, tag: "sys");
-        await SysIMClient.Open();
+        await SysIMClient.Open(true);
         LCLogger.Debug($"m_SysIMClient.Open():{SysIMClient.Tag}");
 
 
@@ -61,11 +61,12 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         //message.ConversationId = SysIMConversation.Id;
         //message.FromClientId = SysIMClient.Id;
+        message.MentionIdList = new List<string>();
         message.MentionIdList.AddRange(toClientIds);
         //message["from_client"] = SysIMClient.Id;
         //message["message"] = text;
         //message["no_sync"] = false;
-        
+
         //message.SetupContent("from_client", SysIMClient.Id);
         //message.SetupContent("message", "cccccccccccccccccccccccccccccc");
         foreach (KeyValuePair<string, object> kv in content)
