@@ -46,12 +46,6 @@ public class SysIMClientService
 
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        //SysIMConversation = await SysIMClient.CreateConversation(null, "sysconv2222", properties:new Dictionary<string, object>() 
-        //{
-        //    { "system",true},
-        //}) as LCIMServiceConversation;
-
-        SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
         LCIMConversationQuery convQuery = SysIMClient.GetQuery();
         convQuery.WhereEqualTo("name", "sysconv");
         convQuery.WhereEqualTo("sys", true);
@@ -68,6 +62,7 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
+
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
         foreach (KeyValuePair<string, object> kv in content)
@@ -79,9 +74,9 @@ public class SysIMClientService
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
-        sendOptions.Transient = true;
+        //sendOptions.Transient = true;
         //需要回读
-        sendOptions.Receipt = true;
+        sendOptions.Receipt = false;
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }
