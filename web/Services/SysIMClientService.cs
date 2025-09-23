@@ -70,7 +70,7 @@ public class SysIMClientService
             message[kv.Key] = kv.Value;
         }
 
-        LCLogger.Debug(message.ToString());
+        LCLogger.Debug("sssssssssssssssssssssssssssssssssss"+message.ToString());
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
