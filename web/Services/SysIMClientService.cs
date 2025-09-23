@@ -46,7 +46,7 @@ public class SysIMClientService
         convQuery.WhereEqualTo("name", "sysconv");
         convQuery.WhereEqualTo("sys", true);
         SysIMConversation = (LCIMServiceConversation)await convQuery.First();
-        await SysIMConversation.Subscribe();
+
 
         LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
 

@@ -176,6 +176,7 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
         public static Dictionary<string, object> OnMessageSent(Dictionary<string, object> parameters)
         {
+            parameters["onlinePeers"] = JsonConvert.SerializeObject( new List<string>() { "68b9286c49adb47c41678afb" });
             return default;
         }
     }
