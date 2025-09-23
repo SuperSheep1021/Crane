@@ -278,8 +278,15 @@ public class RESTAPIService
         if (string.IsNullOrEmpty(fromClientId))
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
-        if (string.IsNullOrEmpty(message))
-            throw new ArgumentNullException(nameof(message), "消息不能为空");
+
+        var dddd = new Dictionary<string, object>()
+        {
+            { "_lctext","sssssssssssssssssss"},
+            { "_lctype",-1},
+        };
+        LCLogger.Debug("========================================");
+        LCLogger.Debug(JsonConvert.SerializeObject(dddd));
+        LCLogger.Debug("========================================");
 
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -293,7 +300,7 @@ public class RESTAPIService
         {
             { "from_client",fromClientId },
             { "to_clients",toClientIds},
-            { "message",message },
+            { "message",JsonConvert.SerializeObject(dddd) },
             { "transient",false},
             { "no_sync",false}
         };

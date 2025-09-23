@@ -72,10 +72,10 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
-        await SysIMConversation.AddMembers(toClientIds);
+        //await SysIMConversation.AddMembers(toClientIds);
 
-        message["ids"] = "68b9286c49adb47c41678afb";
-        message.Text = "ssssssssssssssssssssss122ssssssssssssssssssssssssssss";
+        //message["ids"] = "68b9286c49adb47c41678afb";
+        //message.Text = "ssssssssssssssssssssss122ssssssssssssssssssssssssssss";
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
