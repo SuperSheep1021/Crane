@@ -216,7 +216,7 @@ public class RESTAPIService
         var requestData = new Dictionary<string, object>
         {
             { "from_client",fromClientId },
-            { "message",JsonConvert.SerializeObject(textmessage) },
+            { "message","ssssssssssssssssssssssssss" },
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
