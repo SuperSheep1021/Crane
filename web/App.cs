@@ -181,8 +181,8 @@ namespace web {
             //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             //parameters.Remove("onlinePeers");
             //parameters.Remove("offlinePeers");
-            //LCLogger.Debug("=================setup=================");
-            //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
+            LCLogger.Debug("=================setup=================");
+            LCLogger.Debug(JsonConvert.SerializeObject(parameters));
 
             return parameters;
         }
