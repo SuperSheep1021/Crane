@@ -70,10 +70,10 @@ public class SysIMClientService
         // 1. 构造要发送的数据对象
         var mmmm = new MessageData
         {
-            LcText = "这是一个纯文本消息",
+            LcText = "ttttttttttt",
             LcAttrs = new LcAttributes
             {
-                A = "_lcattrs 是用来存储用户自定义的一些键值对"
+                A = "_lcattrs aaaaaaaaaaaaaaaaa"
             }
         };
 
@@ -83,11 +83,11 @@ public class SysIMClientService
         Console.WriteLine(jsonData);
 
         // 3. 创建HTTP请求内容
-        var ccccc = new StringContent(
-            jsonData,
-            Encoding.UTF8,
-            "application/json"
-        );
+        //var ccccc = new StringContent(
+        //    jsonData,
+        //    Encoding.UTF8,
+        //    "application/json"
+        //);
 
         message.Text = jsonData;
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
