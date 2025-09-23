@@ -5,7 +5,12 @@ using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+
+
+
 
 public class SysIMClientService 
 {
@@ -62,21 +67,46 @@ public class SysIMClientService
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
 
+        // 1. 构造要发送的数据对象
+        var mmmm = new MessageData
+        {
+            LcText = "这是一个纯文本消息",
+            LcAttrs = new LcAttributes
+            {
+                A = "_lcattrs 是用来存储用户自定义的一些键值对"
+            }
+        };
+
+        // 2. 将对象序列化为JSON字符串
+        string jsonData = JsonConvert.SerializeObject(mmmm, Formatting.Indented);
+        Console.WriteLine("要发送的JSON数据:");
+        Console.WriteLine(jsonData);
+
+        // 3. 创建HTTP请求内容
+        var ccccc = new StringContent(
+            jsonData,
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        message.Text = jsonData;
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
 
-        foreach (KeyValuePair<string, object> kv in content)
-        {
-            message[kv.Key] = kv.Value;
-        }
-        message["toPeers"] = new string[1] { toClientIds[0] };
+        //foreach (KeyValuePair<string, object> kv in content)
+        //{
+        //    message[kv.Key] = kv.Value;
+        //}
 
-        LCLogger.Debug("sssssssssssssssssssssssssssssssssss"+message.ToString());
+
+        //message["toPeers"] = new string[1] { toClientIds[0] };
+
+        //LCLogger.Debug("sssssssssssssssssssssssssssssssssss"+message.ToString());
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
-        //sendOptions.Transient = true;
+        sendOptions.Transient = true;
         //需要回读
-        sendOptions.Receipt = false;
+        sendOptions.Receipt = true;
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }

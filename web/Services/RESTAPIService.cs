@@ -15,6 +15,28 @@ using System.Text;
 using System.Threading.Tasks;
 using web;
 
+public class LcAttributes
+{
+    [JsonProperty("a")]
+    public string A { get; set; }
+}
+
+
+
+// 定义与JSON结构匹配的类
+public class MessageData
+{
+    [JsonProperty("_lctype")]
+    public int LcType { get; set; } = -1; // 固定值-1
+
+    [JsonProperty("_lctext")]
+    public string LcText { get; set; }
+
+    [JsonProperty("_lcattrs")]
+    public LcAttributes LcAttrs { get; set; }
+}
+
+
 public class RESTAPIService
 {
     static RESTAPIService inst;
@@ -187,13 +209,15 @@ public class RESTAPIService
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
 
+        
+
+
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
             { "from_client",fromClientId },
             { "message",message },
         };
-
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
         {
