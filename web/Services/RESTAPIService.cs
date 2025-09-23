@@ -14,6 +14,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using web;
+using static System.Net.Mime.MediaTypeNames;
 
 public class LcAttributes
 {
@@ -209,12 +210,13 @@ public class RESTAPIService
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
 
-
+        LCIMTextMessage textmessage = new LCIMTextMessage("ssssssssssss");
+        
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
             { "from_client",fromClientId },
-            { "message",message },
+            { "message",JsonConvert.SerializeObject(textmessage) },
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
