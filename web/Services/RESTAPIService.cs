@@ -260,6 +260,7 @@ public class RESTAPIService
             { "from_client",fromClientId },
             { "to_clients",toClientIds},
             { "message",message },
+            { "transient",false},
             { "no_sync",false}
         };
 

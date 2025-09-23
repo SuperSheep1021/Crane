@@ -46,7 +46,12 @@ public class SysIMClientService
 
 
         SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
+        SysIMConversation = await SysIMClient.CreateConversation(null, "sysconv2222", properties:new Dictionary<string, object>() 
+        {
+            { "system",true},
+        }) as LCIMServiceConversation;
+
+        //SysIMConversation = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
         //LCIMConversationQuery convQuery = SysIMClient.GetQuery();
         //convQuery.WhereEqualTo("name", SysConvName);
         //convQuery.WhereEqualTo("sys", true);
