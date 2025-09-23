@@ -184,7 +184,7 @@ namespace web {
             //LCLogger.Debug("=================setup=================");
             //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
 
-            return default;
+            return parameters;
         }
     }
 }
