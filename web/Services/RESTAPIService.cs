@@ -211,12 +211,20 @@ public class RESTAPIService
 
 
         LCIMTextMessage textmessage = new LCIMTextMessage("ssssssssssss");
-        
+
+        var dddd = new Dictionary<string, object>()
+        {
+            { "_lctext","sssssssssssssssssss"},
+            { "_lctype",-1},
+        };
+        LCLogger.Debug("========================================");
+        LCLogger.Debug(JsonConvert.SerializeObject(dddd));
+        LCLogger.Debug("========================================");
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
             { "from_client",fromClientId },
-            { "message","ssssssssssssssssssssssssss" },
+            { "message",JsonConvert.SerializeObject(dddd) },
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
