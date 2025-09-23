@@ -69,6 +69,7 @@ public class SysIMClientService
         {
             message[kv.Key] = kv.Value;
         }
+        message["toPeers"] = new string[1] { toClientIds[0] };
 
         LCLogger.Debug("sssssssssssssssssssssssssssssssssss"+message.ToString());
 
