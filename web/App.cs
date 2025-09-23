@@ -55,10 +55,10 @@ namespace web {
             return await RESTAPIService.Inst.SubscribeSysConvAsync(clientId);
         }
 
-        [LCEngineFunction("RA发送消息给所有订阅者(string message)")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("message")] string message)
+        [LCEngineFunction("RA发送消息给所有订阅者")]
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes()
         {
-            return await RESTAPIService.Inst.SendMessageToSubscribesAsync(message);
+            return await RESTAPIService.Inst.SendMessageToSubscribesAsync();
         }
         [LCEngineFunction("RA发送消息给指定订阅者")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("clientIds")] List<object> clientIds,

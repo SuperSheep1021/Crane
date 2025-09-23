@@ -178,7 +178,7 @@ public class RESTAPIService
     /// <param name="fromClientId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId, string message)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId, Dictionary<string,object> message)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -186,8 +186,6 @@ public class RESTAPIService
         if (string.IsNullOrEmpty(fromClientId))
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
-        if (string.IsNullOrEmpty(message))
-            throw new ArgumentNullException(nameof(message), "消息不能为空");
 
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
@@ -221,9 +219,14 @@ public class RESTAPIService
     /// <param name="conversationId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string message)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync()
     {
-        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message);
+        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, new Dictionary<string, object>() 
+        {
+            { "gtgtgt",1111},
+            { "gtgtgt32222",2222}
+
+        });
     }
 
     /// <summary>
