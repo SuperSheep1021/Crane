@@ -59,6 +59,7 @@ public class SysIMClientService
     {
         LCLogger.Debug($"conv id:{SysConvId}");
         LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
+        await serConv.AddMembers(toClientIds);
         LCIMTextMessage message = new LCIMTextMessage(text);
 
         //LCIMPartiallySuccessResult result = await SysIMConversation.AddMembers(toClientIds);
