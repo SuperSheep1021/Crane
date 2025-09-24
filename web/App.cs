@@ -142,14 +142,16 @@ namespace web {
 
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
             {
-                LCLogger.Debug($"===========parameters.content============={parameters["content"]}========================");
-                var dic = parameters["content"] as Dictionary<string, object>;
+                string contentJson = parameters["content"] as string;
+                LCLogger.Debug($"===========parameters.content============={contentJson}========================");
+                var contentDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentJson);
 
+                string lctextJson = contentDic["_lctext"].ToString() ;
+                LCLogger.Debug($"========mess.Text================{lctextJson}=======================");
 
-                LCLogger.Debug($"========mess.Text================{dic["_lctext"]}========================");
-
-                var dic2 = dic["_lcattrs"] as Dictionary<string, object>;
-                LCLogger.Debug($"========================{dic2["toPeers"]}========================");
+                var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lctextJson);
+                string[] topeers = lcattrsDic["toPeers"] as string[];
+                LCLogger.Debug($"========================{topeers[0]} ========================");
                 //string[] toPeers = parameters["content"]
                 //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             }
