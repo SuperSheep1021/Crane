@@ -149,6 +149,8 @@ namespace web {
                 LCLogger.Debug($"========mess.lcattrs================{lcattrsJson}=======================");
 
                 var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsJson);
+                LCLogger.Debug($"=========lcattrsDic[\"toPeers\"].GetType()==============={lcattrsDic["toPeers"].GetType() } ========================");
+
                 string[] topeers = lcattrsDic["toPeers"] as string[];
                 LCLogger.Debug($"========================{topeers[0]} ========================");
                 //string[] toPeers = parameters["content"]
