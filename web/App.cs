@@ -143,14 +143,13 @@ namespace web {
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
             {
                 LCLogger.Debug($"===========parameters.content============={parameters["content"]}========================");
-                LCIMTextMessage mess = JsonConvert.DeserializeObject<LCIMTextMessage>(parameters["content"].ToString() );
-                
+                var dic = parameters["content"] as Dictionary<string, object>;
 
-                LCLogger.Debug($"========mess.Text================{mess.Text}========================");
-                //message.ConversationId = SysIMConversation.Id;
-                //message.FromClientId = SysIMClient.Id;
-                //message["toPeers"] = toClientIds;
-                LCLogger.Debug($"========================{mess["toPeers"]}========================");
+
+                LCLogger.Debug($"========mess.Text================{dic["_lctext"]}========================");
+
+                var dic2 = dic["_lcattrs"] as Dictionary<string, object>;
+                LCLogger.Debug($"========================{dic2["toPeers"]}========================");
                 //string[] toPeers = parameters["content"]
                 //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             }
