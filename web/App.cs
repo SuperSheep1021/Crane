@@ -83,8 +83,7 @@ namespace web {
         public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message
             /*,[LCEngineFunctionParam("clientIds")] List<object>  clientIds*/)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb" }, new Dictionary<string, object>() {
-                { "通过imclient send message",1}
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb" }}
             });
         }
 
@@ -141,6 +140,7 @@ namespace web {
         {
             //{ "msg": "{\"_lctype\":-1,\"_lctext\":\"dtttttttttttttttttttttttttt\"}", "fromPeerId": "68c22ec62f7ee809fcc9e7e6", "r": true, "cid": "68ca60c716ec9e2c7d13d39e", "transient": true } }
             string formPeerId = parameters["fromPeerId"] as string;
+
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
             {
                 LCIMTextMessage mess = JsonConvert.DeserializeObject<LCIMTextMessage>(parameters["content"].ToString() );

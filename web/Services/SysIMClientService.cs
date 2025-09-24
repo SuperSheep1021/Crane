@@ -90,7 +90,7 @@ public class SysIMClientService
         return SysIMClient.Id == id ? true : false;
     }
 
-    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
+    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds )
     {
         LCLogger.Debug($"conv id:{SysConvId}");
         //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
@@ -100,7 +100,7 @@ public class SysIMClientService
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysIMConversation.Id;
         message.FromClientId = SysIMClient.Id;
-        message["toPeers"] = toClientIds;
+        message["toPeers"] = JsonConvert.SerializeObject(toClientIds);
 
         LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
         //在线才能收到消息
