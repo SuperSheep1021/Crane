@@ -152,9 +152,22 @@ namespace web {
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"].GetType()==============={lcattrsDic["toPeers"].GetType() } ========================");
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"]==============={lcattrsDic["toPeers"]} ========================");
 
+                List<object> members = new List<object>();
+                object membersObj = lcattrsDic["toPeers"];
+                if (membersObj is List<object>)
+                {
+                    members = membersObj as List<object>;
+                }
+                else
+                {
+                    members.Add(membersObj.ToString());
+                }
+                foreach (string str in members)
+                {
+                    LCLogger.Debug($"OnConversationAdd imclient object id is {str.ToString()}");
+                }
 
-                string[] topeers = lcattrsDic["toPeers"] as string[];
-                LCLogger.Debug($"========================{topeers[0]} ========================");
+
                 //string[] toPeers = parameters["content"]
                 //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             }
