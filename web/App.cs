@@ -149,6 +149,8 @@ namespace web {
 
                 contentDic.Remove("_lcattrs");
                 parameters["content"] = JsonConvert.SerializeObject(contentDic);
+
+                LCLogger.Debug($"JsonConvert.SerializeObject(contentDic) {JsonConvert.SerializeObject(contentDic)}");
             }
             return parameters;
         }
