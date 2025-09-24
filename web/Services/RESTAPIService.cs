@@ -192,7 +192,7 @@ public class RESTAPIService
     /// <param name="fromClientId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId, Dictionary<string,object> message)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string conversationId, string fromClientId,string text)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -200,22 +200,19 @@ public class RESTAPIService
         if (string.IsNullOrEmpty(fromClientId))
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
-
-        LCIMTextMessage textmessage = new LCIMTextMessage("ssssssssssss");
-
-        var dddd = new Dictionary<string, object>()
+        var message = new Dictionary<string, object>()
         {
-            { "_lctext","sssssssssssssssssss"},
+            { "_lctext",text},
             { "_lctype",-1},
         };
         LCLogger.Debug("========================================");
-        LCLogger.Debug(JsonConvert.SerializeObject(dddd));
+        LCLogger.Debug(JsonConvert.SerializeObject(message));
         LCLogger.Debug("========================================");
         // 构建请求数据（添加用户到订阅者列表）
         var requestData = new Dictionary<string, object>
         {
             { "from_client",fromClientId },
-            { "message",JsonConvert.SerializeObject(dddd) },
+            { "message",JsonConvert.SerializeObject(message) },
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -242,13 +239,9 @@ public class RESTAPIService
     /// <param name="conversationId"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync()
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string text)
     {
-        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, new Dictionary<string, object>() 
-        {
-            { "gtgtgt",1111},
-            { "gtgtgt32222",2222}
-        });
+        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, text);
     }
 
     /// <summary>
@@ -261,7 +254,7 @@ public class RESTAPIService
     /// <param name="message"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,bool transient, string message)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,string text)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -270,13 +263,13 @@ public class RESTAPIService
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
 
-        var dddd = new Dictionary<string, object>()
+        var message = new Dictionary<string, object>()
         {
-            { "_lctext",message},
+            { "_lctext",text},
             { "_lctype",-1},
         };
         LCLogger.Debug("========================================");
-        LCLogger.Debug(JsonConvert.SerializeObject(dddd));
+        LCLogger.Debug(JsonConvert.SerializeObject(message));
         LCLogger.Debug("========================================");
 
         // 可以添加额外的请求头（如果需要）
@@ -291,7 +284,7 @@ public class RESTAPIService
         {
             { "from_client",fromClientId },
             { "to_clients",toClientIds},
-            { "message",JsonConvert.SerializeObject(dddd) },
+            { "message",JsonConvert.SerializeObject(message) },
             { "transient",false},
             { "no_sync",false}
         };
@@ -315,9 +308,9 @@ public class RESTAPIService
     /// <param name="transient"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string[] toClientIds, string message)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string[] toClientIds, string text)
     {
-        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id,toClientIds,true,message);
+        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text);
     }
 
 

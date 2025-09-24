@@ -63,19 +63,6 @@ namespace web {
         {
             return await RESTAPIService.Inst.SubscribeSysConvAsync(clientId);
         }
-
-        [LCEngineFunction("RA发送消息给所有订阅者")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribes()
-        {
-            return await RESTAPIService.Inst.SendMessageToSubscribesAsync();
-        }
-        [LCEngineFunction("RA发送消息给指定订阅者")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribes(/*[LCEngineFunctionParam("clientIds")] List<object> clientIds,*/
-            [LCEngineFunctionParam("message")] string message)
-        {
-            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { "68b9286c49adb47c41678afb" }, message);
-        }
-
         [LCEngineFunction("RA查询服务号给客户端发送的消息(string targetClientId)")]
         public static async Task<IDictionary<string, object>> QuerySendFormClientId([LCEngineFunctionParam("targetClientId")] string targetClientId)
         {
@@ -85,11 +72,22 @@ namespace web {
 
 
 
-        [LCEngineFunction("发送消息给指定订阅者")]
-        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message
-            /*,[LCEngineFunctionParam("clientIds")] List<object>  clientIds*/)
+        [LCEngineFunction("RA发送消息给所有订阅者")]
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("text")] string text)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb"});
+            return await RESTAPIService.Inst.SendMessageToSubscribesAsync(text);
+        }
+        [LCEngineFunction("RA发送消息给指定订阅者")]
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("clientIds")] string[] clientIds,
+            [LCEngineFunctionParam("text")] string text)
+        {
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(clientIds, text);
+        }
+        [LCEngineFunction("发送消息给指定订阅者")]
+        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("clientIds")] string[] clientIds, 
+            [LCEngineFunctionParam("text")] string text)
+        {
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds );
         }
 
 
