@@ -81,7 +81,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -107,7 +107,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
 
         var where = new Dictionary<string, object>() 
@@ -158,7 +158,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 调用Post方法发送请求
@@ -221,7 +221,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -283,7 +283,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 构建请求数据（添加用户到订阅者列表）
@@ -341,7 +341,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -377,7 +377,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
         // 调用Post方法发送请求
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -401,7 +401,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
 
         // 调用Post方法发送请求
@@ -432,7 +432,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
 
         var where = new Dictionary<string, object>()
@@ -496,7 +496,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -558,7 +558,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -600,7 +600,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -630,7 +630,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("MASTER_KEY")},master" },
+            { "X-LC-Key",$"{Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master" },
         };
 
         // 假设API版本已经在Post方法内部处理，withAPIVersion设为true
@@ -661,7 +661,7 @@ public class RESTAPIService
         var headers = new Dictionary<string, object>
         {
             // 例如添加认证信息或其他必要头信息
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("MASTER_KEY")},master"  }
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY")},master"  }
         };
 
         var requestData = new Dictionary<string, object>

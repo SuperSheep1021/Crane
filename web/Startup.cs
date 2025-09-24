@@ -48,14 +48,12 @@ namespace web {
                 }
             };
             LCEngine.Initialize(services);
-
             //Task.Run(async () => 
             //{
             //    await RESTAPIService.Inst.Initialtion();
             //    await SysIMClientService.Inst.Initialtion();
             //});
 
-            //RESTAPIService.Inst.Initialtion();
             services.AddControllersWithViews();
         }
 

@@ -30,6 +30,12 @@ namespace web {
         //    return "TestCloudFunc:" + name;
         //}
 
+        [LCEngineFunction("MasterKey")]
+        public static string GetMasterKey()
+        {
+            return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+        }
+
         [LCEngineFunction("初始化服务器")]
         public static async Task<bool> TestCloudFuncAsync()
         {
