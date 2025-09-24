@@ -93,26 +93,20 @@ namespace web {
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser loginUser)
         {
-            //await Task.Delay(2000);
-            LCLogger.Debug(string.Format("1 {0} login", loginUser["username"]));
-            LCLogger.Debug($"2 login client id is {loginUser["objectId"]} ");
-            LCLogger.Debug($"3 login client name is {loginUser.Username} ");
-            LCLogger.Debug($"4 login client user.ObjectId is {loginUser.ObjectId} ");
+            LCLogger.Debug($"user login{loginUser.Username}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static void OnClientOnline(Dictionary<string, object> parameters)
         {
-            LCLogger.Debug($"客户端上线");
-            LCLogger.Debug($"客户端上线{parameters["peerId"]} online.");
+            LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
         }
 
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static void OnClientOffline(Dictionary<string, object> parameters)
         {
-            LCLogger.Debug($"客户端离线");
-            LCLogger.Debug($"客户端离线{parameters["peerId"]} offline");
+            LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
 
 
@@ -169,7 +163,7 @@ namespace web {
         public static object OnConversationStart(Dictionary<string, object> parameters)
         {
             string convId = parameters["convId"] as string;
-            Console.WriteLine($"{convId} OnConversationStart");
+            LCLogger.Debug($"{convId} OnConversationStart");
             return parameters;
         }
 
@@ -177,7 +171,7 @@ namespace web {
         public static object OnConversationStarted(Dictionary<string, object> parameters)
         {
             string convId = parameters["convId"] as string;
-            Console.WriteLine($"{convId} OnConversationStarted");
+            LCLogger.Debug($"{convId} OnConversationStarted");
             return parameters;
         }
 
