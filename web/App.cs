@@ -137,7 +137,6 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            //{ "msg": "{\"_lctype\":-1,\"_lctext\":\"dtttttttttttttttttttttttttt\"}", "fromPeerId": "68c22ec62f7ee809fcc9e7e6", "r": true, "cid": "68ca60c716ec9e2c7d13d39e", "transient": true } }
             string formPeerId = parameters["fromPeer"] as string;
 
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
@@ -146,10 +145,10 @@ namespace web {
                 LCLogger.Debug($"===========parameters.content============={contentJson}========================");
                 var contentDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentJson);
 
-                string lctextJson = contentDic["_lctext"].ToString() ;
-                LCLogger.Debug($"========mess.Text================{lctextJson}=======================");
+                string lcattrsJson = contentDic["_lcattrs"].ToString() ;
+                LCLogger.Debug($"========mess.lcattrs================{lcattrsJson}=======================");
 
-                var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lctextJson);
+                var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsJson);
                 string[] topeers = lcattrsDic["toPeers"] as string[];
                 LCLogger.Debug($"========================{topeers[0]} ========================");
                 //string[] toPeers = parameters["content"]
