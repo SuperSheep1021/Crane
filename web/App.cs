@@ -137,21 +137,24 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            if (!parameters.ContainsKey("toPeers")) 
-            {
-                string contentJson = parameters["content"] as string;
-                var contentDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentJson);
-                string lcattrsJson = contentDic["_lcattrs"].ToString();
-                var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsJson);
-                var topeerArray = JsonConvert.DeserializeObject<string[]>(lcattrsDic["toPeers"].ToString());
-                parameters["toPeers"] = topeerArray;
+            //if (!parameters.ContainsKey("toPeers")) 
+            //{
+                
+            //}
+
+            string contentJson = parameters["content"] as string;
+            var contentDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentJson);
+            string lcattrsJson = contentDic["_lcattrs"].ToString();
+            var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsJson);
+            var topeerArray = JsonConvert.DeserializeObject<string[]>(lcattrsDic["toPeers"].ToString());
+            parameters["toPeers"] = topeerArray;
 
 
-                contentDic.Remove("_lcattrs");
-                parameters["content"] = JsonConvert.SerializeObject(contentDic);
+            contentDic.Remove("_lcattrs");
+            parameters["content"] = JsonConvert.SerializeObject(contentDic);
 
-                LCLogger.Debug($"JsonConvert.SerializeObject(contentDic) {JsonConvert.SerializeObject(contentDic)}");
-            }
+            LCLogger.Debug($"JsonConvert.SerializeObject(contentDic) {JsonConvert.SerializeObject(contentDic)}");
+
             return parameters;
         }
 
