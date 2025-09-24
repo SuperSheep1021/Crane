@@ -89,11 +89,11 @@ namespace web {
         }
 
 
-
+        #region // onlogin OnClient
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser loginUser)
         {
-            LCLogger.Debug($"user login{loginUser.Username}");
+            LCLogger.Debug($"user login {loginUser.Username}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
@@ -108,7 +108,7 @@ namespace web {
         {
             LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
-
+        #endregion
 
         //[LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
         //public static LCObject ReviewBeforeSave(LCObject review)
@@ -139,7 +139,12 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            //{ "msg": "{\"_lctype\":-1,\"_lctext\":\"dtttttttttttttttttttttttttt\"}", "fromPeerId": "68c22ec62f7ee809fcc9e7e6", "r": true, "cid": "68ca60c716ec9e2c7d13d39e", "transient": true } }
+            //string formPeerId = parameters["fromPeerId"] as string;
+            //if (SysIMClientService.Inst.isSysClientId(formPeerId) ) 
+            //{
+            //    parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            //}
             return parameters;
         }
 
@@ -159,6 +164,11 @@ namespace web {
         }
 
         #region//conversation
+        /// <summary>
+        /// 创建对话，在签名校验（如果开启）之后，实际创建之前调用。开发者在这里可以为新的「对话」添加其他内部属性，或完成操作鉴权，以及其他类似操作。
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStart)]
         public static object OnConversationStart(Dictionary<string, object> parameters)
         {
@@ -166,7 +176,11 @@ namespace web {
             LCLogger.Debug($"{convId} OnConversationStart");
             return parameters;
         }
-
+        /// <summary>
+        /// 创建对话完成后调用。开发者在这里可以完成业务统计，或将对话数据中转备份到己方服务器，以及其他类似操作。
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
         public static object OnConversationStarted(Dictionary<string, object> parameters)
         {
