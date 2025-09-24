@@ -83,7 +83,7 @@ namespace web {
         public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message
             /*,[LCEngineFunctionParam("clientIds")] List<object>  clientIds*/)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb" });
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(message, new string[] { "68b9286c49adb47c41678afb", "68bc9adb47c41678afb" });
         }
 
 
