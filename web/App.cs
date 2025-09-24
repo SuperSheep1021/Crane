@@ -30,14 +30,14 @@ namespace web {
         //    return "TestCloudFunc:" + name;
         //}
 
-        [LCEngineFunction("初始化服务器")]
-        public static async Task<bool> TestCloudFuncAsync()
-        {
-            bool success = true;
-            await RESTAPIService.Inst.Initialtion();
-            await SysIMClientService.Inst.Initialtion();
-            return success;
-        }
+        //[LCEngineFunction("初始化服务器")]
+        //public static async Task<bool> TestCloudFuncAsync()
+        //{
+        //    bool success = true;
+        //    await RESTAPIService.Inst.Initialtion();
+        //    await SysIMClientService.Inst.Initialtion();
+        //    return success;
+        //}
 
 
         [LCEngineFunction("RA创建系统会话(string name)")]

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace web {
     public class Startup {
@@ -47,6 +48,13 @@ namespace web {
                 }
             };
             LCEngine.Initialize(services);
+
+            Task.Run(async () => 
+            {
+                await RESTAPIService.Inst.Initialtion();
+                await SysIMClientService.Inst.Initialtion();
+            });
+
             //RESTAPIService.Inst.Initialtion();
             services.AddControllersWithViews();
         }

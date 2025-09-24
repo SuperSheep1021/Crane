@@ -79,6 +79,7 @@ public class SysIMClientService
     }
     public async Task<bool> Initialtion()
     {
+        
         bool success = true;
         success = await OpenClient();
         success = await GetSysConv();
