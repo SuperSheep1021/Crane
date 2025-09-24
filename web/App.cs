@@ -157,6 +157,7 @@ namespace web {
                 {
                     LCLogger.Debug($"to peer is {str}");
                 }
+                parameters["toPeers"] = topeerArray;
                 //List<object> members = new List<object>();
                 //object membersObj = lcattrsDic["toPeers"];
                 //if (membersObj is List<object>)
@@ -168,7 +169,6 @@ namespace web {
                 //    members.Add(membersObj.ToString());
                 //}
 
-                LCLogger.Debug($"===========lcattrsDic[\"toPeers\"].ToString().Split(',')============={lcattrsDic["toPeers"].ToString().Split(',')}========================");
                 //parameters["toPeers"] = new string[] { lcattrsDic["toPeers"] };
             }
 
