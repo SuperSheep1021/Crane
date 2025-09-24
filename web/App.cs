@@ -89,9 +89,10 @@ namespace web {
 
         #region // onlogin OnClient
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser loginUser)
+        public static async Task OnLoginAsync(LCUser loginUser)
         {
             LCLogger.Debug($"user login {loginUser.Username}");
+            await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
@@ -157,14 +158,6 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageSent)]
         public static Dictionary<string, object> OnMessageSent(Dictionary<string, object> parameters)
         {
-            //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
-            //parameters["onlinePeers"] = new string[] { "68b9286c49adb47c41678afb" };
-            ////parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
-            ////parameters.Remove("onlinePeers");
-            ////parameters.Remove("offlinePeers");
-            //LCLogger.Debug("=================setup=================");
-            //LCLogger.Debug(JsonConvert.SerializeObject(parameters));
-
             return parameters;
         }
 
