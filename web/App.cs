@@ -30,14 +30,14 @@ namespace web {
         //    return "TestCloudFunc:" + name;
         //}
 
-        //[LCEngineFunction("初始化服务器")]
-        //public static async Task<bool> TestCloudFuncAsync()
-        //{
-        //    bool success = true;
-        //    await RESTAPIService.Inst.Initialtion();
-        //    await SysIMClientService.Inst.Initialtion();
-        //    return success;
-        //}
+        [LCEngineFunction("初始化服务器")]
+        public static async Task<bool> TestCloudFuncAsync()
+        {
+            bool success = true;
+            await RESTAPIService.Inst.Initialtion();
+            await SysIMClientService.Inst.Initialtion();
+            return success;
+        }
 
 
         [LCEngineFunction("RA创建系统会话(string name)")]
@@ -89,10 +89,10 @@ namespace web {
 
         #region // onlogin OnClient
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLoginAsync(LCUser loginUser)
+        public static void OnLogin(LCUser loginUser)
         {
             LCLogger.Debug($"user login {loginUser.Username}");
-            await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
+            //await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
