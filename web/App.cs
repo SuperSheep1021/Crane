@@ -162,14 +162,10 @@ namespace web {
                 {
                     members.Add(membersObj.ToString());
                 }
-                foreach (string str in members)
-                {
-                    LCLogger.Debug($"OnConversationAdd imclient object id is {str.ToString()}");
-                }
 
 
                 //string[] toPeers = parameters["content"]
-                //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+                parameters["toPeers"] = members.ToArray();
             }
             return parameters;
         }
