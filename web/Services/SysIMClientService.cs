@@ -65,7 +65,7 @@ public class SysIMClientService
             SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys");
             await SysIMClient.Open(true);
             success = true;
-            LCLogger.Debug($"SysIMClient Opened ");
+            LCLogger.Debug($"SysIMClient Opened Id is {SysIMClient.Id}");
         }
         catch (LCException e)
         {
