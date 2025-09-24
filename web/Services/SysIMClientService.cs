@@ -83,10 +83,5 @@ public class SysIMClientService
 
     }
 
-    public async Task<int> SubscribesTotal() 
-    { 
-        int total = await SysIMConversation.GetMembersCount();
-        return total;
-    }
 
 }

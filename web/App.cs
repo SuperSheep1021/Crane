@@ -37,6 +37,8 @@ namespace web {
             await SysIMClientService.Inst.Initialtion();
         }
 
+
+
         [LCEngineFunction("RA创建系统会话(string name)")]
         public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)
         {
@@ -74,6 +76,8 @@ namespace web {
         }
 
 
+
+
         [LCEngineFunction("发送消息给指定订阅者")]
         public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("message")] string message
             /*,[LCEngineFunctionParam("clientIds")] List<object>  clientIds*/)
@@ -83,12 +87,6 @@ namespace web {
             });
         }
 
-
-        [LCEngineFunction("打印订阅者数量")]
-        public static async Task<int> SendMessageToSubscribesAsync()
-        {
-            return await SysIMClientService.Inst.SubscribesTotal();
-        }
 
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
@@ -146,7 +144,6 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            LCLogger.Debug("OnMessageReceived");
             parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
             return parameters;
         }
@@ -184,61 +181,60 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdd)]
         public static object OnConversationAdd(Dictionary<string, object> parameters)
         {
+            string[] membersArray = parameters["members"] as string[];
+            foreach (string str in membersArray)
+            {
+                LCLogger.Debug($"add imclient object id is {str}");
+            }
             return parameters;
         }
+        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
+        public static object OnConversationAdded(Dictionary<string, object> parameters)
+        {
+            string[] membersArray = parameters["members"] as string[];
+            foreach (string str in membersArray)
+            {
+                LCLogger.Debug($"added imclient object id is {str}");
+            }
+            return parameters;
+        }
+
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemove)]
         public static object OnConversationRemove(Dictionary<string, object> parameters)
         {
-            List<string> supporters = new List<string> { "Bast", "Hypnos", "Kthanid" };
-            List<object> members = parameters["members"] as List<object>;
-            foreach (object member in members)
+            string[] membersArray = parameters["members"] as string[];
+            foreach (string str in membersArray)
             {
-                if (supporters.Contains(member as string))
-                {
-                    return new Dictionary<string, object> {
-                { "reject", true },
-                { "code", 1928 },
-                { "detail", $"不允许移除官方运营人员 {member}" }
-            };
-                }
+                LCLogger.Debug($"remove imclient object id is {str}");
             }
             return default;
         }
 
 
-        [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
-        public static async Task OnConversationAdded(Dictionary<string, object> parameters)
-        {
-
-        }
-
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemoved)]
         public static void OnConversationRemoved(Dictionary<string, object> parameters)
         {
-            List<string> members = (parameters["members"] as List<object>)
-                .Cast<string>()
-                .ToList();
-            string initBy = parameters["initBy"] as string;
-            if (members.Count == 1 && members[0].Equals(initBy))
+            string[] membersArray = parameters["members"] as string[];
+            foreach (string str in membersArray)
             {
-                Console.WriteLine($"{parameters["convId"]} removed.");
+                LCLogger.Debug($"removed imclient object id is {str}");
             }
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationUpdate)]
         public static object OnConversationUpdate(Dictionary<string, object> parameters)
         {
-            Dictionary<string, object> attr = parameters["attr"] as Dictionary<string, object>;
-            if (attr != null && attr.ContainsKey("name"))
-            {
-                return new Dictionary<string, object> {
-            { "reject", true },
-            { "code", 1949 },
-            { "detail", "对话名称不可修改" }
-        };
-            }
-            return default;
+        //    Dictionary<string, object> attr = parameters["attr"] as Dictionary<string, object>;
+        //    if (attr != null && attr.ContainsKey("name"))
+        //    {
+        //        return new Dictionary<string, object> {
+        //    { "reject", true },
+        //    { "code", 1949 },
+        //    { "detail", "对话名称不可修改" }
+        //};
+        //    }
+            return parameters;
         }
         #endregion
 
