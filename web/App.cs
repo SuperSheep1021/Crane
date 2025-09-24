@@ -137,41 +137,19 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            string formPeerId = parameters["fromPeer"] as string;
-
-            if (SysIMClientService.Inst.isSysClientId(formPeerId))
+            if (!parameters.ContainsKey("toPeers")) 
             {
                 string contentJson = parameters["content"] as string;
-                LCLogger.Debug($"===========parameters.content============={contentJson}========================");
                 var contentDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentJson);
-
-                string lcattrsJson = contentDic["_lcattrs"].ToString() ;
-                LCLogger.Debug($"========mess.lcattrs================{lcattrsJson}=======================");
-
+                string lcattrsJson = contentDic["_lcattrs"].ToString();
                 var lcattrsDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsJson);
-                LCLogger.Debug($"=========lcattrsDic[\"toPeers\"].GetType()==============={lcattrsDic["toPeers"].GetType() } ========================");
-                LCLogger.Debug($"=========lcattrsDic[\"toPeers\"]==============={lcattrsDic["toPeers"]} ========================");
-
-                var topeerArray = JsonConvert.DeserializeObject<string[]>(lcattrsDic["toPeers"].ToString() );
-                foreach (string str in topeerArray) 
-                {
-                    LCLogger.Debug($"to peer is {str}");
-                }
+                var topeerArray = JsonConvert.DeserializeObject<string[]>(lcattrsDic["toPeers"].ToString());
                 parameters["toPeers"] = topeerArray;
-                //List<object> members = new List<object>();
-                //object membersObj = lcattrsDic["toPeers"];
-                //if (membersObj is List<object>)
-                //{
-                //    members = membersObj as List<object>;
-                //}
-                //else
-                //{
-                //    members.Add(membersObj.ToString());
-                //}
 
-                //parameters["toPeers"] = new string[] { lcattrsDic["toPeers"] };
+
+                contentDic.Remove("_lcattrs");
+                parameters["content"] = contentDic;
             }
-
             return parameters;
         }
 
