@@ -148,7 +148,7 @@ namespace web {
 
 
                 contentDic.Remove("_lcattrs");
-                parameters["content"] = contentDic;
+                parameters["content"] = JsonConvert.SerializeObject(contentDic);
             }
             return parameters;
         }
