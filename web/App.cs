@@ -140,11 +140,17 @@ namespace web {
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
             //{ "msg": "{\"_lctype\":-1,\"_lctext\":\"dtttttttttttttttttttttttttt\"}", "fromPeerId": "68c22ec62f7ee809fcc9e7e6", "r": true, "cid": "68ca60c716ec9e2c7d13d39e", "transient": true } }
-            //string formPeerId = parameters["fromPeerId"] as string;
-            //if (SysIMClientService.Inst.isSysClientId(formPeerId) ) 
-            //{
-            //    parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
-            //}
+            string formPeerId = parameters["fromPeerId"] as string;
+            if (SysIMClientService.Inst.isSysClientId(formPeerId))
+            {
+                LCIMTextMessage mess = JsonConvert.DeserializeObject<LCIMTextMessage>(parameters["content"].ToString() );
+                //message.ConversationId = SysIMConversation.Id;
+                //message.FromClientId = SysIMClient.Id;
+                //message["toPeers"] = toClientIds;
+                LCLogger.Debug($"========================{mess["toPeers"]}========================");
+                //string[] toPeers = parameters["content"]
+                //parameters["toPeers"] = new string[] { "68b9286c49adb47c41678afb" };
+            }
             return parameters;
         }
 
