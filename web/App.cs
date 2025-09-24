@@ -166,6 +166,8 @@ namespace web {
 
                 parameters["toPeers"] = members.ToArray();
             }
+
+            LCLogger.Debug($"===========final parameters============={parameters.ToString() }========================");
             return parameters;
         }
 
