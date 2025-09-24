@@ -152,22 +152,21 @@ namespace web {
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"].GetType()==============={lcattrsDic["toPeers"].GetType() } ========================");
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"]==============={lcattrsDic["toPeers"]} ========================");
 
-                List<object> members = new List<object>();
-                object membersObj = lcattrsDic["toPeers"];
-                if (membersObj is List<object>)
-                {
-                    members = membersObj as List<object>;
-                }
-                else
-                {
-                    members.Add(membersObj.ToString());
-                }
+                //List<object> members = new List<object>();
+                //object membersObj = lcattrsDic["toPeers"];
+                //if (membersObj is List<object>)
+                //{
+                //    members = membersObj as List<object>;
+                //}
+                //else
+                //{
+                //    members.Add(membersObj.ToString());
+                //}
 
-
-                parameters["toPeers"] = lcattrsDic["toPeers"];
+                LCLogger.Debug($"===========lcattrsDic[\"toPeers\"].ToString().Split(',')============={lcattrsDic["toPeers"].ToString().Split(',')}========================");
+                parameters["toPeers"] = lcattrsDic["toPeers"].ToString().Split(',');
             }
 
-            LCLogger.Debug($"===========final parameters============={parameters.ToString() }========================");
             return parameters;
         }
 
