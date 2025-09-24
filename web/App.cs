@@ -138,7 +138,7 @@ namespace web {
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
             //{ "msg": "{\"_lctype\":-1,\"_lctext\":\"dtttttttttttttttttttttttttt\"}", "fromPeerId": "68c22ec62f7ee809fcc9e7e6", "r": true, "cid": "68ca60c716ec9e2c7d13d39e", "transient": true } }
-            string formPeerId = parameters["fromPeerId"] as string;
+            string formPeerId = parameters["fromPeer"] as string;
 
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
             {
