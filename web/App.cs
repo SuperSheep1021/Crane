@@ -181,7 +181,16 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdd)]
         public static object OnConversationAdd(Dictionary<string, object> parameters)
         {
-            string[] membersArray = parameters["members"] as string[];
+            object membersObj = parameters["members"];
+            string[] membersArray = null;
+            if (membersObj is string[] existingArray)
+            {
+                membersArray = existingArray;
+            }else if (membersObj != null)
+            {
+                membersArray = new string[] { membersObj.ToString() };
+            }
+
             foreach (string str in membersArray)
             {
                 LCLogger.Debug($"add imclient object id is {str}");
@@ -191,7 +200,16 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
         public static object OnConversationAdded(Dictionary<string, object> parameters)
         {
-            string[] membersArray = parameters["members"] as string[];
+            object membersObj = parameters["members"];
+            string[] membersArray = null;
+            if (membersObj is string[] existingArray)
+            {
+                membersArray = existingArray;
+            }
+            else if (membersObj != null)
+            {
+                membersArray = new string[] { membersObj.ToString() };
+            }
             foreach (string str in membersArray)
             {
                 LCLogger.Debug($"added imclient object id is {str}");
@@ -203,7 +221,16 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemove)]
         public static object OnConversationRemove(Dictionary<string, object> parameters)
         {
-            string[] membersArray = parameters["members"] as string[];
+            object membersObj = parameters["members"];
+            string[] membersArray = null;
+            if (membersObj is string[] existingArray)
+            {
+                membersArray = existingArray;
+            }
+            else if (membersObj != null)
+            {
+                membersArray = new string[] { membersObj.ToString() };
+            }
             foreach (string str in membersArray)
             {
                 LCLogger.Debug($"remove imclient object id is {str}");
@@ -215,7 +242,16 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemoved)]
         public static void OnConversationRemoved(Dictionary<string, object> parameters)
         {
-            string[] membersArray = parameters["members"] as string[];
+            object membersObj = parameters["members"];
+            string[] membersArray = null;
+            if (membersObj is string[] existingArray)
+            {
+                membersArray = existingArray;
+            }
+            else if (membersObj != null)
+            {
+                membersArray = new string[] { membersObj.ToString() };
+            }
             foreach (string str in membersArray)
             {
                 LCLogger.Debug($"removed imclient object id is {str}");
