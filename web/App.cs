@@ -164,7 +164,6 @@ namespace web {
                 }
 
 
-                //string[] toPeers = parameters["content"]
                 parameters["toPeers"] = members.ToArray();
             }
             return parameters;
