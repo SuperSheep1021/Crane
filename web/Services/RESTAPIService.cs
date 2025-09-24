@@ -13,30 +13,6 @@ using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
-using web;
-using static System.Net.Mime.MediaTypeNames;
-
-public class LcAttributes
-{
-    [JsonProperty("a")]
-    public string A { get; set; }
-}
-
-
-
-// 定义与JSON结构匹配的类
-public class MessageData
-{
-    [JsonProperty("_lctype")]
-    public int LcType { get; set; } = -1; // 固定值-1
-
-    [JsonProperty("_lctext")]
-    public string LcText { get; set; }
-
-    [JsonProperty("_lcattrs")]
-    public LcAttributes LcAttrs { get; set; }
-}
-
 
 public class RESTAPIService
 {
@@ -58,18 +34,33 @@ public class RESTAPIService
     public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
-    public async Task Initialtion()
+    async Task<bool> UserLogin() 
     {
-        LCLogger.Debug($"{this} Initialtion start!!");
-
-        SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
-        SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-
-        SysUser = await LCUser.Login(SysUserName, SysUserPassword);
-        LCLogger.Debug($"SysUserName Logined:{SysUserName}");
-
-        LCLogger.Debug($"{this} Initialtion end!!");
+        bool success = false;
+        try
+        {
+            SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
+            SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
+            SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+            SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+            success = true;
+            LCLogger.Debug($"SysUserName{SysUserName} Logined Success!!!!!");
+        }
+        catch (LCException e)
+        {
+            LCLogger.Error($"SysUserName{SysUserName} Logined Failure:{e.Code} : {e.Message}");
+        }
+        catch (Exception e)
+        {
+            LCLogger.Error($"SysUserName{SysUserName} Logined Failure: {e.Message}");
+        }
+        return success;
+    }
+    public async Task<bool> Initialtion()
+    {
+        bool success = true;
+        success = await UserLogin();
+        return success;
     }
 
     #region//服务号

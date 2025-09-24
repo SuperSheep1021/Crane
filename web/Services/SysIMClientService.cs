@@ -6,6 +6,7 @@ using LeanCloud.Realtime.Internal.Protocol;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,36 +33,58 @@ public class SysIMClientService
     public LCIMClient SysIMClient { get; private set; }
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
-    public async Task Initialtion()
+
+    async Task<bool> GetSysConv()
     {
-        LCUser user = await LCUser.GetCurrent();
-        SysIMClient = new LCIMClient(user, tag: "sys");
-        
-        await SysIMClient.Open(true);
-        LCLogger.Debug($"SysIMClient Open ");
-
-
-        SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-        LCIMConversationQuery convQuery = SysIMClient.GetQuery();
-        convQuery.WhereEqualTo("name", "sysconv");
-        convQuery.WhereEqualTo("sys", true);
-        SysIMConversation = (LCIMServiceConversation)await convQuery.First();
-
-
-        LCLogger.Debug($"SysIMConversation.First():{SysIMConversation.Name}");
-
-
-        SysIMClient.OnMembersJoined = (conversation, newMembers, operatorId) =>
+        bool success = false;
+        try
         {
-            LCLogger.Debug($"OnMembersJoined {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
-
-        };
-
-        SysIMClient.OnMembersLeft = (conversation, newMembers, operatorId) =>
+            SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+            LCIMConversationQuery convQuery = SysIMClient.GetQuery();
+            convQuery.WhereEqualTo("name", "sysconv");
+            convQuery.WhereEqualTo("sys", true);
+            SysIMConversation = (LCIMServiceConversation)await convQuery.First();
+            success = true;
+            LCLogger.Debug($"Get Sys Conv {SysIMConversation.Name} Success!!!");
+        }
+        catch (LCException e)
         {
-            LCLogger.Debug($"OnMembersLeft {conversation.Name} + newmembers is {newMembers} + operatorid is {operatorId}");
-        };
+            LCLogger.Error($"Get Sys Conv {SysIMConversation.Name} Failure!!  {e.Code} : {e.Message}");
+        }
+        catch (Exception e)
+        {
+            LCLogger.Error($"Get Sys Conv {SysIMConversation.Name} Failure!!  {e.Message}");
+        }
+        return success;
     }
+    async Task<bool> OpenClient() 
+    {
+        bool success = false;
+        try
+        {
+            SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys");
+            await SysIMClient.Open(true);
+            success = true;
+            LCLogger.Debug($"SysIMClient Opened ");
+        }
+        catch (LCException e)
+        {
+            LCLogger.Error($"SysIMClient Open Failure:{e.Code} : {e.Message}");
+        }
+        catch (Exception e)
+        {
+            LCLogger.Error($"SysIMClient Open Failure: {e.Message}");
+        }
+        return success;
+    }
+    public async Task<bool> Initialtion()
+    {
+        bool success = true;
+        success = await OpenClient();
+        success = await GetSysConv();
+        return success;
+    }
+
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds, Dictionary<string,object> content)
     {
         LCLogger.Debug($"conv id:{SysConvId}");
