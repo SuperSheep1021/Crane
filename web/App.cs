@@ -164,7 +164,7 @@ namespace web {
                 }
 
 
-                parameters["toPeers"] = members.ToArray();
+                parameters["toPeers"] = lcattrsDic["toPeers"];
             }
 
             LCLogger.Debug($"===========final parameters============={parameters.ToString() }========================");
