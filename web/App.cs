@@ -152,9 +152,8 @@ namespace web {
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"].GetType()==============={lcattrsDic["toPeers"].GetType() } ========================");
                 LCLogger.Debug($"=========lcattrsDic[\"toPeers\"]==============={lcattrsDic["toPeers"]} ========================");
 
-
-                string[] topeersarray = lcattrsDic["toPeers"].ToString().Split(',');
-                foreach (string str in topeersarray) 
+                var topeerArray = JsonConvert.DeserializeObject<string[]>(lcattrsDic["toPeers"].ToString() );
+                foreach (string str in topeerArray) 
                 {
                     LCLogger.Debug($"to peer is {str}");
                 }
