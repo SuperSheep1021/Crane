@@ -142,7 +142,11 @@ namespace web {
 
             if (SysIMClientService.Inst.isSysClientId(formPeerId))
             {
+                LCLogger.Debug($"===========parameters.content============={parameters["content"]}========================");
                 LCIMTextMessage mess = JsonConvert.DeserializeObject<LCIMTextMessage>(parameters["content"].ToString() );
+                
+
+                LCLogger.Debug($"========mess.Text================{mess.Text}========================");
                 //message.ConversationId = SysIMConversation.Id;
                 //message.FromClientId = SysIMClient.Id;
                 //message["toPeers"] = toClientIds;
