@@ -184,11 +184,11 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdd)]
         public static object OnConversationAdd(Dictionary<string, object> parameters)
         {
-            List<string> members = new List<string>();
+            List<object> members = new List<object>();
             object membersObj = parameters["members"];
-            if (membersObj is List<string>)
+            if (membersObj is List<object>)
             {
-                members = membersObj as List<string>;
+                members = membersObj as List<object>;
             }
             else {
                 members.Add(membersObj.ToString() );
@@ -196,18 +196,18 @@ namespace web {
 
             foreach (string str in members)
             {
-                LCLogger.Debug($"OnConversationAdd imclient object id is {str}");
+                LCLogger.Debug($"OnConversationAdd imclient object id is {str.ToString() }");
             }
             return parameters;
         }
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
         public static object OnConversationAdded(Dictionary<string, object> parameters)
         {
-            List<string> members = new List<string>();
+            List<object> members = new List<object>();
             object membersObj = parameters["members"];
-            if (membersObj is List<string>)
+            if (membersObj is List<object>)
             {
-                members = membersObj as List<string>;
+                members = membersObj as List<object>;
             }
             else
             {
@@ -216,7 +216,7 @@ namespace web {
 
             foreach (string str in members)
             {
-                LCLogger.Debug($"OnConversationAdded imclient object id is {str}");
+                LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
             }
             return parameters;
         }
@@ -225,11 +225,11 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemove)]
         public static object OnConversationRemove(Dictionary<string, object> parameters)
         {
-            List<string> members = new List<string>();
+            List<object> members = new List<object>();
             object membersObj = parameters["members"];
-            if (membersObj is List<string>)
+            if (membersObj is List<object>)
             {
-                members = membersObj as List<string>;
+                members = membersObj as List<object>;
             }
             else
             {
@@ -238,7 +238,7 @@ namespace web {
 
             foreach (string str in members)
             {
-                LCLogger.Debug($"OnConversationRemove imclient object id is {str}");
+                LCLogger.Debug($"OnConversationRemove imclient object id is {str.ToString()}");
             }
             return default;
         }
@@ -247,11 +247,11 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemoved)]
         public static void OnConversationRemoved(Dictionary<string, object> parameters)
         {
-            List<string> members = new List<string>();
+            List<object> members = new List<object>();
             object membersObj = parameters["members"];
-            if (membersObj is List<string>)
+            if (membersObj is List<object>)
             {
-                members = membersObj as List<string>;
+                members = membersObj as List<object>;
             }
             else
             {
@@ -260,7 +260,7 @@ namespace web {
 
             foreach (string str in members)
             {
-                LCLogger.Debug($"OnConversationRemoved imclient object id is {str}");
+                LCLogger.Debug($"OnConversationRemoved imclient object id is {str.ToString()}");
             }
         }
 
