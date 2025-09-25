@@ -183,15 +183,10 @@ namespace web {
         /// <param name="parameters"></param>
         /// <returns></returns>
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
-        public static async Task<object> OnConversationStartedAsync(Dictionary<string, object> parameters)
+        public static object OnConversationStartedAsync(Dictionary<string, object> parameters)
         {
             string convId = parameters["convId"] as string;
             LCLogger.Debug($"{convId} OnConversationStarted");
-
-            string toClientId= parameters["members"] as string;
-            LCLogger.Debug($"=========toClientId=========={toClientId}====================");
-            LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { toClientId });
-            LCLogger.Debug($"=========SendMessageToSubscribesAsync=========={sendMess.Text}====================");
 
             return parameters;
         }
@@ -216,7 +211,7 @@ namespace web {
             return parameters;
         }
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
-        public static object OnConversationAdded(Dictionary<string, object> parameters)
+        public static async Task<object> OnConversationAddedAsync(Dictionary<string, object> parameters)
         {
             List<object> members = new List<object>();
             object membersObj = parameters["members"];
@@ -233,6 +228,15 @@ namespace web {
             {
                 LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
             }
+
+
+
+            string toClientId = parameters["members"] as string;
+            LCLogger.Debug($"=========toClientId=========={toClientId}====================");
+            LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { toClientId });
+            LCLogger.Debug($"=========SendMessageToSubscribesAsync=========={sendMess.Text}====================");
+
+
             return parameters;
         }
 
