@@ -108,6 +108,7 @@ public class SysIMClientService
         sendOptions.Transient = true;
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
+        await SysIMConversation.Fetch();
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }
