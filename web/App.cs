@@ -78,16 +78,26 @@ namespace web {
             return await RESTAPIService.Inst.SendMessageToSubscribesAsync(text);
         }
         [LCEngineFunction("RA发送消息给指定订阅者")]
-        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("clientIds")] string[] clientIds,
-            [LCEngineFunctionParam("text")] string text)
+        public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("text")] string text,
+            [LCEngineFunctionParam("clientIds")] List<object> clientIds)
         {
-            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(clientIds, text);
+            List<string> clientIdsStrarr= new List<string>();
+            foreach (object clientid in clientIds) 
+            {
+                clientIdsStrarr.Add(clientid.ToString() );
+            }
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(clientIdsStrarr.ToArray() , text);
         }
         [LCEngineFunction("发送消息给指定订阅者")]
-        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("clientIds")] string[] clientIds, 
-            [LCEngineFunctionParam("text")] string text)
+        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
+            [LCEngineFunctionParam("clientIds")] List<object> clientIds)
         {
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIds );
+            List<string> clientIdsStrarr = new List<string>();
+            foreach (object clientid in clientIds)
+            {
+                clientIdsStrarr.Add(clientid.ToString());
+            }
+            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray() );
         }
 
 
