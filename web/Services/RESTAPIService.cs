@@ -14,6 +14,11 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
+
+/// <summary>
+/// https://docs.leancloud.cn/sdk/im/guide/rest/#%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E9%A2%91%E7%8E%87%E9%99%90%E5%88%B6
+/// ÆµÂÊÎÄµµ
+/// </summary>
 public class RESTAPIService
 {
     static RESTAPIService inst;
