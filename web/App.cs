@@ -240,9 +240,9 @@ namespace web {
             }
 
 
-
-            LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString()  });
-            LCLogger.Debug($"=========SendMessageToSubscribesAsync=========={sendMess.Text}====================");
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { members[0].ToString() }, "login success");
+            //LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString()  });
+            //LCLogger.Debug($"=========SendMessageToSubscribesAsync=========={sendMess.Text}====================");
 
 
             return parameters;
