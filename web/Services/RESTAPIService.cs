@@ -63,6 +63,11 @@ public class RESTAPIService
         return success;
     }
 
+    public bool isSysUser(LCUser user) 
+    {
+        return (bool)user["sys"];
+    }
+
     #region//服务号
     /// <summary>
     /// 创建服务号

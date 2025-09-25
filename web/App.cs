@@ -93,10 +93,13 @@ namespace web {
 
         #region // onlogin OnClient
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser loginUser)
+        public static async Task OnLoginAsync(LCUser loginUser)
         {
             LCLogger.Debug($"user login {loginUser.Username}");
-            //await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
+            if (!RESTAPIService.Inst.isSysUser(loginUser) )
+            {
+                await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
+            }
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
