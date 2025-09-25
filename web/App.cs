@@ -231,9 +231,7 @@ namespace web {
 
 
 
-            string toClientId = parameters["members"] as string;
-            LCLogger.Debug($"=========toClientId=========={toClientId}====================");
-            LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { toClientId });
+            LCIMTextMessage sendMess = await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString()  });
             LCLogger.Debug($"=========SendMessageToSubscribesAsync=========={sendMess.Text}====================");
 
 
