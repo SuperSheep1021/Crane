@@ -164,6 +164,7 @@ namespace web {
             //    contentDic.Remove("_lcattrs");
             //    parameters["content"] = JsonConvert.SerializeObject(contentDic);
             //}
+            SysIMClientService.Inst.SysIMConversation.Read();
             return parameters;
         }
 
