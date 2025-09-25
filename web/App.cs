@@ -93,13 +93,9 @@ namespace web {
 
         #region // onlogin OnClient
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLoginAsync(LCUser loginUser)
+        public static void OnLogin(LCUser loginUser)
         {
             LCLogger.Debug($"user login {loginUser.Username}");
-            if (!RESTAPIService.Inst.isSysUser(loginUser) )
-            {
-                await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { loginUser.ObjectId });
-            }
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
@@ -187,10 +183,14 @@ namespace web {
         /// <param name="parameters"></param>
         /// <returns></returns>
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
-        public static object OnConversationStarted(Dictionary<string, object> parameters)
+        public static async Task<object> OnConversationStartedAsync(Dictionary<string, object> parameters)
         {
             string convId = parameters["convId"] as string;
             LCLogger.Debug($"{convId} OnConversationStarted");
+
+            string toClientId= parameters["members"] as string;
+            await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { toClientId });
+
             return parameters;
         }
 
