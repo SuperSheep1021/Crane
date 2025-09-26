@@ -318,7 +318,7 @@ public class RESTAPIService
     /// <param name="transient"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string[] toClientIds, string text)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string text, string[] toClientIds)
     {
         return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text);
     }

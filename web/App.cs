@@ -239,8 +239,8 @@ namespace web {
                 LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
             }
 
-
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { members[0].ToString() }, "login success");
+            await SysIMClientService.Inst.SendMessageToSubscribesAsync( "login success", new string[] { members[0].ToString() } );
+            //await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success",new string[] { members[0].ToString() });
 
             return parameters;
         }
