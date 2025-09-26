@@ -42,13 +42,6 @@ public class SysIMClientService
             SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
             SysIMConversation = (LCIMServiceConversation)await SysIMClient.GetConversation(SysConvId);
 
-            var memberInfo = await SysIMConversation.GetAllMemberInfo();
-            foreach (LCIMConversationMemberInfo info in memberInfo)
-            {
-                LCLogger.Debug(info.MemberId + ":" + info.IsOwner);
-            }
-
-
             success = true;
             LCLogger.Debug($"Get Sys Conv {SysIMConversation.Name} Success!!!");
         }
