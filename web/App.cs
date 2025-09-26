@@ -254,13 +254,13 @@ namespace web {
             {
                 LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
             }
-            if (m_ImSend)
-            {
-                await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString() });
-            }
-            else {
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success", new string[] { members[0].ToString() });
-            }
+            //if (m_ImSend)
+            //{
+            //    await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString() });
+            //}
+            //else {
+            //    await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success", new string[] { members[0].ToString() });
+            //}
 
             return parameters;
         }
