@@ -151,18 +151,18 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            if (parameters["topeers"] == null)
+            if (parameters["toPeers"] == null)
             {
-                string contentjson = parameters["content"] as string;
+                string contentjson = parameters["Content"] as string;
                 var contentdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentjson);
                 string lcattrsjson = contentdic["_lcattrs"].ToString();
                 var lcattrsdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsjson);
-                var topeerarray = JsonConvert.DeserializeObject<string[]>(lcattrsdic["topeers"].ToString());
-                parameters["topeers"] = topeerarray;
+                var topeerarray = JsonConvert.DeserializeObject<string[]>(lcattrsdic["toPeers"].ToString());
+                parameters["toPeers"] = topeerarray;
 
 
                 contentdic.Remove("_lcattrs");
-                parameters["content"] = JsonConvert.SerializeObject(contentdic);
+                parameters["Content"] = JsonConvert.SerializeObject(contentdic);
             }
             return parameters;
         }
