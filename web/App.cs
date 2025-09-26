@@ -163,6 +163,8 @@ namespace web {
 
                 contentdic.Remove("_lcattrs");
                 parameters["content"] = JsonConvert.SerializeObject(contentdic);
+
+                LCLogger.Debug($"================execute parameters repair========={parameters["content"]}=======");
             }
             return parameters;
         }
