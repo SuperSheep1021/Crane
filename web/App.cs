@@ -161,6 +161,10 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
+            LCLogger.Debug("=======================================");
+            LCLogger.Debug($"=================={JsonConvert.SerializeObject(parameters)}=====================");
+            LCLogger.Debug("=======================================");
+
             if (parameters["toPeers"] == null)
             {
                 string contentjson = parameters["content"] as string;
