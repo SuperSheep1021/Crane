@@ -185,8 +185,8 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStart)]
         public static object OnConversationStart(Dictionary<string, object> parameters)
         {
-            string convId = parameters["convId"] as string;
-            LCLogger.Debug($"{convId} OnConversationStart");
+            //string convId = parameters["convId"] as string;
+            //LCLogger.Debug($"{convId} OnConversationStart");
             return parameters;
         }
         /// <summary>
@@ -197,8 +197,8 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
         public static object OnConversationStartedAsync(Dictionary<string, object> parameters)
         {
-            string convId = parameters["convId"] as string;
-            LCLogger.Debug($"{convId} OnConversationStarted");
+            //string convId = parameters["convId"] as string;
+            //LCLogger.Debug($"{convId} OnConversationStarted");
 
             return parameters;
         }
