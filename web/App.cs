@@ -163,7 +163,8 @@ namespace web {
         {
             LCLogger.Debug("=======================================");
             LCLogger.Debug($"=================={JsonConvert.SerializeObject(parameters)}=====================");
-            LCLogger.Debug("=======================================");
+            LCLogger.Debug($"=================={parameters["toPeers"]}=====================");
+            LCLogger.Debug(" =======================================");
 
             if (parameters["toPeers"] == null)
             {
