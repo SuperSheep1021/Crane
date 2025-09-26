@@ -104,5 +104,21 @@ public class SysIMClientService
 
     //}
 
+    public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds)
+    {
+        LCLogger.Debug($"conv id:{SysConvId}");
 
+        LCIMConversation conv = await SysIMClient.CreateConversation(toClientIds,unique:true);
+        LCIMTextMessage message = new LCIMTextMessage(text);
+        message.ConversationId = SysConvId;
+        message.FromClientId = SysIMClient.Id;
+
+        LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
+        //在线才能收到消息
+        sendOptions.Transient = true;
+        //需要回读
+        sendOptions.Receipt = true;
+        return await conv.Send(message, sendOptions) as LCIMTextMessage;
+
+    }
 }
