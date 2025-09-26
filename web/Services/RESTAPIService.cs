@@ -296,7 +296,7 @@ public class RESTAPIService
             { "to_clients",toClientIds},
             { "message",JsonConvert.SerializeObject(message) },
             { "transient",false},
-            { "no_sync",false}
+            { "no_sync",true}
         };
 
         
