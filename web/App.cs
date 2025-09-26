@@ -24,11 +24,21 @@ namespace web {
         //    Console.WriteLine(msg);
         //    return msg;
         //}
-        //[LCEngineFunction("TestCloudFunc")]
-        //public static string TestCloudFunc([LCEngineFunctionParam("name")] string name)
-        //{
-        //    return "TestCloudFunc:" + name;
-        //}
+
+        static bool m_ImSend = false;
+
+        [LCEngineFunction("SwicthSend")]
+        public static bool SwicthSend()
+        {
+            if (m_ImSend)
+            {
+                m_ImSend = false;
+            }
+            else {
+                m_ImSend = true;
+            }
+            return m_ImSend;
+        }
 
         [LCEngineFunction("MasterKey")]
         public static string GetMasterKey()
@@ -222,6 +232,10 @@ namespace web {
             }
             return parameters;
         }
+
+        
+
+
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
         public static async Task<object> OnConversationAddedAsync(Dictionary<string, object> parameters)
         {
@@ -240,9 +254,13 @@ namespace web {
             {
                 LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
             }
-
-            await SysIMClientService.Inst.SendMessageToSubscribesAsync( "login success", new string[] { members[0].ToString() } );
-            //await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success",new string[] { members[0].ToString() });
+            if (m_ImSend)
+            {
+                await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString() });
+            }
+            else {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success", new string[] { members[0].ToString() });
+            }
 
             return parameters;
         }
