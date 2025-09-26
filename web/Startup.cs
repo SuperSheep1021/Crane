@@ -51,7 +51,7 @@ namespace web {
             Task.Run(async () =>
             {
                 await RESTAPIService.Inst.Initialtion();
-                //await SysIMClientService.Inst.Initialtion();
+                await SysIMClientService.Inst.Initialtion();
             });
 
             services.AddControllersWithViews();
