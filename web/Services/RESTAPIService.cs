@@ -68,10 +68,6 @@ public class RESTAPIService
         return success;
     }
 
-    public bool isSysUser(LCUser user) 
-    {
-        return (bool)user["sys"];
-    }
 
     #region//·þÎñºÅ
     /// <summary>
