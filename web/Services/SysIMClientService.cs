@@ -40,10 +40,7 @@ public class SysIMClientService
         try
         {
             SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-            LCIMConversationQuery convQuery = SysIMClient.GetQuery();
-            convQuery.WhereEqualTo("name", "sysconv");
-            convQuery.WhereEqualTo("sys", true);
-            SysIMConversation = (LCIMServiceConversation)await convQuery.First();
+            SysIMConversation = (LCIMServiceConversation)await SysIMClient.GetConversation(SysConvId);
             success = true;
             LCLogger.Debug($"Get Sys Conv {SysIMConversation.Name} Success!!!");
         }
@@ -79,27 +76,19 @@ public class SysIMClientService
     }
     public async Task<bool> Initialtion()
     {
-        
         bool success = true;
         success = await OpenClient();
         success = await GetSysConv();
         return success;
     }
-
-    public bool isSysClientId(string id)
-    {
-        return SysIMClient.Id == id ? true : false;
-    }
-
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds )
     {
         LCLogger.Debug($"conv id:{SysConvId}");
         //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
         //await serConv.AddMembers(toClientIds);
 
-
         LCIMTextMessage message = new LCIMTextMessage(text);
-        message.ConversationId = SysIMConversation.Id;
+        message.ConversationId = SysConvId;
         message.FromClientId = SysIMClient.Id;
         message["toPeers"] = toClientIds;
 
