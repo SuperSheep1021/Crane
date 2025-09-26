@@ -153,7 +153,7 @@ namespace web {
         {
             if (parameters["toPeers"] == null)
             {
-                string contentjson = parameters["Content"] as string;
+                string contentjson = parameters["content"] as string;
                 var contentdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentjson);
                 string lcattrsjson = contentdic["_lcattrs"].ToString();
                 var lcattrsdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsjson);
@@ -162,7 +162,7 @@ namespace web {
 
 
                 contentdic.Remove("_lcattrs");
-                parameters["Content"] = JsonConvert.SerializeObject(contentdic);
+                parameters["content"] = JsonConvert.SerializeObject(contentdic);
             }
             return parameters;
         }
