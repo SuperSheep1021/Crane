@@ -98,17 +98,19 @@ namespace web {
             }
             return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync( text, clientIdsStrarr.ToArray());
         }
-        [LCEngineFunction("发送消息给指定订阅者")]
-        public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
-            [LCEngineFunctionParam("clientIds")] List<object> clientIds)
-        {
-            List<string> clientIdsStrarr = new List<string>();
-            foreach (object clientid in clientIds)
-            {
-                clientIdsStrarr.Add(clientid.ToString());
-            }
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray() );
-        }
+
+
+        //[LCEngineFunction("发送消息给指定订阅者")]
+        //public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
+        //    [LCEngineFunctionParam("clientIds")] List<object> clientIds)
+        //{
+        //    List<string> clientIdsStrarr = new List<string>();
+        //    foreach (object clientid in clientIds)
+        //    {
+        //        clientIdsStrarr.Add(clientid.ToString());
+        //    }
+        //    return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray() );
+        //}
 
 
         #region // onlogin OnClient
