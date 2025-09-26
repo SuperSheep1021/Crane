@@ -97,8 +97,9 @@ public class SysIMClientService
         sendOptions.Transient = true;
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
-        await SysIMConversation.Fetch();
-        return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
+        LCIMServiceConversation conv =  (LCIMServiceConversation)await SysIMConversation.Fetch();
+        LCLogger.Debug($"fetch conv{conv.Name} success!");
+        return await conv.Send(message, sendOptions) as LCIMTextMessage;
 
     }
 
