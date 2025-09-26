@@ -41,6 +41,14 @@ public class SysIMClientService
         {
             SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
             SysIMConversation = (LCIMServiceConversation)await SysIMClient.GetConversation(SysConvId);
+
+            var memberInfo = await SysIMConversation.GetAllMemberInfo();
+            foreach (LCIMConversationMemberInfo info in memberInfo)
+            {
+                LCLogger.Debug(info.MemberId + ":" + info.IsOwner);
+            }
+
+
             success = true;
             LCLogger.Debug($"Get Sys Conv {SysIMConversation.Name} Success!!!");
         }
@@ -98,7 +106,6 @@ public class SysIMClientService
         sendOptions.Transient = true;
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
-
         return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     }
