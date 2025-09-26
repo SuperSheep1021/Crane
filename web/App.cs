@@ -86,7 +86,7 @@ namespace web {
             {
                 clientIdsStrarr.Add(clientid.ToString() );
             }
-            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(clientIdsStrarr.ToArray() , text);
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync( text, clientIdsStrarr.ToArray());
         }
         [LCEngineFunction("发送消息给指定订阅者")]
         public static async Task<LCIMTextMessage> SendMessageToSubscribesAsync([LCEngineFunctionParam("text")] string text,
