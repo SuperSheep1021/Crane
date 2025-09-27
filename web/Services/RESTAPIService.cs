@@ -86,6 +86,7 @@ public class RESTAPIService
         LCQuery<LCUser> query = LCUser.GetQuery();
         query.WhereEqualTo("username", userName);
         LCUser firstUser = await query.First();
+        LCLogger.Debug($"======================{firstUser.Username}========================");
         if (firstUser != null)
         {
             return true;
