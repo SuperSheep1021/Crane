@@ -40,11 +40,18 @@ namespace web {
             return m_ImSend;
         }
 
-        [LCEngineFunction("MasterKey")]
-        public static string GetMasterKey()
+        [LCEngineFunction("GetSignatureKey")]
+        public static string GetSignatureKey()
         {
             return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
+
+        [LCEngineFunction("isSignUped")]
+        public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] string userName)
+        {
+             return await RESTAPIService.Inst.isSignUped(userName);
+        }
+
 
         [LCEngineFunction("初始化服务器")]
         public static async Task<bool> TestCloudFuncAsync()

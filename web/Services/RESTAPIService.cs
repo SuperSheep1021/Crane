@@ -68,6 +68,20 @@ public class RESTAPIService
         return success;
     }
 
+    public async Task<bool> isSignUped(string userName)
+    {
+        LCQuery<LCUser> query = LCUser.GetQuery();
+        query.WhereEqualTo("userName",userName);
+        var queryUser = await query.First();
+        if (queryUser != null)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
     #region//·þÎñºÅ
     /// <summary>
