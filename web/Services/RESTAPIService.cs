@@ -39,6 +39,15 @@ public class RESTAPIService
     public string SysConvId { get;private set; }
     public LCUser SysUser { get;private set; }
 
+    LCACL CreateSysACL()
+    {
+        LCACL acl = new LCACL();
+        acl.SetUserWriteAccess(SysUser, true);
+        acl.SetUserReadAccess(SysUser, true);
+        acl.PublicReadAccess = true;
+        acl.PublicWriteAccess = true;
+        return acl;
+    }
     async Task<bool> UserLogin() 
     {
         bool success = false;
@@ -49,13 +58,7 @@ public class RESTAPIService
             SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
             SysUser = await LCUser.Login(SysUserName, SysUserPassword);
 
-            LCACL acl = new LCACL();
-            acl.SetUserWriteAccess(SysUser,true);
-            acl.SetUserReadAccess(SysUser, true);
-            acl.PublicReadAccess = true;
-            acl.PublicWriteAccess = true;
-            SysUser.ACL = acl;
-
+            SysUser.ACL = CreateSysACL();
             await SysUser.Save();
 
             success = true;
