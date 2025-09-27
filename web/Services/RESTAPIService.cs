@@ -84,7 +84,7 @@ public class RESTAPIService
     public async Task<bool> isSignUped(string userName)
     {
         LCQuery<LCUser> query = LCUser.GetQuery();
-        query.WhereEqualTo("userName",userName);
+        query.WhereEqualTo("username", userName);
         var queryUser = await query.First();
         if (queryUser != null)
         {
