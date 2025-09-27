@@ -47,7 +47,7 @@ namespace web {
         }
 
         [LCEngineFunction("isSignUped")]
-        public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] string userName)
+        public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
              return await RESTAPIService.Inst.isSignUped(userName);
         }

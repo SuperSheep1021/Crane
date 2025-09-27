@@ -81,7 +81,7 @@ public class RESTAPIService
         return success;
     }
 
-    public async Task<bool> isSignUped(string userName)
+    public async Task<bool> isSignUped(object userName)
     {
         LCLogger.Debug($"=========query user============={userName}========================");
         LCQuery<LCUser> query = LCUser.GetQuery();
