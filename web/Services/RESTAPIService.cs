@@ -48,6 +48,16 @@ public class RESTAPIService
             SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
             SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
             SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+
+            LCACL acl = new LCACL();
+            acl.SetUserWriteAccess(SysUser,true);
+            acl.SetUserReadAccess(SysUser, true);
+            acl.PublicReadAccess = true;
+            acl.PublicWriteAccess = true;
+            SysUser.ACL = acl;
+
+            await SysUser.Save();
+
             success = true;
             LCLogger.Debug($"SysUserName{SysUserName} Logined Success!!!!!");
         }
