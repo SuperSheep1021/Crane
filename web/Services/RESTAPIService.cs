@@ -85,8 +85,8 @@ public class RESTAPIService
     {
         LCQuery<LCUser> query = LCUser.GetQuery();
         query.WhereEqualTo("username", userName);
-        var queryUser = await query.First();
-        if (queryUser != null)
+        LCUser firstUser = await query.First();
+        if (firstUser != null)
         {
             return true;
         }
