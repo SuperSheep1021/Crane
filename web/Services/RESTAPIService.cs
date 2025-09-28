@@ -96,6 +96,11 @@ public class RESTAPIService
         }
     }
 
+    public async Task SetupOnline(bool online) 
+    {
+        SysUser["online"] = online;
+        await SysUser.Save();
+    }
 
     #region//·þÎñºÅ
     /// <summary>

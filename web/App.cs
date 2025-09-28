@@ -15,31 +15,6 @@ using static System.Net.Mime.MediaTypeNames;
 namespace web {
     public class App
     {
-
-        //// Function
-        //[LCEngineFunction("hello")]
-        //public static string Hello([LCEngineFunctionParam("name")] string name)
-        //{
-        //    string msg = $"hello, {name}";
-        //    Console.WriteLine(msg);
-        //    return msg;
-        //}
-
-        static bool m_ImSend = false;
-
-        [LCEngineFunction("SwicthSend")]
-        public static bool SwicthSend()
-        {
-            if (m_ImSend)
-            {
-                m_ImSend = false;
-            }
-            else {
-                m_ImSend = true;
-            }
-            return m_ImSend;
-        }
-
         [LCEngineFunction("GetSignatureKey")]
         public static string GetSignatureKey()
         {
@@ -50,6 +25,11 @@ namespace web {
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
              return await RESTAPIService.Inst.isSignUped(userName);
+        }
+        [LCEngineFunction("SysAccountId")]
+        public static string SysAccountId()
+        {
+            return RESTAPIService.Inst.SysUser.ObjectId;
         }
 
 
@@ -131,6 +111,7 @@ namespace web {
         public static void OnClientOnline(Dictionary<string, object> parameters)
         {
             LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
+
         }
 
 
