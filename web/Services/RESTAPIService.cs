@@ -132,6 +132,11 @@ public class RESTAPIService
             null,                              // 查询数据
             true                               // 使用API版本
         );
+
+        foreach (KeyValuePair<string,object> kv in response) 
+        {
+            LCLogger.Debug($"key{kv.Key}=== value{kv.Value}");
+        }
         return response["iso"] as string;
     }
 
