@@ -112,34 +112,6 @@ public class RESTAPIService
         return user;
     }
 
-    public async Task<bool> SetupUserDataAsync(string userId, Dictionary<string, object> parameters)
-    {
-        bool success = false;
-        try
-        {
-            LCUser firstUser = await QueryUser(userId);
-            foreach (KeyValuePair<string,object> kv in parameters) 
-            {
-                firstUser[kv.Key] = kv.Value;
-            }
-            await firstUser.Save();
-            success = true;
-        }
-        catch(LCException ex) 
-        {
-            LCLogger.Error($"{ex.Code}, Message:{ex.Message}");
-        }
-
-        return success;
-    }
-
-
-    public async Task SetupOnline(bool online) 
-    {
-        SysUser["online"] = online;
-        await SysUser.Save();
-    }
-
     #region//服务号
     /// <summary>
     /// 创建服务号
