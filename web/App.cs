@@ -32,6 +32,12 @@ namespace web {
             return RESTAPIService.Inst.SysUser.ObjectId;
         }
 
+        //[LCEngineFunction("SysAccountId")]
+        public static async Task<bool> SetupUserDatas(string userId,Dictionary<string, object> parameters)
+        {
+            return await RESTAPIService.Inst.SetupUserDataAsync(userId,parameters);
+        }
+
 
         [LCEngineFunction("初始化服务器")]
         public static async Task<bool> TestCloudFuncAsync()
