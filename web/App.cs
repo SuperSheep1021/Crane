@@ -32,7 +32,7 @@ namespace web {
             return RESTAPIService.Inst.SysUser.ObjectId;
         }
 
-        //[LCEngineFunction("SysAccountId")]
+        [LCEngineFunction("SetupUserDatas")]
         public static async Task<bool> SetupUserDatas(string userId,Dictionary<string, object> parameters)
         {
             return await RESTAPIService.Inst.SetupUserDataAsync(userId,parameters);
