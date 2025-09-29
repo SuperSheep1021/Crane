@@ -32,6 +32,15 @@ namespace web {
             return RESTAPIService.Inst.SysUser.ObjectId;
         }
 
+        [LCEngineFunction("GetSysTime")]
+        public static async Task<string> GetSysTimeAsync()
+        {
+            return await RESTAPIService.Inst.GetSysTime();
+        }
+
+
+
+
         [LCEngineFunction("初始化服务器")]
         public static async Task<bool> TestCloudFuncAsync()
         {
