@@ -121,9 +121,12 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<string> GetSysTime() 
     {
+        var headers = new Dictionary<string, object>
+        {
+        };
         var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
             "data",   // 路径
-            null,                              // 请求头
+            headers,                              // 请求头
             null,                              // 查询数据
             true                               // 使用API版本
         );
