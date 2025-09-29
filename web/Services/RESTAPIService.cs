@@ -113,6 +113,12 @@ public class RESTAPIService
     }
 
 
+
+    /// <summary>
+    /// UTCÊ±¼ä
+    /// https://docs.leancloud.cn/sdk/storage/guide/rest/#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4
+    /// </summary>
+    /// <returns></returns>
     public async Task<string> GetSysTime() 
     {
         var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
