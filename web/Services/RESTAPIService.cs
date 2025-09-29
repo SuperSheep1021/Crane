@@ -119,21 +119,21 @@ public class RESTAPIService
     /// https://docs.leancloud.cn/sdk/storage/guide/rest/#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4
     /// </summary>
     /// <returns></returns>
-    public async Task<object> GetSysTime() 
+    public async Task<string> GetSysTime() 
     {
         //var headers = new Dictionary<string, object>
         //{
         //    { "X-LC-Id",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID")}"  },
         //    { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY")}"  }
         //};
-        var response = await LCCore.HttpClient.Get<object>(
+        var response = await LCCore.HttpClient.Get<Dictionary<string,object>>(
             "date",   // 路径
             null,                              // 请求头
             null,                              // 查询数据
             true                               // 使用API版本
         );
-        LCLogger.Debug($"reponse type is:{response.GetType() }");
-        return response;
+
+        return response["iso"].ToString();
     }
 
 
