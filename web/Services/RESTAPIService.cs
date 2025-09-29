@@ -123,6 +123,8 @@ public class RESTAPIService
     {
         var headers = new Dictionary<string, object>
         {
+            { "X-LC-Id",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID")}"  },
+            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY")}"  }
         };
         var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
             "data",   // Â·¾¶
