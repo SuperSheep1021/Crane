@@ -121,14 +121,14 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<string> GetSysTime() 
     {
-        var headers = new Dictionary<string, object>
-        {
-            { "X-LC-Id",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID")}"  },
-            { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY")}"  }
-        };
+        //var headers = new Dictionary<string, object>
+        //{
+        //    { "X-LC-Id",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID")}"  },
+        //    { "X-LC-Key",$"{ Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY")}"  }
+        //};
         var response = await LCCore.HttpClient.Get<Dictionary<string, object>>(
-            "data",   // 路径
-            headers,                              // 请求头
+            "date",   // 路径
+            null,                              // 请求头
             null,                              // 查询数据
             true                               // 使用API版本
         );
