@@ -132,8 +132,7 @@ public class RESTAPIService
             null,                              // 查询数据
             true                               // 使用API版本
         );
-
-        return response["iso"].ToString();
+        return $"{response["iso"]: yyyy-MM-dd HH:mm:ss}";
     }
 
 
