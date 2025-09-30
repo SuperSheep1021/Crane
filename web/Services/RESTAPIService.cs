@@ -119,7 +119,7 @@ public class RESTAPIService
     /// https://docs.leancloud.cn/sdk/storage/guide/rest/#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4
     /// </summary>
     /// <returns></returns>
-    public async Task<string> GetSysTime() 
+    public async Task<object> GetSysTime() 
     {
         //var headers = new Dictionary<string, object>
         //{
@@ -132,7 +132,7 @@ public class RESTAPIService
             null,                              // 查询数据
             true                               // 使用API版本
         );
-        return $"{response["iso"]: yyyy-MM-dd HH:mm:ss}";
+        return response["iso"];
     }
 
 

@@ -33,7 +33,7 @@ namespace web {
         }
 
         [LCEngineFunction("GetSysTime")]
-        public static async Task<string> GetSysTimeAsync()
+        public static async Task<object> GetSysTimeAsync()
         {
             return await RESTAPIService.Inst.GetSysTime();
         }
