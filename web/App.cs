@@ -26,6 +26,13 @@ namespace web {
         {
              return await RESTAPIService.Inst.isSignUped(userName);
         }
+
+        [LCEngineFunction("SysConvId")]
+        public static string SysConvId()
+        {
+            return RESTAPIService.Inst.SysConvId;
+        }
+
         [LCEngineFunction("SysAccountId")]
         public static string SysAccountId()
         {
