@@ -42,7 +42,7 @@ namespace web {
 
 
         [LCEngineFunction("初始化服务器")]
-        public static async Task<bool> TestCloudFuncAsync()
+        public static async Task<bool> InitialService()
         {
             bool success = true;
             await RESTAPIService.Inst.Initialtion();
