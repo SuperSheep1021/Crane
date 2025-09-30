@@ -119,7 +119,7 @@ public class RESTAPIService
     /// https://docs.leancloud.cn/sdk/storage/guide/rest/#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4
     /// </summary>
     /// <returns></returns>
-    public async Task<object> GetSysTime() 
+    public async Task<object> GetSysUTCTime() 
     {
         //var headers = new Dictionary<string, object>
         //{

@@ -39,13 +39,18 @@ namespace web {
             return RESTAPIService.Inst.SysUser.ObjectId;
         }
 
-        [LCEngineFunction("GetSysTime")]
-        public static async Task<object> GetSysTimeAsync()
+        [LCEngineFunction("SysUTCTime")]
+        public static async Task<object> GetSysUTCTime()
         {
-            return await RESTAPIService.Inst.GetSysTime();
+            return await RESTAPIService.Inst.GetSysUTCTime();
         }
 
-
+        [LCEngineFunction("SysLocalTime")]
+        public static async Task<object> GetSysLocalTime()
+        {
+            DateTime utc =(DateTime) await RESTAPIService.Inst.GetSysUTCTime();
+            return utc.ToLocalTime();
+        }
 
 
         [LCEngineFunction("初始化服务器")]
