@@ -68,6 +68,10 @@ namespace web {
         public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("parames")] Dictionary<string,object> parames)
         {
             bool success = true;
+            foreach (KeyValuePair<string,object> kv in parames)
+            {
+                LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
+            }
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { parames["id"].ToString() });
             return success;
         }
