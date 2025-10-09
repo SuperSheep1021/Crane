@@ -63,6 +63,25 @@ namespace web {
         }
 
 
+
+        [LCEngineFunction("登录/创建成功")]
+        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("parames")] Dictionary<string,object> parames)
+        {
+            bool success = true;
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { parames["id"].ToString() });
+            return success;
+        }
+
+        [LCEngineFunction("开始游戏")]
+        public static async Task<bool> StartGame([LCEngineFunctionParam("parames")] Dictionary<string, object> parames)
+        {
+            bool success = true;
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { parames["id"].ToString() });
+            return success;
+        }
+
+
+
         [LCEngineFunction("RA创建系统会话(string name)")]
         public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)
         {
