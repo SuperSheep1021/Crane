@@ -65,9 +65,11 @@ namespace web {
 
 
         [LCEngineFunction("登录/创建成功")]
-        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("parames")] Dictionary<string,object> parames)
+        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("parames")] Dictionary<string,object> parames,
+            LCUser user)
         {
             bool success = true;
+            LCLogger.Debug($"user execute signOrLogin:{user.Username}!!!!!!!");
             foreach (KeyValuePair<string,object> kv in parames)
             {
                 LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
