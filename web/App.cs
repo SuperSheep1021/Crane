@@ -68,13 +68,11 @@ namespace web {
         public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] string user, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
-
             //todo验证
             LCUser curUser = await LCJsonUtils.DeserializeObjectAsync<LCUser>(user);
-
-            LCLogger.Debug(parameters);
-
+            LCLogger.Debug($"验证{curUser.Username}用户登录");
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { curUser.ObjectId });
+            LCLogger.Debug($"验证{curUser.ObjectId}用户登录");
             return success;
         }
 
