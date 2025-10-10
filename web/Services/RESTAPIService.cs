@@ -327,7 +327,7 @@ public class RESTAPIService
     /// <param name="message"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,string text)
+    async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string conversationId, string fromClientId, string[] toClientIds,string text,Dictionary<string,object> parameters =null)
     {
         if (string.IsNullOrEmpty(conversationId))
             throw new ArgumentNullException(nameof(conversationId), "服务号对话ID不能为空");
@@ -335,14 +335,19 @@ public class RESTAPIService
         if (string.IsNullOrEmpty(fromClientId))
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
-
-        var message = new Dictionary<string, object>()
+        LCIMTextMessage message = new LCIMTextMessage(text);
+        if (parameters!=null) 
         {
-            { "_lctext",text},
-            { "_lctype",-1},
-        };
+            foreach (KeyValuePair<string, object> kv in parameters)
+            {
+                message[kv.Key] = kv.Value;
+            }
+        }
+        
+        string messageJson =await LCJsonUtils.SerializeObjectAsync(message);
+
         LCLogger.Debug("========================================");
-        LCLogger.Debug(JsonConvert.SerializeObject(message));
+        LCLogger.Debug(messageJson);
         LCLogger.Debug("========================================");
 
         // 可以添加额外的请求头（如果需要）
@@ -357,7 +362,7 @@ public class RESTAPIService
         {
             { "from_client",fromClientId },
             { "to_clients",toClientIds},
-            { "message",JsonConvert.SerializeObject(message) },
+            { "message",messageJson },
             { "transient",false},
             { "no_sync",true}
         };
@@ -381,9 +386,9 @@ public class RESTAPIService
     /// <param name="transient"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync(string text, string[] toClientIds)
+    public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync( string[] toClientIds, string text,Dictionary<string, object> parameters = null)
     {
-        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text);
+        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text, parameters);
     }
 
 

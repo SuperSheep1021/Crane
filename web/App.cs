@@ -83,7 +83,10 @@ namespace web {
             }
             await lcobj.Save();
 
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { userId });
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
+            {
+                { "deviceInfoId",lcobj.ObjectId }
+            });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
@@ -118,7 +121,7 @@ namespace web {
             //await lcobj.Save();
 
            
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { userId });
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001");
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
@@ -164,7 +167,7 @@ namespace web {
             {
                 clientIdsStrarr.Add(clientid.ToString() );
             }
-            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync( text, clientIdsStrarr.ToArray());
+            return await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync( clientIdsStrarr.ToArray(), text);
         }
 
 
