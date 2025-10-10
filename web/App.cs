@@ -65,7 +65,7 @@ namespace web {
 
 
         [LCEngineFunction("SignUpOrLogin")]
-        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] string user, [LCEngineFunctionParam("params")] string parameters)
+        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] string user, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
 
