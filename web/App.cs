@@ -65,14 +65,17 @@ namespace web {
 
 
         [LCEngineFunction("SignUpOrLogin")]
-        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] string user, [LCEngineFunctionParam("parameters")] string parameters)
+        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
+            Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
             //todo验证
-            LCUser curUser = await LCJsonUtils.DeserializeObjectAsync<LCUser>(user);
-            LCLogger.Debug($"验证{curUser.Username}用户登录");
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { curUser.ObjectId });
-            LCLogger.Debug($"验证{curUser.ObjectId}用户登录");
+            if (userId == dic["userId"].ToString() ) 
+            {
+                LCLogger.Debug($"验证通过");
+            }
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { userId });
+            LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
 
