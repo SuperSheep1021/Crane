@@ -86,6 +86,13 @@ namespace web {
 
             //todo验证
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
+            LCObject lcobj = new LCObject("DeviceInfo");
+            foreach (KeyValuePair<string,object> kv in dic) 
+            {
+                lcobj[kv.Key] = kv.Value;
+            }
+            await lcobj.Save();
+
             //todo验证
             if (userId == dic["userId"].ToString())
             {
