@@ -84,20 +84,23 @@ namespace web {
         {
             bool success = true;
 
-            //todo验证
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
-            LCObject lcobj = new LCObject("DeviceInfo");
-            foreach (KeyValuePair<string,object> kv in dic) 
-            {
-                lcobj[kv.Key] = kv.Value;
-            }
-            await lcobj.Save();
-
             //todo验证
             if (userId == dic["userId"].ToString())
             {
                 LCLogger.Debug($"验证通过");
             }
+
+
+            LCObject lcobj = new LCObject("DeviceInfo");
+            foreach (KeyValuePair<string,object> kv in dic) 
+            {
+                lcobj[kv.Key] = kv.Value;
+                LCLogger.Debug($"key{kv.Key} value{kv.Value}");
+            }
+            await lcobj.Save();
+
+           
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { userId });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
