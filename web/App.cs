@@ -65,24 +65,32 @@ namespace web {
 
 
         [LCEngineFunction("登录/创建成功")]
-        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("parames")] Dictionary<string,object> parames,
-            [LCEngineFunctionParam("user")] LCUser user)
+        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] LCUser user , [LCEngineFunctionParam("json")] string json)
         {
             bool success = true;
             LCLogger.Debug($"user execute signOrLogin:{user.Username}!!!!!!!");
-            foreach (KeyValuePair<string,object> kv in parames)
+            //todo验证
+            Dictionary<string, object> parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            foreach (KeyValuePair<string,object> kv in parameters)
             {
                 LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
             }
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { parames["id"].ToString() });
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { user.ObjectId });
             return success;
         }
 
         [LCEngineFunction("开始游戏")]
-        public static async Task<bool> StartGame([LCEngineFunctionParam("parames")] Dictionary<string, object> parames)
+        public static async Task<bool> StartGame([LCEngineFunctionParam("user")] LCUser user, [LCEngineFunctionParam("json")] string json)
         {
             bool success = true;
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { parames["id"].ToString() });
+            LCLogger.Debug($"user execute StartGame:{user.Username}!!!!!!!");
+            //todo验证
+            Dictionary<string, object> parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            foreach (KeyValuePair<string, object> kv in parameters)
+            {
+                LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
+            }
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { user.ObjectId });
             return success;
         }
 
