@@ -68,13 +68,16 @@ namespace web {
         public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("json")] string json)
         {
             bool success = true;
+
             //todo验证
             Dictionary<string, object> parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            foreach (KeyValuePair<string,object> kv in parameters)
-            {
-                LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
-            }
-            //await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { user.ObjectId });
+            string userJson = parameters["user"].ToString();
+            LCUser user = await LCJsonUtils.DeserializeObjectAsync<LCUser>(userJson);
+
+            string paramsJson = parameters["json"].ToString();
+            LCLogger.Debug(paramsJson);
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { user.ObjectId });
             return success;
         }
 
