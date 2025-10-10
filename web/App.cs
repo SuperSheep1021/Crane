@@ -6,6 +6,7 @@ using LeanCloud.Realtime;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
@@ -102,34 +103,37 @@ namespace web {
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
-
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
             //todo验证
             if (userId == dic["userId"].ToString())
             {
                 LCLogger.Debug($"验证通过");
             }
-            try
-            {
-                string parametersStr = dic["parameters"].ToString();
-            }
-            catch(Exception ex) {
-                LCLogger.Debug(ex.Message);
-            }
-            //string parametersStr = dic["parameters"].ToString();
-            //LCLogger.Debug($"parametersStr   {parametersStr}");
-            //Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(parametersStr);
-            //LCObject lcobj = new LCObject("DeviceInfo");
-            foreach (KeyValuePair<string,object> kv in dic) 
-            {
-                //lcobj[kv.Key] = kv.Value;
-                LCLogger.Debug($"key{kv.Key} value{kv.Value}");
-            }
-            //await lcobj.Save();
 
-           
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001");
-            LCLogger.Debug($"验证{userId}用户登录");
+
+            LCQuery<LCObject> devQuery = new LCQuery<LCObject>("StartGameInfo");
+            devQuery.WhereEqualTo("userId", dic["userId"]);
+            devQuery.WhereEqualTo("userName", dic["userName"]);
+            devQuery.OrderByDescending("createAt");
+            ReadOnlyCollection<LCObject> sGameTables = await devQuery.Find();
+
+            if (sGameTables.Count > 10)
+            {
+                await sGameTables[9].Delete();
+            }
+
+
+            LCObject sGame = new LCObject("StartGameInfo");
+            foreach (KeyValuePair<string, object> kv in dic)
+            {
+                sGame[kv.Key] = kv.Value;
+            }
+            await sGame.Save();
+
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001",new Dictionary<string, object>() {
+                {"startGameId", sGame.ObjectId}
+            });
             return success;
         }
 
