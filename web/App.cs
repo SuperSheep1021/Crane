@@ -64,7 +64,7 @@ namespace web {
 
 
 
-        [LCEngineFunction("登录/创建成功")]
+        [LCEngineFunction("SignUpOrLogin")]
         public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("user")] LCUser user , [LCEngineFunctionParam("json")] string json)
         {
             bool success = true;
