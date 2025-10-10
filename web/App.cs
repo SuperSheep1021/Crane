@@ -74,12 +74,23 @@ namespace web {
             {
                 LCLogger.Debug($"验证通过");
             }
+            string parametersStr = dic["parameters"].ToString();
+            LCLogger.Debug($"parametersStr   {parametersStr}");
+            Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(parametersStr);
+            LCObject lcobj = new LCObject("DeviceInfo");
+            foreach (KeyValuePair<string, object> kv in dic)
+            {
+                lcobj[kv.Key] = kv.Value;
+                LCLogger.Debug($"key{kv.Key} value{kv.Value}");
+            }
+            await lcobj.Save();
+
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { userId });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
 
-        [LCEngineFunction("开始游戏")]
+        [LCEngineFunction("StartGame")]
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
