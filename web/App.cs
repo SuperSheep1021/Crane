@@ -90,17 +90,23 @@ namespace web {
             {
                 LCLogger.Debug($"验证通过");
             }
-
-            string parametersStr = dic["parameters"].ToString();
-            LCLogger.Debug($"parametersStr   {parametersStr}");
-            Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(parametersStr);
-            LCObject lcobj = new LCObject("DeviceInfo");
-            foreach (KeyValuePair<string,object> kv in deviceInfo) 
+            try
             {
-                lcobj[kv.Key] = kv.Value;
+                string parametersStr = dic["parameters"].ToString();
+            }
+            catch(Exception ex) {
+                LCLogger.Debug(ex.Message);
+            }
+            //string parametersStr = dic["parameters"].ToString();
+            //LCLogger.Debug($"parametersStr   {parametersStr}");
+            //Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(parametersStr);
+            //LCObject lcobj = new LCObject("DeviceInfo");
+            foreach (KeyValuePair<string,object> kv in dic) 
+            {
+                //lcobj[kv.Key] = kv.Value;
                 LCLogger.Debug($"key{kv.Key} value{kv.Value}");
             }
-            await lcobj.Save();
+            //await lcobj.Save();
 
            
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { userId });
