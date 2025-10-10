@@ -91,9 +91,9 @@ namespace web {
                 LCLogger.Debug($"验证通过");
             }
 
-
+            Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>( dic["parameters"].ToString()  );
             LCObject lcobj = new LCObject("DeviceInfo");
-            foreach (KeyValuePair<string,object> kv in dic) 
+            foreach (KeyValuePair<string,object> kv in deviceInfo) 
             {
                 lcobj[kv.Key] = kv.Value;
                 LCLogger.Debug($"key{kv.Key} value{kv.Value}");
