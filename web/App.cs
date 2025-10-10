@@ -45,14 +45,6 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
 
-        [LCEngineFunction("SysLocalTime")]
-        public static async Task<object> GetSysLocalTime()
-        {
-            DateTime utc =(DateTime) await RESTAPIService.Inst.GetSysUTCTime();
-            return utc.ToLocalTime();
-        }
-
-
         [LCEngineFunction("初始化服务器")]
         public static async Task<bool> InitialService()
         {
@@ -73,19 +65,34 @@ namespace web {
             if (userId == dic["userId"].ToString() ) 
             {
                 LCLogger.Debug($"验证通过");
+            }
 
-            }
-            LCObject lcobj = new LCObject("DeviceInfo");
-            foreach (KeyValuePair<string, object> kv in dic)
+            LCQuery<LCObject> devQuery = new LCQuery<LCObject>("DeviceInfo");
+            devQuery.WhereEqualTo("userId", dic["userId"] );
+            devQuery.WhereEqualTo("userName", dic["userName"] );
+            LCObject devTable = await devQuery.First();
+
+            if (devTable == null)
             {
-                lcobj[kv.Key] = kv.Value;
-                LCLogger.Debug($"key {kv.Key} value {kv.Value}");
+                devTable = new LCObject("DeviceInfo");
+                foreach (KeyValuePair<string, object> kv in dic)
+                {
+                    devTable[kv.Key] = kv.Value;
+                    LCLogger.Debug($"key {kv.Key} value {kv.Value}");
+                }
+                await devTable.Save();
             }
-            await lcobj.Save();
+            else {
+                foreach (KeyValuePair<string, object> kv in dic)
+                {
+                    devTable[kv.Key] = kv.Value;
+                }
+                await devTable.Save();
+            }
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
             {
-                { "deviceInfoId",lcobj.ObjectId }
+                { "deviceInfoId",devTable.ObjectId }
             });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
