@@ -80,20 +80,21 @@ namespace web {
         }
 
         [LCEngineFunction("开始游戏")]
-        public static async Task<bool> StartGame([LCEngineFunctionParam("user")] LCUser user, [LCEngineFunctionParam("json")] string json)
+        public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = true;
-            LCLogger.Debug($"user execute StartGame:{user.Username}!!!!!!!");
+
             //todo验证
-            Dictionary<string, object> parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            foreach (KeyValuePair<string, object> kv in parameters)
+            Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
+            //todo验证
+            if (userId == dic["userId"].ToString())
             {
-                LCLogger.Debug($"key:{kv.Key} value:{kv.Value}");
+                LCLogger.Debug($"验证通过");
             }
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { user.ObjectId });
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100001", new string[] { userId });
+            LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
-
 
 
         [LCEngineFunction("RA创建系统会话(string name)")]
