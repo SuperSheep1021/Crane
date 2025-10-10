@@ -75,20 +75,11 @@ namespace web {
                 LCLogger.Debug($"验证通过");
 
             }
-            foreach (KeyValuePair<string, object> kv in dic)
-            {
-                LCLogger.Debug($"key{kv.Key} value{kv.Value}");
-            }
-            LCLogger.Debug($"==================================================");
-
-            string parametersStr = dic["parameters"].ToString();
-            LCLogger.Debug($"parametersStr   {parametersStr}");
-            Dictionary<string, object> deviceInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(parametersStr);
             LCObject lcobj = new LCObject("DeviceInfo");
             foreach (KeyValuePair<string, object> kv in dic)
             {
                 lcobj[kv.Key] = kv.Value;
-                LCLogger.Debug($"key{kv.Key} value{kv.Value}");
+                LCLogger.Debug($"key {kv.Key} value {kv.Value}");
             }
             await lcobj.Save();
 
