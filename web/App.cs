@@ -308,7 +308,7 @@ namespace web {
             //else {
             //    await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success", new string[] { members[0].ToString() });
             //}
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { members[0].ToString() });
+            //await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { members[0].ToString() });
             return parameters;
         }
 
