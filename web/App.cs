@@ -149,6 +149,13 @@ namespace web {
 
             sGame["sysUtc"] = sysUtcTime;
             sGame["sysLocal"] = sysLocalTime;
+
+            sGame.ACL = new LCACL();
+            sGame.ACL.SetUserIdReadAccess(userId, true);
+            sGame.ACL.SetUserIdWriteAccess(userId, true);
+            sGame.ACL.SetUserIdReadAccess(SysIMClientService.Inst.SysIMClient.Id, true);
+            sGame.ACL.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
+
             await sGame.Save();
 
 
