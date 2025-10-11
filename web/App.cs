@@ -96,7 +96,6 @@ namespace web {
                 await devTable.Save();
             }
             
-            //string devtablejson = await LCJsonUtils.SerializeAsync(devTable);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
             {
                 { "deviceInfoId",devTable.ObjectId }
@@ -120,7 +119,7 @@ namespace web {
             LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
             devQuery.WhereEqualTo("userId", dic["userId"]);
             devQuery.WhereEqualTo("userName", dic["userName"]);
-            devQuery.OrderByDescending("createAt");
+            devQuery.OrderByDescending("createdAt");
             ReadOnlyCollection<LCObject> sGameTables = await devQuery.Find();
 
             if (sGameTables.Count > 10)
