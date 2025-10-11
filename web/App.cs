@@ -60,108 +60,50 @@ namespace web {
         [LCEngineFunction("SignUpOrLogin")]
         public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
-            bool success = true;
+            bool success = false;
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
-            //todo验证
-            if (userId == dic["userId"].ToString() ) 
+
+            if (!dic.ContainsKey("userId"))
             {
-                LCLogger.Debug($"验证通过");
+                return success;
             }
 
-            LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.DeviceTable);
-            devQuery.WhereEqualTo("userId", dic["userId"] );
-            devQuery.WhereEqualTo("userName", dic["userName"] );
-            LCObject devTable = await devQuery.First();
-
-            if (devTable == null)
+            string paramsClientId = dic["userId"] as string;
+            success = await HelpService.ValidateClientID(userId, paramsClientId);
+            if (success) 
             {
-                devTable = new LCObject(HelpService.DeviceTable);
-                foreach (KeyValuePair<string, object> kv in dic)
+                string deviceInfoId = await HelpService.CreateDeviceInfo(dic);
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
                 {
-                    devTable[kv.Key] = kv.Value;
-                }
-                devTable.ACL = new LCACL();
-                devTable.ACL.SetUserIdReadAccess(userId,true);
-                devTable.ACL.SetUserIdWriteAccess(userId, true);
-                devTable.ACL.SetUserIdReadAccess(SysIMClientService.Inst.SysIMClient.Id, true);
-                devTable.ACL.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
-
-                await devTable.Save();
+                    { "deviceInfoId",deviceInfoId }
+                });
             }
-            else {
-                foreach (KeyValuePair<string, object> kv in dic)
-                {
-                    devTable[kv.Key] = kv.Value;
-                }
-                await devTable.Save();
-            }
+           
             
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
-            {
-                { "deviceInfoId",devTable.ObjectId }
-            });
-            LCLogger.Debug($"验证{userId}用户登录");
             return success;
         }
 
         [LCEngineFunction("StartGame")]
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
-            bool success = true;
+            bool success = false;
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
-            //todo验证
-            if (userId == dic["userId"].ToString())
+            if (!dic.ContainsKey("userId") ) 
             {
-                LCLogger.Debug($"验证通过");
+                return success;
+            }
+            string paramsClientId = dic["userId"] as string;
+            success = await HelpService.ValidateClientID(userId,paramsClientId);
+
+            if (success) 
+            {
+                string startGameInfoId = await HelpService.CreateStartGameInfo(dic);
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() {
+                {
+                        "startGameId",startGameInfoId }
+                 });
             }
 
-
-            LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
-            devQuery.WhereEqualTo("userId", dic["userId"]);
-            devQuery.WhereEqualTo("userName", dic["userName"]);
-            devQuery.OrderByDescending("createdAt");
-            ReadOnlyCollection<LCObject> sGameTables = await devQuery.Find();
-
-            if (sGameTables.Count > 10)
-            {
-                await sGameTables[9].Delete();
-            }
-
-
-            LCObject sGame = new LCObject(HelpService.StartGameTable);
-            foreach (KeyValuePair<string, object> kv in dic)
-            {
-                sGame[kv.Key] = kv.Value;
-            }
-
-            DateTime sysUtcTime = DateTime.ParseExact(
-                $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
-               "yyyy-MM-dd HH:mm:ss",
-               System.Globalization.CultureInfo.InvariantCulture,
-               System.Globalization.DateTimeStyles.AssumeUniversal
-           );
-            DateTime sysLocalTime = DateTime.ParseExact(
-                 $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}",
-                "yyyy-MM-dd HH:mm:ss",
-                System.Globalization.CultureInfo.InvariantCulture,
-                System.Globalization.DateTimeStyles.AssumeUniversal
-            );
-
-            sGame["sysUtc"] = sysUtcTime;
-            sGame["sysLocal"] = sysLocalTime;
-
-            sGame.ACL = new LCACL();
-            sGame.ACL.SetUserIdReadAccess(userId, true);
-            sGame.ACL.SetUserIdWriteAccess(userId, true);
-            sGame.ACL.SetUserIdReadAccess(SysIMClientService.Inst.SysIMClient.Id, true);
-            sGame.ACL.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
-
-            await sGame.Save();
-
-
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001",new Dictionary<string, object>() {
-                {"startGameId", sGame.ObjectId}
-            });
             return success;
         }
 
