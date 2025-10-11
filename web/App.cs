@@ -79,7 +79,6 @@ namespace web {
                 foreach (KeyValuePair<string, object> kv in dic)
                 {
                     devTable[kv.Key] = kv.Value;
-                    LCLogger.Debug($"key {kv.Key} value {kv.Value}");
                 }
                 await devTable.Save();
             }

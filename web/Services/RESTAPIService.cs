@@ -340,8 +340,10 @@ public class RESTAPIService
             { "_lctext",text},
             { "_lctype",-1},
         };
-
-        message.Add("_lcattrs", JsonConvert.SerializeObject(parameters) );
+        if (parameters!=null) {
+            message.Add("_lcattrs", parameters);
+        }
+        
 
         //LCIMTextMessage message = new LCIMTextMessage(text);
         //if (parameters!=null) 
