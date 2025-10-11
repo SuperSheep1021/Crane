@@ -133,6 +133,9 @@ namespace web {
             {
                 sGame[kv.Key] = kv.Value;
             }
+            
+            sGame["sysUtc"] = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
+            sGame["sysLocal"] = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}";
             await sGame.Save();
 
 
