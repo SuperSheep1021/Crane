@@ -89,10 +89,11 @@ namespace web {
                 }
                 await devTable.Save();
             }
-
+            
+            //string devtablejson = await LCJsonUtils.SerializeAsync(devTable);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
             {
-                { "deviceInfoId",devTable.ObjectId }
+                { "deviceInfo",devTable }
             });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
