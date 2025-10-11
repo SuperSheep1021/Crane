@@ -335,15 +335,24 @@ public class RESTAPIService
         if (string.IsNullOrEmpty(fromClientId))
             throw new ArgumentNullException(nameof(fromClientId), "发送客户端ID不能为空");
 
-        LCIMTextMessage message = new LCIMTextMessage(text);
-        if (parameters!=null) 
+        var message = new Dictionary<string, object>()
         {
-            foreach (KeyValuePair<string, object> kv in parameters)
-            {
-                message[kv.Key] = kv.Value;
-            }
-        }
-        
+            { "_lctext",text},
+            { "_lctype",-1},
+        };
+
+        message.Add("_lcattrs", JsonConvert.SerializeObject(parameters) );
+
+        //LCIMTextMessage message = new LCIMTextMessage(text);
+        //if (parameters!=null) 
+        //{
+
+        //    foreach (KeyValuePair<string, object> kv in parameters)
+        //    {
+        //        message[kv.Key] = kv.Value;
+        //    }
+        //}
+
         string messageJson =await LCJsonUtils.SerializeObjectAsync(message);
 
         LCLogger.Debug("========================================");
