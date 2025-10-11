@@ -99,7 +99,7 @@ namespace web {
             //string devtablejson = await LCJsonUtils.SerializeAsync(devTable);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },"100000" ,new Dictionary<string, object>() 
             {
-                { "deviceInfo",devTable }
+                { "deviceInfoId",devTable.ObjectId }
             });
             LCLogger.Debug($"验证{userId}用户登录");
             return success;
