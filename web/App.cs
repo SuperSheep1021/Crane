@@ -80,6 +80,12 @@ namespace web {
                 {
                     devTable[kv.Key] = kv.Value;
                 }
+                devTable.ACL = new LCACL();
+                devTable.ACL.SetUserIdReadAccess(userId,true);
+                devTable.ACL.SetUserIdWriteAccess(userId, true);
+                devTable.ACL.SetUserIdReadAccess(SysIMClientService.Inst.SysIMClient.Id, true);
+                devTable.ACL.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
+
                 await devTable.Save();
             }
             else {
