@@ -133,9 +133,22 @@ namespace web {
             {
                 sGame[kv.Key] = kv.Value;
             }
-            
-            sGame["sysUtc"] = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
-            sGame["sysLocal"] = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+
+            DateTime sysUtcTime = DateTime.ParseExact(
+                $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
+               "yyyy-MM-dd HH:mm:ss",
+               System.Globalization.CultureInfo.InvariantCulture,
+               System.Globalization.DateTimeStyles.AssumeUniversal
+           );
+            DateTime sysLocalTime = DateTime.ParseExact(
+                 $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}",
+                "yyyy-MM-dd HH:mm:ss",
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AssumeUniversal
+            );
+
+            sGame["sysUtc"] = sysUtcTime;
+            sGame["sysLocal"] = sysLocalTime;
             await sGame.Save();
 
 
