@@ -46,14 +46,14 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
 
-        [LCEngineFunction("初始化服务器")]
-        public static async Task<bool> InitialService()
-        {
-            bool success = true;
-            await RESTAPIService.Inst.Initialtion();
-            await SysIMClientService.Inst.Initialtion();
-            return success;
-        }
+        //[LCEngineFunction("初始化服务器")]
+        //public static async Task<bool> InitialService()
+        //{
+        //    bool success = true;
+        //    await RESTAPIService.Inst.Initialtion();
+        //    await SysIMClientService.Inst.Initialtion();
+        //    return success;
+        //}
 
 
 
