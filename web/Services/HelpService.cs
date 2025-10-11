@@ -19,5 +19,6 @@ public static class HelpService
         }
     }
 
-
+    public static string DeviceTable = "DeviceInfos";
+    public static string StartGameTable = "StartGameInfo";
 }

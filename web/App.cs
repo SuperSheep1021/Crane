@@ -68,14 +68,14 @@ namespace web {
                 LCLogger.Debug($"验证通过");
             }
 
-            LCQuery<LCObject> devQuery = new LCQuery<LCObject>("DeviceInfo");
+            LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.DeviceTable);
             devQuery.WhereEqualTo("userId", dic["userId"] );
             devQuery.WhereEqualTo("userName", dic["userName"] );
             LCObject devTable = await devQuery.First();
 
             if (devTable == null)
             {
-                devTable = new LCObject("DeviceInfo");
+                devTable = new LCObject(HelpService.DeviceTable);
                 foreach (KeyValuePair<string, object> kv in dic)
                 {
                     devTable[kv.Key] = kv.Value;
@@ -111,7 +111,7 @@ namespace web {
             }
 
 
-            LCQuery<LCObject> devQuery = new LCQuery<LCObject>("StartGameInfo");
+            LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
             devQuery.WhereEqualTo("userId", dic["userId"]);
             devQuery.WhereEqualTo("userName", dic["userName"]);
             devQuery.OrderByDescending("createAt");
@@ -123,7 +123,7 @@ namespace web {
             }
 
 
-            LCObject sGame = new LCObject("StartGameInfo");
+            LCObject sGame = new LCObject(HelpService.StartGameTable);
             foreach (KeyValuePair<string, object> kv in dic)
             {
                 sGame[kv.Key] = kv.Value;
