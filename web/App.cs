@@ -55,11 +55,8 @@ namespace web {
         //    return success;
         //}
 
-
-
-        [LCEngineFunction("SignUpOrLogin")]
-        public static async Task<bool> SignUpOrLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
-        {
+        [LCEngineFunction("OnSignUp")]
+        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters) {
             bool success = false;
             Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
 
@@ -76,15 +73,49 @@ namespace web {
                 return success;
             }
 
-            if (success) 
+            if (success)
             {
-                string deviceInfoId = await HelpService.CreateDeviceInfo(dic);
-                string playerPropInfoId = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+                LCObject deviceInfo = await HelpService.CreateOrSetupDeviceInfo(dic);
+                LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+                string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
                 {
-                    { "deviceInfoId",deviceInfoId },
-                    { "playerPropInfoId",playerPropInfoId }
+                    { "deviceInfoId",deviceInfo.ObjectId },
+                    { "playerPropInfoId",playerPropInfo.ObjectId },
+                    { "playerProp", playerPropJson }
                 });
+            }
+            return success;
+        }
+
+        [LCEngineFunction("OnLogin")]
+        public static async Task<bool> OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
+        {
+            bool success = false;
+            
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
+
+            if (!dic.ContainsKey("userId"))
+            {
+                return success;
+            }
+
+            string paramsClientId = dic["userId"] as string;
+            success = await HelpService.ValidateClientID(userId, paramsClientId);
+            if (!success)
+            {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
+                return success;
+            }
+
+            if (success) 
+            {
+                LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
+                string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000",new Dictionary<string, object>() 
+                {
+                    { "playerProp",playerPropJson }
+                } );
             }
             return success;
         }
@@ -115,10 +146,10 @@ namespace web {
 
             if (success)
             {
-                string startGameInfoId = await HelpService.CreateStartGameInfo(dic);
+                LCObject startGameInfo = await HelpService.CreateStartGameInfo(dic);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() 
                 {
-                    {"startGameId",startGameInfoId },
+                    {"startGameId",startGameInfo.ObjectId },
                  });
             }
 

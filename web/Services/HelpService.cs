@@ -91,7 +91,7 @@ public static class HelpService
         acl.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
         return acl;
     }
-    public static async Task<string> CreateStartGameInfo(Dictionary<string,object> dic) 
+    public static async Task<LCObject> CreateStartGameInfo(Dictionary<string,object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
         devQuery.WhereEqualTo("userId", dic["userId"]);
@@ -131,9 +131,9 @@ public static class HelpService
 
         await startGameInfo.Save();
 
-        return startGameInfo.ObjectId;
+        return startGameInfo;
     }
-    public static async Task<string> CreateDeviceInfo(Dictionary<string, object> dic) 
+    public static async Task<LCObject> CreateOrSetupDeviceInfo(Dictionary<string, object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
         devQuery.WhereEqualTo("userId", dic["userId"]);
@@ -160,16 +160,15 @@ public static class HelpService
             await devTable.Save();
         }
 
-        return devTable.ObjectId;
+        return devTable;
     }
-    public static async Task<string> CreateDefaultPlayerPropsInfoFromUser(string userId)
+    public static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
     {
         LCObject playerProp = new LCObject(PlayerPropsTable);
         playerProp.ACL = SetupACL(userId);
         await playerProp.Save();
-        return playerProp.ObjectId;
+        return playerProp;
     }
-
     private static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(ConfigTable);
@@ -178,8 +177,7 @@ public static class HelpService
         //string json = await LCJsonUtils.SerializeObjectAsync(gameConfig);
         //return json;
     }
-    
-    private static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
+    public static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
         query.WhereEqualTo("userId", userId);
@@ -297,19 +295,7 @@ public static class HelpService
     }
     #endregion
 
-    //public static async Task<string> GetPlayerPropsTableInfoFromUser(string userId,string userName)
-    //{
-    //    LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
-    //    query.WhereEqualTo("userId",userId);
-    //    query.WhereEqualTo("userName", userName);
-    //    LCObject palyerProp = await query.First();
-
-    //    string json = await LCJsonUtils.SerializeObjectAsync(palyerProp);
-    //    return json;
-    //}
-
-
-    #region //ProbabilityTool https://www.doubao.com/thread/w168a32c6ad71453a
+    #region //ProbabilityTool 
     // 线程本地存储的Random实例（确保多线程安全，避免种子重复）
     private static readonly ThreadLocal<Random> _threadLocalRandom = new ThreadLocal<Random>(
         () => new Random(Guid.NewGuid().GetHashCode()) // 用GUID哈希作为种子，降低重复概率
@@ -320,6 +306,7 @@ public static class HelpService
     /// </summary>
     /// <param name="probabilityPercent">概率百分比（0-100，包含0和100）</param>
     /// <returns>true：执行；false：不执行</returns>
+    /// https://www.doubao.com/thread/w168a32c6ad71453a
     /// <exception cref="ArgumentOutOfRangeException">当概率超出0-100范围时抛出</exception>
     public static bool ShouldExecute(int probabilityPercent)
     {
@@ -343,4 +330,5 @@ public static class HelpService
         return _threadLocalRandom.Value.NextDouble() < probability;
     }
     #endregion
+
 }
