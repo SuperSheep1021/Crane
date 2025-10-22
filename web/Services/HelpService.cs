@@ -6,6 +6,7 @@ using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 public static class HelpService 
@@ -306,4 +307,40 @@ public static class HelpService
     //    string json = await LCJsonUtils.SerializeObjectAsync(palyerProp);
     //    return json;
     //}
+
+
+    #region //ProbabilityTool https://www.doubao.com/thread/w168a32c6ad71453a
+    // 线程本地存储的Random实例（确保多线程安全，避免种子重复）
+    private static readonly ThreadLocal<Random> _threadLocalRandom = new ThreadLocal<Random>(
+        () => new Random(Guid.NewGuid().GetHashCode()) // 用GUID哈希作为种子，降低重复概率
+    );
+
+    /// <summary>
+    /// 根据概率百分比判断是否执行
+    /// </summary>
+    /// <param name="probabilityPercent">概率百分比（0-100，包含0和100）</param>
+    /// <returns>true：执行；false：不执行</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当概率超出0-100范围时抛出</exception>
+    public static bool ShouldExecute(int probabilityPercent)
+    {
+        // 校验参数合法性
+        if (probabilityPercent < 0 || probabilityPercent > 100)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(probabilityPercent),
+                "概率百分比必须在0-100之间"
+            );
+        }
+
+        // 边界情况优化：0%一定不执行，100%一定执行（无需生成随机数）
+        if (probabilityPercent == 0) return false;
+        if (probabilityPercent == 100) return true;
+
+        // 转换为0-1之间的概率值（例如30% → 0.3）
+        double probability = probabilityPercent / 100.0;
+
+        // 生成[0.0, 1.0)的随机数，若小于目标概率则返回true
+        return _threadLocalRandom.Value.NextDouble() < probability;
+    }
+    #endregion
 }
