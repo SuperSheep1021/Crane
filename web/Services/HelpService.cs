@@ -1,6 +1,7 @@
 
 using LC.Newtonsoft.Json;
 using LeanCloud;
+using LeanCloud.Common;
 using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
@@ -78,8 +79,8 @@ public static class HelpService
 
     public static string DeviceTable = "DeviceInfos";
     public static string StartGameTable = "StartGameInfo";
-
-
+    public static string ConfigTable = "Config";
+    public static string PlayerPropsTable = "PlayerProps";
     public static LCACL SetupACL(string clientUserId) 
     {
         LCACL acl = new LCACL();
@@ -89,7 +90,6 @@ public static class HelpService
         acl.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
         return acl;
     }
-
     public static async Task<string> CreateStartGameInfo(Dictionary<string,object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
@@ -132,7 +132,6 @@ public static class HelpService
 
         return startGameInfo.ObjectId;
     }
-
     public static async Task<string> CreateDeviceInfo(Dictionary<string, object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
@@ -162,5 +161,22 @@ public static class HelpService
 
         return devTable.ObjectId;
     }
+    public static async Task<string> GetGameConfigTableInfo()
+    {
+        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(ConfigTable);
+        LCObject gameConfig = await devQuery.First();
+        string json =await LCJsonUtils.SerializeObjectAsync(gameConfig);
+        return json;
+    }
 
+    public static async Task<string> GetPlayerPropsTableInfoFromUser(string userId,string userName)
+    {
+        LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
+        query.WhereEqualTo("userId",userId);
+        query.WhereEqualTo("userName", userName);
+        LCObject palyerProp = await query.First();
+       
+        string json = await LCJsonUtils.SerializeObjectAsync(palyerProp);
+        return json;
+    }
 }
