@@ -70,19 +70,22 @@ namespace web {
 
             string paramsClientId = dic["userId"] as string;
             success = await HelpService.ValidateClientID(userId, paramsClientId);
+            if (!success)
+            {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
+                return success;
+            }
+
             if (success) 
             {
                 string deviceInfoId = await HelpService.CreateDeviceInfo(dic);
+                string playerPropInfoId = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
                 {
-                    { "deviceInfoId",deviceInfoId }
+                    { "deviceInfoId",deviceInfoId },
+                    { "playerPropInfoId",playerPropInfoId }
                 });
-
-
-
             }
-           
-            
             return success;
         }
 
@@ -97,13 +100,25 @@ namespace web {
             }
             string paramsClientId = dic["userId"] as string;
             success = await HelpService.ValidateClientID(userId,paramsClientId);
+            if (!success) 
+            {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
+                return success;
+            }
 
-            if (success) 
+            success = await HelpService.ConsumePower(userId);
+            if (!success)
+            {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100102");
+                return success;
+            }
+
+            if (success)
             {
                 string startGameInfoId = await HelpService.CreateStartGameInfo(dic);
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() 
                 {
-                        "startGameId",startGameInfoId }
+                    {"startGameId",startGameInfoId },
                  });
             }
 

@@ -161,22 +161,149 @@ public static class HelpService
 
         return devTable.ObjectId;
     }
-    public static async Task<string> GetGameConfigTableInfo()
+    public static async Task<string> CreateDefaultPlayerPropsInfoFromUser(string userId)
+    {
+        LCObject playerProp = new LCObject(PlayerPropsTable);
+        playerProp.ACL = SetupACL(userId);
+        await playerProp.Save();
+        return playerProp.ObjectId;
+    }
+
+    private static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(ConfigTable);
         LCObject gameConfig = await devQuery.First();
-        string json =await LCJsonUtils.SerializeObjectAsync(gameConfig);
-        return json;
+        return gameConfig;
+        //string json = await LCJsonUtils.SerializeObjectAsync(gameConfig);
+        //return json;
     }
-
-    public static async Task<string> GetPlayerPropsTableInfoFromUser(string userId,string userName)
+    
+    private static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
-        query.WhereEqualTo("userId",userId);
-        query.WhereEqualTo("userName", userName);
+        query.WhereEqualTo("userId", userId);
         LCObject palyerProp = await query.First();
-       
-        string json = await LCJsonUtils.SerializeObjectAsync(palyerProp);
-        return json;
+        return palyerProp;
     }
+
+    #region//Power Value
+    public static async Task<bool> AddConsumePower(string userId)
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            LCObject gameConfig = await GetGameConfigTableInfo();
+            int addPowerValue = ConvertTo<int>( gameConfig["perAddPower"] );
+
+            int userPower = ConvertTo<int>(palyerProp["power"]);
+            userPower += addPowerValue;
+
+            palyerProp["power"] = userPower;
+            await palyerProp.Save();
+            success = true;
+        }
+        return success;
+    }
+    public static async Task<bool> ConsumePower(string userId)
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            LCObject gameConfig = await GetGameConfigTableInfo();
+            int conSumeValue = ConvertTo<int>(gameConfig["perConsumePower"]);
+            int userPower = ConvertTo<int>(palyerProp["power"]);
+            if (userPower >= conSumeValue)
+            {
+                userPower -= conSumeValue;
+                palyerProp["power"] = userPower;
+                await palyerProp.Save();
+                success = true;
+            }
+        }
+        return success;
+    }
+    #endregion
+
+    #region// GoldCoin
+    public static async Task<bool> ConsumeGoldCoin(string userId, int consumeCount)
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
+            if (userGoldCoin>= consumeCount) 
+            {
+                userGoldCoin -= consumeCount;
+            }
+            palyerProp["goldCoin"] = userGoldCoin;
+            await palyerProp.Save();
+            success = true;
+        }
+        return success;
+    }
+    public static async Task<bool> AddGoldCoin(string userId,int count) 
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
+            userGoldCoin += count;
+
+            palyerProp["goldCoin"] = userGoldCoin;
+            await palyerProp.Save();
+            success = true;
+        }
+        return success;
+    }
+    #endregion
+
+    #region// Gem
+    public static async Task<bool> ConsumeGem(string userId, int consumeCount)
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            int userGem = ConvertTo<int>(palyerProp["gem"]);
+            if (userGem >= consumeCount)
+            {
+                userGem -= consumeCount;
+            }
+            palyerProp["gem"] = userGem;
+            await palyerProp.Save();
+            success = true;
+        }
+        return success;
+    }
+    public static async Task<bool> AddGem(string userId, int count)
+    {
+        bool success = false;
+        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        if (palyerProp != null)
+        {
+            int userGem = ConvertTo<int>(palyerProp["gem"]);
+            userGem += count;
+
+            palyerProp["gem"] = userGem;
+            await palyerProp.Save();
+            success = true;
+        }
+        return success;
+    }
+    #endregion
+
+    //public static async Task<string> GetPlayerPropsTableInfoFromUser(string userId,string userName)
+    //{
+    //    LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
+    //    query.WhereEqualTo("userId",userId);
+    //    query.WhereEqualTo("userName", userName);
+    //    LCObject palyerProp = await query.First();
+
+    //    string json = await LCJsonUtils.SerializeObjectAsync(palyerProp);
+    //    return json;
+    //}
 }
