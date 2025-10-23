@@ -60,7 +60,8 @@ public class SysIMClientService
         bool success = false;
         try
         {
-            SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys" );
+            string monsterKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+            SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys",signatureFactory: new LocalSignatureFactory(monsterKey)  );
             await SysIMClient.Open(true);
             success = true;
             LCLogger.Debug($"SysIMClient Opened Id is {SysIMClient.Id}");
