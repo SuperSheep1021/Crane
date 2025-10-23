@@ -17,7 +17,7 @@ namespace web {
     public class App
     {
         [LCEngineFunction("GetSignatureKey")]
-        public static string GetSignatureKey([LCEngineFunctionParam("userId")] string userId )
+        public static string GetSignatureKey()
         {
             return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
