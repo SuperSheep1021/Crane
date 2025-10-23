@@ -7,12 +7,7 @@ using LeanCloud.Storage;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace web {
     public class App
@@ -66,7 +61,7 @@ namespace web {
             success = await HelpService.ValidateClientID(userId, paramsClientId);
             if (!success)
             {
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.VALIDATE_USERID_FAILURE );
                 return success;
             }
             return success;
@@ -79,7 +74,7 @@ namespace web {
             LCObject deviceInfo = await HelpService.CreateOrSetupDeviceInfo(dic);
             LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
             string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_SIGUP, new Dictionary<string, object>()
             {
                 { "deviceInfoId",deviceInfo.ObjectId },
                 { "playerPropInfoId",playerPropInfo.ObjectId },
@@ -99,7 +94,7 @@ namespace web {
             {
                 LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
                 string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000",new Dictionary<string, object>() 
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_LOGIN ,new Dictionary<string, object>() 
                 {
                     { "playerProp",playerPropJson }
                 } );
@@ -119,7 +114,7 @@ namespace web {
             if (!success)
             {
                 //消耗失败
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100102");
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.CONSUME_POWER_FAILURE );
                 return success;
             }
             
@@ -134,7 +129,7 @@ namespace web {
                 }
 
                 LCObject startGameInfo = await HelpService.CreateStartGameInfo(dic);
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() 
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.START_GAME, new Dictionary<string, object>() 
                 {
                     {"startGameId",startGameInfo.ObjectId },
                     {"createSpecialName",CreateSpecialName }

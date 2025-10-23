@@ -11,6 +11,20 @@ using System.Threading.Tasks;
 
 public static class HelpService 
 {
+    public static string DeviceTable = "DeviceInfos";
+    public static string StartGameTable = "StartGameInfos";
+    public static string GameConfigTable = "GameConfig";
+    public static string PlayerPropsTable = "PlayerProps";
+    public static string SpecialDollsTable = "SpecialDolls";
+
+    public static string ON_LOGIN = "100000";
+    public static string ON_SIGUP = "100001";
+    public static string START_GAME = "100002";
+
+    public static string CONSUME_POWER_FAILURE = "100100";
+    public static string VALIDATE_USERID_FAILURE = "100101";
+
+
     public static T ConvertTo<T>(this object obj)
     {
         if (obj == null)
@@ -78,11 +92,7 @@ public static class HelpService
         return success;
     }
 
-    public static string DeviceTable = "DeviceInfos";
-    public static string StartGameTable = "StartGameInfo";
-    public static string ConfigTable = "Config";
-    public static string PlayerPropsTable = "PlayerProps";
-    public static string SpecialDollsTable = "SpecialDolls";
+    
     public static LCACL SetupACL(string clientUserId) 
     {
         LCACL acl = new LCACL();
@@ -172,7 +182,7 @@ public static class HelpService
     }
     private static async Task<LCObject> GetGameConfigTableInfo()
     {
-        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(ConfigTable);
+        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
         LCObject gameConfig = await devQuery.First();
         return gameConfig;
     }
