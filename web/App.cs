@@ -13,7 +13,7 @@ namespace web {
     public class App
     {
         [LCEngineFunction("GetSignature")]
-        public static string GetSignature(string[] args)
+        public static string GetSignature( [LCEngineFunctionParam("args")] string[] args)
         {
             string signature = LocalSignatureFactory.GenerateSignature(args);
             return signature;
