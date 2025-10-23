@@ -23,7 +23,6 @@ public static class HelpService
     public static string START_GAME = "100002";
 
     public static string CONSUME_POWER_FAILURE = "100100";
-    public static string VALIDATE_USERID_FAILURE = "100101";
 
 
     public static T ConvertTo<T>(this object obj)
@@ -92,8 +91,6 @@ public static class HelpService
         }
         return success;
     }
-
-    
     public static LCACL SetupACL(string clientUserId) 
     {
         LCACL acl = new LCACL();
