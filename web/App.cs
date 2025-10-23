@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -54,17 +55,13 @@ namespace web {
         //    await SysIMClientService.Inst.Initialtion();
         //    return success;
         //}
-
-        [LCEngineFunction("OnSignUp")]
-        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters) {
+        private static async Task<bool> ValidateClientID(string userId, Dictionary<string, object> dic )
+        {
             bool success = false;
-            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
-
             if (!dic.ContainsKey("userId"))
             {
                 return success;
             }
-
             string paramsClientId = dic["userId"] as string;
             success = await HelpService.ValidateClientID(userId, paramsClientId);
             if (!success)
@@ -72,40 +69,31 @@ namespace web {
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
                 return success;
             }
-
-            if (success)
-            {
-                LCObject deviceInfo = await HelpService.CreateOrSetupDeviceInfo(dic);
-                LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
-                string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
-                {
-                    { "deviceInfoId",deviceInfo.ObjectId },
-                    { "playerPropInfoId",playerPropInfo.ObjectId },
-                    { "playerProp", playerPropJson }
-                });
-            }
             return success;
+        }
+        [LCEngineFunction("OnSignUp")]
+        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters) 
+        {
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
+
+            LCObject deviceInfo = await HelpService.CreateOrSetupDeviceInfo(dic);
+            LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+            string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000", new Dictionary<string, object>()
+            {
+                { "deviceInfoId",deviceInfo.ObjectId },
+                { "playerPropInfoId",playerPropInfo.ObjectId },
+                { "playerProp", playerPropJson }
+            });
+            return true;
         }
 
         [LCEngineFunction("OnLogin")]
         public static async Task<bool> OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
-            bool success = false;
             Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
 
-            if (!dic.ContainsKey("userId"))
-            {
-                return success;
-            }
-
-            string paramsClientId = dic["userId"] as string;
-            success = await HelpService.ValidateClientID(userId, paramsClientId);
-            if (!success)
-            {
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
-                return success;
-            }
+            bool success = await ValidateClientID(userId, dic);
 
             if (success) 
             {
@@ -122,36 +110,34 @@ namespace web {
         [LCEngineFunction("StartGame")]
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
-            bool success = false;
             Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
-            if (!dic.ContainsKey("userId") ) 
-            {
-                return success;
-            }
-            string paramsClientId = dic["userId"] as string;
-            success = await HelpService.ValidateClientID(userId,paramsClientId);
-            if (!success)
-            {
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
-                return success;
-            }
-
+            bool success = await ValidateClientID(userId, dic);
+            if (!success) return success;
 
 
             success = await HelpService.ConsumePower(userId);
             if (!success)
             {
-                //ConsumePower Failure
+                //消耗失败
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100102");
                 return success;
             }
+            
 
             if (success)
             {
+                bool isCreateSpecial = await HelpService.isCreateSpecialDoll();
+                string CreateSpecialName = string.Empty;
+                if (isCreateSpecial) 
+                {
+                    CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
+                }
+
                 LCObject startGameInfo = await HelpService.CreateStartGameInfo(dic);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100001", new Dictionary<string, object>() 
                 {
                     {"startGameId",startGameInfo.ObjectId },
+                    {"createSpecialName",CreateSpecialName }
                  });
             }
 

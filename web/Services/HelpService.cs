@@ -82,6 +82,7 @@ public static class HelpService
     public static string StartGameTable = "StartGameInfo";
     public static string ConfigTable = "Config";
     public static string PlayerPropsTable = "PlayerProps";
+    public static string SpecialDollsTable = "SpecialDolls";
     public static LCACL SetupACL(string clientUserId) 
     {
         LCACL acl = new LCACL();
@@ -174,8 +175,12 @@ public static class HelpService
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(ConfigTable);
         LCObject gameConfig = await devQuery.First();
         return gameConfig;
-        //string json = await LCJsonUtils.SerializeObjectAsync(gameConfig);
-        //return json;
+    }
+    private static async Task<ReadOnlyCollection<LCObject>> GetSpecialDollsTableInfo()
+    {
+        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(SpecialDollsTable);
+        ReadOnlyCollection<LCObject> objs = await devQuery.Find();
+        return objs;
     }
     public static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
     {
@@ -296,6 +301,33 @@ public static class HelpService
     #endregion
 
     #region //ProbabilityTool 
+    public static WeightedGenerator<string> SpecialDollsGenerator { get;private set; }
+    public static async Task<bool> SetupSpecialDollsWeight() 
+    {
+        bool success = false;
+        ReadOnlyCollection<LCObject> speDolls = await GetSpecialDollsTableInfo();
+        if (speDolls.Count>0) 
+        {
+            SpecialDollsGenerator = new WeightedGenerator<string>();
+            for (int i = 0; i < speDolls.Count; i++)
+            {
+                string name = ConvertTo<string>(speDolls[i]["dollName"]);
+                int weight = ConvertTo<int>(speDolls[i]["weighted"]);
+                SpecialDollsGenerator.AddItem(name, weight);
+            }
+            success = true;
+        }
+        return success;
+    }
+
+    public static async Task<bool> isCreateSpecialDoll() 
+    {
+        LCObject gameConfig = await GetGameConfigTableInfo();
+        int probability = ConvertTo<int>( gameConfig["specialToyProbability"] );
+        return ShouldExecute(probability);
+    }
+
+
     // 线程本地存储的Random实例（确保多线程安全，避免种子重复）
     private static readonly ThreadLocal<Random> _threadLocalRandom = new ThreadLocal<Random>(
         () => new Random(Guid.NewGuid().GetHashCode()) // 用GUID哈希作为种子，降低重复概率
@@ -308,7 +340,7 @@ public static class HelpService
     /// <returns>true：执行；false：不执行</returns>
     /// https://www.doubao.com/thread/w168a32c6ad71453a
     /// <exception cref="ArgumentOutOfRangeException">当概率超出0-100范围时抛出</exception>
-    public static bool ShouldExecute(int probabilityPercent)
+    private static bool ShouldExecute(int probabilityPercent)
     {
         // 校验参数合法性
         if (probabilityPercent < 0 || probabilityPercent > 100)
