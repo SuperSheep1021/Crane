@@ -110,10 +110,10 @@ namespace web {
             if (success) 
             {
                 LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
-                //string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
+                string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100000",new Dictionary<string, object>() 
                 {
-                    { "playerProp",playerPropInfo.ObjectId }
+                    { "playerProp",playerPropJson }
                 } );
             }
             return success;
