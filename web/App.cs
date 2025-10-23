@@ -17,7 +17,7 @@ namespace web {
     public class App
     {
         [LCEngineFunction("GetSignatureKey")]
-        public static string GetSignatureKey()
+        public static string GetSignatureKey([LCEngineFunctionParam("userId")] string userId )
         {
             return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
@@ -58,7 +58,7 @@ namespace web {
         [LCEngineFunction("OnSignUp")]
         public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters) {
             bool success = false;
-            Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
 
             if (!dic.ContainsKey("userId"))
             {
@@ -92,7 +92,6 @@ namespace web {
         public static async Task<bool> OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = false;
-            
             Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
 
             if (!dic.ContainsKey("userId"))
@@ -124,22 +123,25 @@ namespace web {
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
             bool success = false;
-            Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters);
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
             if (!dic.ContainsKey("userId") ) 
             {
                 return success;
             }
             string paramsClientId = dic["userId"] as string;
             success = await HelpService.ValidateClientID(userId,paramsClientId);
-            if (!success) 
+            if (!success)
             {
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100101");
                 return success;
             }
 
+
+
             success = await HelpService.ConsumePower(userId);
             if (!success)
             {
+                //ConsumePower Failure
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, "100102");
                 return success;
             }
