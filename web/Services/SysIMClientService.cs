@@ -60,7 +60,7 @@ public class SysIMClientService
         bool success = false;
         try
         {
-            LocalSignatureFactory signature = new LocalSignatureFactory(Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY"));
+            LocalSignatureFactory signature = new LocalSignatureFactory( Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY") );
             SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys", signatureFactory: signature);
             await SysIMClient.Open(true);
             success = true;

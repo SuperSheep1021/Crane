@@ -12,10 +12,12 @@ using System.Threading.Tasks;
 namespace web {
     public class App
     {
-        [LCEngineFunction("GetSignatureKey")]
-        public static string GetSignatureKey()
+        [LCEngineFunction("GetSignature")]
+        public static string GetSignature(string[] args)
         {
-            return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+            string signature = LocalSignatureFactory.GenerateSignature(args);
+            return signature;
+            //return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
 
         [LCEngineFunction("isSignUped")]
@@ -42,14 +44,6 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
 
-        //[LCEngineFunction("初始化服务器")]
-        //public static async Task<bool> InitialService()
-        //{
-        //    bool success = true;
-        //    await RESTAPIService.Inst.Initialtion();
-        //    await SysIMClientService.Inst.Initialtion();
-        //    return success;
-        //}
         private static async Task<bool> ValidateClientID(string userId, Dictionary<string, object> dic )
         {
             bool success = false;
