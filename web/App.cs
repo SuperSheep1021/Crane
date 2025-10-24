@@ -14,16 +14,16 @@ namespace web {
     {
 
         [LCEngineFunction("Test")]
-        public static async void Test() 
+        public static async Task<string> Test() 
         {
             LCObject gameconfig =await HelpService.GetGameConfigTableInfo();
             string gameconfigjson = await LCJsonUtils.SerializeAsync(gameconfig); 
-            LCLogger.Debug($"gameconfig: {gameconfigjson}");
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
             LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
             string playerPropjson = await LCJsonUtils.SerializeAsync(playerProp);
-            LCLogger.Debug($"playerProp: {playerPropjson}");
+
+            return $"gameconfig: {gameconfigjson} +\n+ playerProp: {{playerPropjson}}";
         }
 
 
