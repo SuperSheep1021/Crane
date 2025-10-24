@@ -22,7 +22,21 @@ public static class HelpService
     public static string ON_SIGUP = "100001";
     public static string START_GAME = "100002";
 
+    
     public static string CONSUME_POWER_FAILURE = "100100";
+    public static string CONSUME_POWER_SUCCESS = "100101";
+
+    public static string CONSUME_GOLD_COIN_FAILURE = "100102";
+    public static string CONSUME_GOLD_COIN_SUCCESS = "100103";
+
+    public static string CONSUME_GEM_FAILURE = "100104";
+    public static string CONSUME_GEM_SUCCESS = "100105";
+
+
+
+    public static string ADD_POWER_SUCCESS = "100200";
+    public static string ADD_GOLD_COIN_SUCCESS = "100201";
+    public static string ADD_GEM_SUCCESS = "100202";
 
 
     public static T ConvertTo<T>(this object obj)
@@ -268,14 +282,28 @@ public static class HelpService
         if (palyerProp != null)
         {
             LCObject gameConfig = await GetGameConfigTableInfo();
-            int conSumeValue = ConvertTo<int>(gameConfig["perConsumePower"]);
+            int consumeCount = ConvertTo<int>(gameConfig["perConsumePower"]);
             int userPower = ConvertTo<int>(palyerProp["power"]);
-            if (userPower >= conSumeValue)
+
+            if (userPower >= consumeCount)
             {
-                userPower -= conSumeValue;
-                palyerProp["power"] = userPower;
-                await palyerProp.Save();
                 success = true;
+            }
+
+            if (success)
+            {
+                palyerProp["power"] = userPower - consumeCount;
+                await palyerProp.Save();
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_POWER_SUCCESS, new Dictionary<string, object>()
+                {
+                    { "consumeCount",consumeCount}
+                });
+            }
+            else {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_POWER_FAILURE, new Dictionary<string, object>()
+                {
+                    { "missingCount",Math.Abs(userPower - consumeCount) }
+                });
             }
         }
         return success;
@@ -292,10 +320,27 @@ public static class HelpService
             int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
             if (userGoldCoin>= consumeCount) 
             {
-                userGoldCoin -= consumeCount;
+                success = true;
             }
-            palyerProp["goldCoin"] = userGoldCoin;
-            await palyerProp.Save();
+
+
+            if (success)
+            {
+                palyerProp["goldCoin"] = userGoldCoin - consumeCount;
+                await palyerProp.Save();
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_GOLD_COIN_SUCCESS, new Dictionary<string, object>()
+                {
+                    { "consumeCount",consumeCount}
+                });
+            }
+            else {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_GOLD_COIN_FAILURE, new Dictionary<string, object>()
+                {
+                    { "missingCount",Math.Abs(userGoldCoin - consumeCount) }
+                });
+            }
+
+
             success = true;
         }
         return success;
@@ -327,11 +372,26 @@ public static class HelpService
             int userGem = ConvertTo<int>(palyerProp["gem"]);
             if (userGem >= consumeCount)
             {
-                userGem -= consumeCount;
+                success = true;
             }
-            palyerProp["gem"] = userGem;
-            await palyerProp.Save();
-            success = true;
+
+            if (success)
+            {
+                palyerProp["gem"] = userGem - consumeCount;
+                await palyerProp.Save();
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_GEM_SUCCESS, new Dictionary<string, object>()
+                {
+                    { "consumeCount",consumeCount}
+                });
+            }
+            else
+            {
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, CONSUME_GEM_FAILURE, new Dictionary<string, object>()
+                {
+                    { "missingCount",Math.Abs(userGem - consumeCount) }
+                });
+            }
+
         }
         return success;
     }

@@ -47,20 +47,36 @@ namespace web {
         public static async Task<bool> AddPower([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            return await HelpService.AddPower(user);
+            bool success = await HelpService.AddPower(user);
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_POWER_SUCCESS,new Dictionary<string, object>() 
+            {
+                { "AddCount",10}
+            });
+            return success;
         }
         [LCEngineFunction("AddGoldCoin")]
         public static async Task<bool> AddGoldCoin([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            return await HelpService.AddGoldCoin(user,10);
+            bool success = await HelpService.AddGoldCoin(user, 10);
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GOLD_COIN_SUCCESS, new Dictionary<string, object>()
+            {
+                { "AddCount",10}
+            });
+            return success;
         }
         [LCEngineFunction("AddGem")]
         public static async Task<bool> AddGem([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            return await HelpService.AddGem(user,10);
+            bool success = await HelpService.AddGem(user, 10);
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GEM_SUCCESS, new Dictionary<string, object>()
+            {
+                { "AddCount",10}
+            });
+            return success;
         }
+
         #endregion
 
 
@@ -92,32 +108,24 @@ namespace web {
         {
             LCUser user = await HelpService.GetUser(userId);
             bool success = await HelpService.ConsumePower(user);
-            if (!success)
+            if (!success) { return false; }
+
+
+            bool isCreateSpecialDoll = await HelpService.isCreateSpecialDoll();
+            string CreateSpecialName = string.Empty;
+            if (isCreateSpecialDoll)
             {
-                //消耗失败
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.CONSUME_POWER_FAILURE );
-                return success;
+                CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
             }
-            
 
-            if (success)
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
+            LCObject startGameInfo = await HelpService.CreateStartGameInfo(user, dic);
+            await HelpService.SetupPointer(user.ObjectId, "startGameInfo", startGameInfo);
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.START_GAME, new Dictionary<string, object>()
             {
-                bool isCreateSpecial = await HelpService.isCreateSpecialDoll();
-                string CreateSpecialName = string.Empty;
-                if (isCreateSpecial) 
-                {
-                    CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
-                }
-
-                Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
-                LCObject startGameInfo = await HelpService.CreateStartGameInfo(user,dic);
-                await HelpService.SetupPointer(user.ObjectId, "startGameInfo", startGameInfo);
-
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.START_GAME, new Dictionary<string, object>() 
-                {
-                    {"createSpecialName",CreateSpecialName }
-                 });
-            }
+                {"createSpecialName",CreateSpecialName }
+            });
 
             return success;
         }
