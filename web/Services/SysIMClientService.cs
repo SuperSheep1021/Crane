@@ -76,6 +76,21 @@ public class SysIMClientService
         }
         return success;
     }
+
+    public async Task<bool> Online(string userId,bool online)
+    {
+        bool success = false;
+        LCQuery<LCUser> userQuery = LCUser.GetQuery();
+        userQuery.WhereEqualTo("objectId", userId);
+        LCUser lcuser = await userQuery.First();
+        lcuser["online"] = online;
+        await lcuser.Save();
+        //CurUser.Set("online", online);
+        //await CurUser.Save();
+        success = true;
+
+        return success;
+    }
     public async Task<bool> Initialtion()
     {
         bool success = true;

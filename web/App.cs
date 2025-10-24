@@ -15,15 +15,15 @@ namespace web {
         [LCEngineFunction("GetSignature")]
         public static string GetSignature( [LCEngineFunctionParam("args")] string args)
         {
-            string signature = LocalSignatureFactory.GenerateSignature(args);
-            return signature;
+            return LocalSignatureFactory.GenerateSignature(args);
             //return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
-        [LCEngineFunction("GetMonsterKey")]
-        public static string GetMonsterKey()
-        {
-            return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
-        }
+        //[LCEngineFunction("GetMonsterKey")]
+        //public static string GetMonsterKey()
+        //{
+        //    return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+        //}
+
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
@@ -171,6 +171,7 @@ namespace web {
 
 
         #region // onlogin OnClient
+
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser loginUser)
         {
@@ -178,16 +179,16 @@ namespace web {
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static void OnClientOnline(Dictionary<string, object> parameters)
+        public static async void OnClientOnline(Dictionary<string, object> parameters)
         {
+            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(),true);
             LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
-
         }
 
-
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static void OnClientOffline(Dictionary<string, object> parameters)
+        public static async void OnClientOffline(Dictionary<string, object> parameters)
         {
+            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(), false);
             LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
         #endregion
