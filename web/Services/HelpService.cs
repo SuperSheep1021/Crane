@@ -186,13 +186,6 @@ public static class HelpService
 
         return devTable;
     }
-    public static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
-    {
-        LCObject playerProp = new LCObject(PlayerPropsTable);
-        playerProp.ACL = SetupACL(userId);
-        await playerProp.Save();
-        return playerProp;
-    }
     private static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
@@ -205,13 +198,25 @@ public static class HelpService
         ReadOnlyCollection<LCObject> objs = await devQuery.Find();
         return objs;
     }
+    public static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
+    {
+        LCObject playerProp = new LCObject(PlayerPropsTable);
+        playerProp.ACL = SetupACL(userId);
+        await playerProp.Save();
+        return playerProp;
+    }
     public static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
         query.WhereEqualTo("userId", userId);
-        var palyerProp = await query.First();
+        LCObject palyerProp = await query.First();
+        if (palyerProp ==null) 
+        {
+            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(userId);
+        }
         return palyerProp;
     }
+
     //public static async Task<T> GetPlayerPropsInfoFromUser<T>(string userId) where T : LCObject
     //{
     //    LCQuery<T> query = new LCQuery<T>(PlayerPropsTable);
