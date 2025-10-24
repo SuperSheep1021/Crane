@@ -52,8 +52,8 @@ namespace web {
             [LCEngineFunctionParam("upd")] string upd, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
         {
             await HelpService.SetupUser(userId, "upd", upd);
-
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
+
             LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
             await HelpService.SetupPointer(userId, "deviceInfo", deviceObj);
 
