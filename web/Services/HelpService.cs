@@ -116,8 +116,8 @@ public static class HelpService
         LCACL acl = new LCACL();
         acl.SetUserIdReadAccess(clientUserId, true);
         acl.SetUserIdWriteAccess(clientUserId, true);
-        acl.SetUserIdReadAccess(SysIMClientService.Inst.SysIMClient.Id, true);
-        acl.SetUserIdWriteAccess(SysIMClientService.Inst.SysIMClient.Id, true);
+        acl.SetUserReadAccess(SysIMClientService.Inst.SysUser, true);
+        acl.SetUserWriteAccess(SysIMClientService.Inst.SysUser, true);
         return acl;
     }
     public static async Task<LCObject> CreateStartGameInfo(Dictionary<string,object> dic) 
