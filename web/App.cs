@@ -20,10 +20,11 @@ namespace web {
             //string gameconfigjson = gameconfig.ToString();
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
-            LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+            LCObject playerPropObj = user["playerPropInfo"] as LCObject;
+            //LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
 
             return $"gameconfig: { HelpService.ConvertTo<int>(gameconfig["perAddPower"] ) }_" +
-                $"__{HelpService.ConvertTo<int>(playerProp["power"])} ";
+                $"__{HelpService.ConvertTo<int>(playerPropObj["power"])} ";
         }
 
 
