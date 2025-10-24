@@ -34,85 +34,6 @@ public class RESTAPIService
         }
     }
 
-    public string SysUserName { get; private set; }
-    public string SysUserPassword { get; private set; }
-    public string SysConvId { get;private set; }
-    public LCUser SysUser { get;private set; }
-
-    LCACL CreateSysACL()
-    {
-        LCACL acl = new LCACL();
-        acl.SetUserWriteAccess(SysUser, true);
-        acl.SetUserReadAccess(SysUser, true);
-        acl.PublicReadAccess = true;
-        acl.PublicWriteAccess = true;
-        return acl;
-    }
-    async Task<bool> UserLogin() 
-    {
-        bool success = false;
-        try
-        {
-            SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
-            SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
-            SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
-            SysUser = await LCUser.Login(SysUserName, SysUserPassword);
-
-            SysUser.ACL = CreateSysACL();
-            await SysUser.Save();
-
-            success = true;
-            LCLogger.Debug($"SysUserName{SysUserName} Logined Success!!!!!");
-        }
-        catch (LCException e)
-        {
-            LCLogger.Error($"SysUserName{SysUserName} Logined Failure:{e.Code} : {e.Message}");
-        }
-        catch (Exception e)
-        {
-            LCLogger.Error($"SysUserName{SysUserName} Logined Failure: {e.Message}");
-        }
-        return success;
-    }
-    public async Task<bool> Initialtion()
-    {
-        bool success = true;
-        success = await UserLogin();
-        return success;
-    }
-
-    public async Task<bool> isSignUped(object userName)
-    {
-        LCLogger.Debug($"=========query user============={userName}========================");
-        LCQuery<LCUser> query = LCUser.GetQuery();
-        query.WhereEqualTo("username", userName);
-        LCUser firstUser = await query.First();
-        if (firstUser != null)
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    async Task<LCUser> QueryUser(string userId)
-    {
-        LCUser user = default;
-        try
-        {
-            LCQuery<LCUser> query = LCUser.GetQuery();
-            query.WhereEqualTo("objectId", userId);
-            user = await query.First();
-        }
-        catch (LCException ex) 
-        {
-            LCLogger.Error($"{ex.Code}, Message:{ex.Message}");
-        }
-        return user;
-    }
-
-
 
     /// <summary>
     /// UTC时间
@@ -148,7 +69,7 @@ public class RESTAPIService
         var requestData = new Dictionary<string, object>
         {
             { "name",sysConversationName},
-            { "c",SysUser.ObjectId}
+            { "c",SysIMClientService.Inst.SysUser.ObjectId}
         };
         // 可以添加额外的请求头（如果需要）
         var headers = new Dictionary<string, object>
@@ -255,7 +176,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> SubscribeSysConvAsync(string client_id)
     {
-        return await SubscribeSysConvAsync(SysConvId, client_id);
+        return await SubscribeSysConvAsync(SysIMClientService.Inst.SysConvId, client_id);
     }
 
     /// <summary>
@@ -314,7 +235,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> SendMessageToSubscribesAsync(string text)
     {
-        return await SendMessageToSubscribesAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, text);
+        return await SendMessageToSubscribesAsync(SysIMClientService.Inst.SysConvId, SysIMClientService.Inst.SysIMClient.Id, text);
     }
 
     /// <summary>
@@ -399,7 +320,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> SendMessageToSubscribesClientsAsync( string[] toClientIds, string text,Dictionary<string, object> parameters = null)
     {
-        return await SendMessageToSubscribesClientsAsync(SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text, parameters);
+        return await SendMessageToSubscribesClientsAsync(SysIMClientService.Inst.SysConvId, SysIMClientService.Inst.SysIMClient.Id, toClientIds, text, parameters);
     }
 
 
@@ -443,7 +364,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> QuerySendFormClientId(string clientId)
     {
-        return await QuerySendFormClientId(SysConvId, clientId);
+        return await QuerySendFormClientId(SysIMClientService.Inst.SysConvId, clientId);
     }
 
     #endregion
@@ -601,7 +522,7 @@ public class RESTAPIService
     /// <returns></returns>
     public async Task<Dictionary<string, object>> Broadcast(string message, float valid_till, bool transient)
     { 
-        return await Broadcast(SysConvId, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
+        return await Broadcast(SysIMClientService.Inst.SysConvId, SysIMClientService.Inst.SysIMClient.Id, message, valid_till,transient);
     }
     /// <summary>
     /// 广播消息修改仅对当前还未收到该广播消息的设备生效，如果目标设备已经收到了该广播消息则无法修改。请慎重发送广播消息。
@@ -664,7 +585,7 @@ public class RESTAPIService
     /// <returns>成功则返回状态码 200 OK</returns>
     public async Task<string> UpdateBroadcast(int timestamp, string message,string messageId)
     {
-        return await UpdateBroadcast(SysIMClientService.Inst.SysIMClient.Id, timestamp, message, SysConvId, messageId);
+        return await UpdateBroadcast(SysIMClientService.Inst.SysIMClient.Id, timestamp, message, SysIMClientService.Inst.SysConvId, messageId);
     }
 
     /// <summary>

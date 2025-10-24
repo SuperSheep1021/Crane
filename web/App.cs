@@ -27,19 +27,19 @@ namespace web {
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
-             return await RESTAPIService.Inst.isSignUped(userName);
+             return await SysIMClientService.Inst.isSignUped(userName);
         }
 
         [LCEngineFunction("SysConvId")]
         public static string SysConvId()
         {
-            return RESTAPIService.Inst.SysConvId;
+            return SysIMClientService.Inst.SysConvId;
         }
 
         [LCEngineFunction("SysAccountId")]
         public static string SysAccountId()
         {
-            return RESTAPIService.Inst.SysUser.ObjectId;
+            return SysIMClientService.Inst.SysUser.ObjectId;
         }
 
         [LCEngineFunction("SysUTCTime")]

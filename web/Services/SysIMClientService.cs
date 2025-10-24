@@ -28,10 +28,12 @@ public class SysIMClientService
             return inst;
         }
     }
+    public string SysUserName { get; private set; }
+    public string SysUserPassword { get; private set; }
+    public string SysConvId { get; private set; }
     public LCUser SysUser { get; private set; }
     public LCIMClient SysIMClient { get; private set; }
     public LCIMServiceConversation SysIMConversation { get; private set; }
-    public string SysConvId { get; private set; }
     async Task<bool> GetSysConv()
     {
         bool success = false;
@@ -59,7 +61,7 @@ public class SysIMClientService
         try
         {
             string monsterKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
-            SysIMClient = new LCIMClient(RESTAPIService.Inst.SysUser, tag: "sys",signatureFactory: new LocalSignatureFactory(monsterKey)  );
+            SysIMClient = new LCIMClient(SysIMClientService.Inst.SysUser, tag: "sys",signatureFactory: new LocalSignatureFactory(monsterKey)  );
             await SysIMClient.Open(true);
             success = true;
             LCLogger.Debug($"SysIMClient Opened Id is {SysIMClient.Id}");
@@ -74,13 +76,26 @@ public class SysIMClientService
         }
         return success;
     }
+    LCACL CreateSysACL()
+    {
+        LCACL acl = new LCACL();
+        acl.SetUserWriteAccess(SysUser, true);
+        acl.SetUserReadAccess(SysUser, true);
+        acl.PublicReadAccess = true;
+        acl.PublicWriteAccess = true;
+        return acl;
+    }
     async Task<bool> LoginSysAccount()
     {
         bool success = false;
         try {
-            string sysName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
-            string sysPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
-            SysUser = await LCUser.Login(sysName, sysPassword);
+            SysUserName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
+            SysUserPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
+            SysConvId = Environment.GetEnvironmentVariable("SYS_CONV_ID");
+            SysUser = await LCUser.Login(SysUserName, SysUserPassword);
+            SysUser.ACL = CreateSysACL();
+            await SysUser.Save();
+
             success = true;
         }
         catch (LCException e)
@@ -119,7 +134,21 @@ public class SysIMClientService
         }
         return success;
     }
-
+    public async Task<bool> isSignUped(object userName)
+    {
+        LCLogger.Debug($"=========query user============={userName}========================");
+        LCQuery<LCUser> query = LCUser.GetQuery();
+        query.WhereEqualTo("username", userName);
+        LCUser firstUser = await query.First();
+        if (firstUser != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     //public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds )
     //{
     //    LCLogger.Debug($"conv id:{SysConvId}");
