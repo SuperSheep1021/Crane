@@ -72,7 +72,7 @@ namespace web {
             LCLogger.Debug("================CreateOrSetupDeviceInfo==================");
 
             LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
-            var playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
+            LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
             LCLogger.Debug($"================{playerPropInfo.ToString() }==================");
             LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
             if (playerPropInfo == null ) return;
@@ -81,7 +81,7 @@ namespace web {
             LCLogger.Debug(playerPropJson);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
-                { "playerPropJson",playerPropJson }
+                { "playerPropJson",playerPropInfo.ToString() }
             });
         }
 
