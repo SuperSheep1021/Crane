@@ -113,11 +113,11 @@ public static class HelpService
         }
         return success;
     }
-    public static LCACL SetupACL(string clientUserId) 
+    public static LCACL SetupACL(LCUser user) 
     {
         LCACL acl = new LCACL();
-        acl.SetUserIdReadAccess(clientUserId, true);
-        acl.SetUserIdWriteAccess(clientUserId, true);
+        acl.SetUserReadAccess(user, true);
+        acl.SetUserWriteAccess(user, true);
         acl.SetUserReadAccess(SysIMClientService.Inst.SysUser, true);
         acl.SetUserWriteAccess(SysIMClientService.Inst.SysUser, true);
         return acl;
@@ -205,10 +205,12 @@ public static class HelpService
         ReadOnlyCollection<LCObject> objs = await devQuery.Find();
         return objs;
     }
-    private static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
+    private static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(LCUser user)
     {
         LCObject playerProp = new LCObject(PlayerPropsTable);
-        playerProp.ACL = SetupACL(userId);
+        playerProp.ACL = SetupACL(user);
+        playerProp["userId"] = user.ObjectId;
+        playerProp["userName"] = user.Username;
         await playerProp.Save();
         return playerProp;
     }
@@ -219,7 +221,7 @@ public static class HelpService
         LCObject palyerProp = await query.First();
         if (palyerProp ==null) 
         {
-            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(user.ObjectId);
+            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(user);
         }
         return palyerProp;
     }
