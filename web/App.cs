@@ -51,13 +51,13 @@ namespace web {
         public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
             [LCEngineFunctionParam("upd")] string upd, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
         {
-            await HelpService.SetupUser(userId, "upd", upd);
+            LCUser user = await HelpService.SetupUser(userId, "upd", upd);
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
 
-            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
+            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(user,deviceDic);
             await HelpService.SetupPointer(userId, "deviceInfo", deviceObj);
 
-            LCObject playerPropObj = await HelpService.GetPlayerPropsInfoFromUser(userId);
+            LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
             if (playerPropObj == null) return;
             await HelpService.SetupPointer(userId, "playerPropInfo", playerPropObj);
 

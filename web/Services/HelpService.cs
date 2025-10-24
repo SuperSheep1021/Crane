@@ -74,17 +74,19 @@ public static class HelpService
         return user["online"].ConvertTo<bool>();
     }
     
-    public static async Task SetupPointer(string userId,string key,LCObject lcobject)
+    public static async Task<LCUser> SetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
         user[key] = lcobject;
         await user.Save();
+        return user;
     }
-    public static async Task SetupUser(string userId, string key, object value)
+    public static async Task<LCUser> SetupUser(string userId, string key, object value)
     {
         LCUser user = await GetUser(userId);
         user[key] = value;
         await user.Save();
+        return user;
     }
 
     public static async Task<bool> ValidateClientID(string clientUserId,string parametersClientUserId)
@@ -162,11 +164,11 @@ public static class HelpService
 
         return startGameInfo;
     }
-    public static async Task<LCObject> CreateOrSetupDeviceInfo(Dictionary<string, object> dic) 
+    public static async Task<LCObject> CreateOrSetupDeviceInfo(LCUser user,Dictionary<string, object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
-        devQuery.WhereEqualTo("userId", dic["userId"]);
-        devQuery.WhereEqualTo("userName", dic["userName"]);
+        devQuery.WhereEqualTo("userId", user.ObjectId );
+        devQuery.WhereEqualTo("userName", user.Username );
         LCObject devTable = await devQuery.First();
 
         if (devTable == null)
@@ -176,7 +178,7 @@ public static class HelpService
             {
                 devTable[kv.Key] = kv.Value;
             }
-            devTable.ACL = SetupACL( dic["userId"].ConvertTo<string>() );
+            devTable.ACL = SetupACL(user.ObjectId );
 
             await devTable.Save();
         }
@@ -210,14 +212,14 @@ public static class HelpService
         await playerProp.Save();
         return playerProp;
     }
-    public static async Task<LCObject> GetPlayerPropsInfoFromUser(string userId)
+    public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
-        query.WhereEqualTo("userId", userId);
+        query.WhereEqualTo("userId", user.ObjectId);
         LCObject palyerProp = await query.First();
         if (palyerProp ==null) 
         {
-            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(userId);
+            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(user.ObjectId);
         }
         return palyerProp;
     }
