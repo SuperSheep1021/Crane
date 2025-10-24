@@ -74,7 +74,7 @@ namespace web {
             LCLogger.Debug("==================================");
             if (playerPropInfo == null ) return;
 
-            string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
+            string playerPropJson = JsonConvert.SerializeObject(playerPropInfo);
             LCLogger.Debug(playerPropJson);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
