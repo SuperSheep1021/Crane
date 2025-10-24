@@ -30,10 +30,8 @@ public class SysIMClientService
     }
     public LCUser SysUser { get; private set; }
     public LCIMClient SysIMClient { get; private set; }
-
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
-
     async Task<bool> GetSysConv()
     {
         bool success = false;
@@ -101,6 +99,24 @@ public class SysIMClientService
         success = await LoginSysAccount();
         success = await OpenClient();
         success = await GetSysConv();
+        return success;
+    }
+    public async Task<bool> Online(string userId,bool online)
+    {
+        bool success = false;
+        try
+        {
+            LCQuery<LCUser> userLCQuery = LCUser.GetQuery();
+            userLCQuery.WhereEqualTo("objectId",userId);
+            LCUser user= await userLCQuery.First();
+            user["online"] = online;
+            await user.Save();
+            success = true;
+        }
+        catch (LCException ex)
+        {
+            LCLogger.Error(ex.Code + ":" + ex.Message);
+        }
         return success;
     }
 
