@@ -214,8 +214,8 @@ public static class HelpService
     public static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
-        LCObject gameConfig = await devQuery.First();
-        return gameConfig;
+        ReadOnlyCollection<LCObject> gameconfigs = await devQuery.Find();
+        return gameconfigs[0];
     }
     /// <summary>
     /// SpecialDolls
