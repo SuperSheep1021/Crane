@@ -30,7 +30,7 @@ namespace web {
                     .AddFilter("System", LogLevel.Error)
                     .AddConsole();
             });
-
+            
             bool openDebug = bool.Parse( Environment.GetEnvironmentVariable("DEBUG_LOG") );
             if (openDebug)
             {
