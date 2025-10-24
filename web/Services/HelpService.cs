@@ -211,7 +211,7 @@ public static class HelpService
     /// GameConfig
     /// </summary>
     /// <returns></returns>
-    private static async Task<LCObject> GetGameConfigTableInfo()
+    public static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
         LCObject gameConfig = await devQuery.First();

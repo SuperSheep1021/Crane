@@ -13,6 +13,20 @@ namespace web {
     public class App
     {
 
+        [LCEngineFunction("Test")]
+        public static async void Test() 
+        {
+            LCObject gameconfig =await HelpService.GetGameConfigTableInfo();
+            string gameconfigjson = await LCJsonUtils.SerializeAsync(gameconfig); 
+            LCLogger.Debug($"gameconfig: {gameconfigjson}");
+
+            LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
+            LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+            string playerPropjson = await LCJsonUtils.SerializeAsync(playerProp);
+            LCLogger.Debug($"playerProp: {playerPropjson}");
+        }
+
+
         [LCEngineFunction("GetSignature")]
         public static string GetSignature( [LCEngineFunctionParam("args")] string args)
         {
@@ -78,7 +92,6 @@ namespace web {
             await HelpService.SetupPointer(user.ObjectId , "deviceInfo", deviceObj);
 
             LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
-            playerPropObj = await playerPropObj.Fetch();
 
             if (playerPropObj == null) return;
             await HelpService.SetupPointer(user.ObjectId, "playerPropInfo", playerPropObj);
