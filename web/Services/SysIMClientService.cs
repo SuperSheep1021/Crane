@@ -110,12 +110,16 @@ public class SysIMClientService
     }
     public async Task<bool> Initialtion()
     {
-        bool success = true;
-        success = await LoginSysAccount();
+        bool success = await LoginSysAccount();
+        if (!success) { return false; }
         LCLogger.Warn($"sys Account login success");
+
         success = await OpenClient();
+        if (!success) { return false; }
         LCLogger.Warn($"sys Account Open Client success");
+
         success = await GetSysConv();
+        if (!success) { return false; }
         LCLogger.Warn($"sys Account Get Sys Conv success");
         return success;
     }
