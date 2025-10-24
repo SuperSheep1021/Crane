@@ -216,8 +216,6 @@ public static class HelpService
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
         LCObject gameconfigs = await devQuery.First();
-        gameconfigs = LCObject.ParseObject(gameconfigs.ToString() );
-        //ReadOnlyCollection<LCObject> gameconfigs = await devQuery.Find();
         return gameconfigs;
     }
 
