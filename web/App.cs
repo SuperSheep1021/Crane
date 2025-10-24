@@ -92,7 +92,7 @@ namespace web {
                     CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
                 }
 
-                LCObject startGameInfo = await HelpService.CreateStartGameInfo(dic);
+                LCObject startGameInfo = await HelpService.CreateStartGameInfo(user,dic);
                 await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.START_GAME, new Dictionary<string, object>() 
                 {
                     {"startGameId",startGameInfo.ObjectId },

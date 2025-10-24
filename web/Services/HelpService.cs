@@ -122,11 +122,11 @@ public static class HelpService
         acl.SetUserWriteAccess(SysIMClientService.Inst.SysUser, true);
         return acl;
     }
-    public static async Task<LCObject> CreateStartGameInfo(Dictionary<string,object> dic) 
+    public static async Task<LCObject> CreateStartGameInfo(LCUser user,Dictionary<string,object> dic) 
     {
-        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(HelpService.StartGameTable);
-        devQuery.WhereEqualTo("userId", dic["userId"]);
-        devQuery.WhereEqualTo("userName", dic["userName"]);
+        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(StartGameTable);
+        devQuery.WhereEqualTo("userId", user.ObjectId );
+        devQuery.WhereEqualTo("userName", user.Username );
         devQuery.OrderByDescending("createdAt");
         ReadOnlyCollection<LCObject> sGameTables = await devQuery.Find();
 
@@ -158,7 +158,7 @@ public static class HelpService
         startGameInfo["sysUtc"] = sysUtcTime;
         startGameInfo["sysLocal"] = sysLocalTime;
 
-        startGameInfo.ACL = SetupACL( dic["userId"].ConvertTo<string>() );
+        startGameInfo.ACL = SetupACL(user);
 
         await startGameInfo.Save();
 
@@ -178,7 +178,7 @@ public static class HelpService
             {
                 devTable[kv.Key] = kv.Value;
             }
-            devTable.ACL = SetupACL(user.ObjectId );
+            devTable.ACL = SetupACL(user );
 
             await devTable.Save();
         }
