@@ -49,12 +49,12 @@ namespace web {
             };
             LCEngine.Initialize(services);
 
-            //string appId = Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID");
-            //string appKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY");
-            //string server = Environment.GetEnvironmentVariable("LEANCLOUD_API_SERVER");
-            //string masterKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
-            //LCApplication.Initialize(appId,appKey, server, masterKey);
-            //LCApplication.UseMasterKey = true;
+            string appId = Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID");
+            string appKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY");
+            string server = Environment.GetEnvironmentVariable("LEANCLOUD_API_SERVER");
+            string masterKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+            LCApplication.Initialize(appId, appKey, server, masterKey);
+            LCApplication.UseMasterKey = true;
 
 
             Task.Run(async () =>
