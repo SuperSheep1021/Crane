@@ -16,15 +16,17 @@ namespace web {
         [LCEngineFunction("Test")]
         public static async Task<string> Test() 
         {
-            LCObject gameconfig =await HelpService.GetGameConfigTableInfo();
-            //string gameconfigjson = gameconfig.ToString();
+            //LCObject gameconfig =await HelpService.GetGameConfigTableInfo();
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
-            string text = user["playerPropInfo"] as string;
+            LCObject pointerLcobj = user["playerPropInfo"] as LCObject;
+            LCQuery<LCObject> playerPropQuery = new LCQuery<LCObject>(HelpService.PlayerPropsTable);
+            playerPropQuery.WhereEqualTo("objectId", pointerLcobj.ObjectId);
+            LCObject playerPropObj =await playerPropQuery.First();
             //LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
 
             return $"gameconfig: { 1000  }_" +
-                $"__{text } ";
+                $"__{playerPropObj["power"] } ";
         }
 
 
