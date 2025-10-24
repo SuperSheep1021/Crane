@@ -31,8 +31,8 @@ namespace web {
                     .AddConsole();
             });
             
-            bool openDebug = bool.Parse( Environment.GetEnvironmentVariable("DEBUG_LOG") );
-            if (openDebug)
+            int openDebug = int.Parse( Environment.GetEnvironmentVariable("DEBUG_LOG") );
+            if (openDebug>0)
             {
                 LCLogger.LogDelegate = (level, log) =>
                 {
