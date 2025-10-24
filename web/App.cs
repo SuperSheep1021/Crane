@@ -16,7 +16,7 @@ namespace web {
         [LCEngineFunction("Test")]
         public static async Task<string> Test() 
         {
-            LCObject gameconfig =await HelpService.GetGameConfigTableInfo();
+            var gameconfig =await HelpService.GetGameConfigTableInfo<LCObject>();
             string gameconfigjson = await LCJsonUtils.SerializeAsync(gameconfig); 
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
