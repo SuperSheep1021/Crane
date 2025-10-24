@@ -28,7 +28,9 @@ public class SysIMClientService
             return inst;
         }
     }
+    public LCUser SysUser { get; private set; }
     public LCIMClient SysIMClient { get; private set; }
+
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
 
@@ -74,23 +76,29 @@ public class SysIMClientService
         }
         return success;
     }
-    public async Task<bool> Online(string userId,bool online)
+    async Task<bool> LoginSysAccount()
     {
         bool success = false;
-        LCQuery<LCUser> userQuery = LCUser.GetQuery();
-        userQuery.WhereEqualTo("objectId", userId);
-        LCUser lcuser = await userQuery.First();
-        lcuser["online"] = online;
-        await lcuser.Save();
-        //CurUser.Set("online", online);
-        //await CurUser.Save();
-        success = true;
-
+        try {
+            string sysName = Environment.GetEnvironmentVariable("SYS_USER_NAME");
+            string sysPassword = Environment.GetEnvironmentVariable("SYS_USER_PASSWORD");
+            SysUser = await LCUser.Login(sysName, sysPassword);
+            success = true;
+        }
+        catch (LCException e)
+        {
+            LCLogger.Error($"SysIMClient Open Failure:{e.Code} : {e.Message}");
+        }
+        catch (Exception e)
+        {
+            LCLogger.Error($"SysIMClient Open Failure: {e.Message}");
+        }
         return success;
     }
     public async Task<bool> Initialtion()
     {
         bool success = true;
+        success = await LoginSysAccount();
         success = await OpenClient();
         success = await GetSysConv();
         return success;
