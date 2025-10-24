@@ -236,14 +236,19 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
+        //LCObject.CreateWithoutData();
         LCObject playerPropObj = user["playerPropInfo"] as LCObject;
         if (playerPropObj == null)
         {
-            LCObject playerProp = new LCObject(PlayerPropsTable);
+            LCObject playerProp = LCObject.Create(PlayerPropsTable);
             playerProp.ACL = SetupACL(user);
             playerProp["userId"] = user.ObjectId;
             playerProp["userName"] = user.Username;
-            playerProp = await playerProp.Fetch();
+            playerProp["gem"] = 0;
+            playerProp["goldCoin"] = 100;
+            playerProp["power"] = 50;
+            //playerProp["specialDolls"] = user.Username;
+
             await playerProp.Save();
             return playerProp;
         }
