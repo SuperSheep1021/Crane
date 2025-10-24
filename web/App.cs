@@ -81,6 +81,8 @@ namespace web {
         }
 
         #endregion
+
+        #region//消耗
         [LCEngineFunction("ConsumeGoldCoin")]
         public static async Task<bool> ConsumeGoldCoin([LCEngineFunctionParam("userId")] string userId,
             [LCEngineFunctionParam("consumeCount")] int consumeCount)
@@ -95,9 +97,6 @@ namespace web {
             LCUser user = await HelpService.GetUser(userId);
             return await HelpService.ConsumeGem(user, consumeCount);
         }
-
-        #region
-
         #endregion
 
         [LCEngineFunction("OnSignUpOrLogin")]
