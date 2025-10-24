@@ -100,6 +100,12 @@ public static class HelpService
         }
         return success;
     }
+
+    private static async Task SetupPointer(LCUser user, string key, LCObject lcobject)
+    {
+        user[key] = lcobject;
+        await user.Save();
+    }
     public static async Task<LCUser> SetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
@@ -198,6 +204,7 @@ public static class HelpService
                 deviceObj[kv.Key] = kv.Value;
             }
             await deviceObj.Save();
+            await SetupPointer(user, "deviceInfo", deviceObj);
         }
         else
         {
@@ -248,11 +255,13 @@ public static class HelpService
             playerProp.ACL = SetupACL(user);
             playerProp["userId"] = user.ObjectId;
             playerProp["userName"] = user.Username;
+
             //playerProp["gem"] = 0;
             //playerProp["goldCoin"] = 100;
             //playerProp["power"] = 50;
             //playerProp["specialDolls"] = user.Username;
             await playerProp.Save();
+            await SetupPointer(user, "playerPropInfo", playerProp );
         }
         else {
             LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);

@@ -92,12 +92,10 @@ namespace web {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
 
             LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(user,deviceDic);
-            await HelpService.SetupPointer(user.ObjectId , "deviceInfo", deviceObj);
+            
 
             LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
-
-            if (playerPropObj == null) return;
-            await HelpService.SetupPointer(user.ObjectId, "playerPropInfo", playerPropObj);
+            
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
