@@ -47,7 +47,7 @@ public class LocalSignatureFactory : ILCIMSignatureFactory
     {
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();                     
         string nonce = NewNonce();
-        string signature = GenerateSignature( LCCore.AppId,LCCore.AppKey ,clientId,timestamp.ToString(), nonce);
+        string signature = GenerateSignature(LCCore.AppId, clientId, string.Empty, timestamp.ToString(), nonce);
         return Task.FromResult(new LCIMSignature
         {
             Signature = signature,
@@ -66,7 +66,7 @@ public class LocalSignatureFactory : ILCIMSignatureFactory
         }
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
         string nonce = NewNonce();
-        string signature = GenerateSignature(LCCore.AppId, LCCore.AppKey, clientId, sortedMemberIds, timestamp.ToString(), nonce);
+        string signature = GenerateSignature(LCCore.AppId, clientId, sortedMemberIds, timestamp.ToString(), nonce);
         return Task.FromResult(new LCIMSignature
         {
             Signature = signature,
@@ -85,7 +85,7 @@ public class LocalSignatureFactory : ILCIMSignatureFactory
         }
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
         string nonce = NewNonce();
-        string signature = GenerateSignature(LCCore.AppId, LCCore.AppKey,clientId, conversationId, sortedMemberIds, timestamp.ToString(), nonce, action);
+        string signature = GenerateSignature(LCCore.AppId, clientId, conversationId, sortedMemberIds, timestamp.ToString(), nonce, action);
         return Task.FromResult(new LCIMSignature
         {
             Signature = signature,
