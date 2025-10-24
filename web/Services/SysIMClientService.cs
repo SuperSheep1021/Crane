@@ -112,8 +112,11 @@ public class SysIMClientService
     {
         bool success = true;
         success = await LoginSysAccount();
+        LCLogger.Warn($"sys Account login success");
         success = await OpenClient();
+        LCLogger.Warn($"sys Account Open Client success");
         success = await GetSysConv();
+        LCLogger.Warn($"sys Account Get Sys Conv success");
         return success;
     }
     public async Task<bool> Online(string userId,bool online)
