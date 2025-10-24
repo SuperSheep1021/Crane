@@ -73,6 +73,7 @@ namespace web {
 
             LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
             var playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
+            LCLogger.Debug($"================{playerPropInfo.ToString() }==================");
             LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
             if (playerPropInfo == null ) return;
 
