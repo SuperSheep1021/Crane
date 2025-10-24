@@ -28,8 +28,6 @@ public class SysIMClientService
             return inst;
         }
     }
-
-
     public LCIMClient SysIMClient { get; private set; }
     public LCIMServiceConversation SysIMConversation { get; private set; }
     public string SysConvId { get; private set; }
@@ -76,7 +74,6 @@ public class SysIMClientService
         }
         return success;
     }
-
     public async Task<bool> Online(string userId,bool online)
     {
         bool success = false;
@@ -118,7 +115,6 @@ public class SysIMClientService
     //    return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
 
     //}
-
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds)
     {
         LCLogger.Debug($"conv id:{SysConvId}");
@@ -134,6 +130,5 @@ public class SysIMClientService
         //ÐèÒª»Ø¶Á
         sendOptions.Receipt = true;
         return await conv.Send(message, sendOptions) as LCIMTextMessage;
-
     }
 }

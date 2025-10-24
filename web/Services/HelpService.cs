@@ -144,6 +144,7 @@ public static class HelpService
     }
     public static async Task<LCObject> CreateOrSetupDeviceInfo(Dictionary<string, object> dic) 
     {
+        SysIMClientService.Inst.SysIMClient.GetQuery();
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
         devQuery.WhereEqualTo("userId", dic["userId"]);
         devQuery.WhereEqualTo("userName", dic["userName"]);
