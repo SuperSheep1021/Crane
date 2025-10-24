@@ -125,7 +125,7 @@ public class SysIMClientService
             userLCQuery.WhereEqualTo("objectId",userId);
             LCUser user= await userLCQuery.First();
             user["online"] = online;
-            await user.Save();
+            await user.Save( );
             success = true;
         }
         catch (LCException ex)
