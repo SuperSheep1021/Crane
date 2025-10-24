@@ -19,8 +19,7 @@ public static class HelpService
     public static string SpecialDollsTable = "SpecialDolls";
 
     public static string ON_LOGIN = "100000";
-    public static string ON_SIGUP = "100001";
-    public static string START_GAME = "100002";
+    public static string START_GAME = "100001";
 
     
     public static string CONSUME_POWER_FAILURE = "100100";
