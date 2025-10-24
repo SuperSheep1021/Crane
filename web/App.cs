@@ -20,7 +20,7 @@ namespace web {
             //string gameconfigjson = gameconfig.ToString();
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
-            string text = user["playerPropInfo"].ToString();
+            string text = user["playerPropInfo"] as string;
             //LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
 
             return $"gameconfig: { 1000  }_" +
