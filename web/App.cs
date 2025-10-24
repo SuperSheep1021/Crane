@@ -23,7 +23,7 @@ namespace web {
             LCObject playerPropObj = user["playerPropInfo"] as LCObject;
             //LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
 
-            return $"gameconfig: { HelpService.ConvertTo<int>(gameconfig["perAddPower"] ) }_" +
+            return $"gameconfig: { playerPropObj.ObjectId  }_" +
                 $"__{HelpService.ConvertTo<int>(playerPropObj["power"])} ";
         }
 
