@@ -3,6 +3,7 @@ using LC.Newtonsoft.Json;
 using LeanCloud;
 using LeanCloud.Common;
 using LeanCloud.Storage;
+using LeanCloud.Storage.Internal.Codec;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -215,16 +216,8 @@ public static class HelpService
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
         ReadOnlyCollection<LCObject> gameconfigs = await devQuery.Find();
-        return gameconfigs[0];
+        return LCEncoder.Encode(gameconfigs[0], full: true) as LCObject;
     }
-
-    public static async Task<T> GetGameConfigTableInfo<T>() where T : LCObject
-    {
-        LCQuery<T> devQuery = new LCQuery<T>(GameConfigTable);
-        ReadOnlyCollection<T> gameconfigs = await devQuery.Find();
-        return gameconfigs[0];
-    }
-
 
     /// <summary>
     /// SpecialDolls
