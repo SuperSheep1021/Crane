@@ -67,11 +67,13 @@ namespace web {
         public static async Task OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfoJson")] string deviceInfoJson)
         {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfoJson);
+            LCLogger.Debug("================CreateOrSetupDeviceInfo==================");
             await HelpService.CreateOrSetupDeviceInfo(deviceDic);
+            LCLogger.Debug("================CreateOrSetupDeviceInfo==================");
 
-            LCLogger.Debug("================aa==================");
+            LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
             var playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
-            LCLogger.Debug("================aa==================");
+            LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
             if (playerPropInfo == null ) return;
 
             string playerPropJson = JsonConvert.SerializeObject(playerPropInfo);
