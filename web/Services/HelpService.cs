@@ -271,6 +271,14 @@ public static class HelpService
 
             palyerProp["power"] = userPower;
             await palyerProp.Save();
+            
+
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_POWER_SUCCESS, new Dictionary<string, object>()
+            {
+                { "AddCount",10}
+            });
+
             success = true;
         }
         return success;
@@ -352,10 +360,15 @@ public static class HelpService
         if (palyerProp != null)
         {
             int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
-            userGoldCoin += count;
-
-            palyerProp["goldCoin"] = userGoldCoin;
+            palyerProp["goldCoin"] = userGoldCoin + count;
             await palyerProp.Save();
+            
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GOLD_COIN_SUCCESS, new Dictionary<string, object>()
+            {
+                { "AddCount",count}
+            });
+
             success = true;
         }
         return success;
@@ -402,10 +415,14 @@ public static class HelpService
         if (palyerProp != null)
         {
             int userGem = ConvertTo<int>(palyerProp["gem"]);
-            userGem += count;
-
-            palyerProp["gem"] = userGem;
+            palyerProp["gem"] = userGem + count;
             await palyerProp.Save();
+
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GEM_SUCCESS, new Dictionary<string, object>()
+            {
+                { "AddCount",count }
+            });
+
             success = true;
         }
         return success;

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace web {
     public class App
     {
+
         [LCEngineFunction("GetSignature")]
         public static string GetSignature( [LCEngineFunctionParam("args")] string args)
         {
@@ -47,34 +48,19 @@ namespace web {
         public static async Task<bool> AddPower([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            bool success = await HelpService.AddPower(user);
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_POWER_SUCCESS,new Dictionary<string, object>() 
-            {
-                { "AddCount",10}
-            });
-            return success;
+            return await HelpService.AddPower(user);
         }
         [LCEngineFunction("AddGoldCoin")]
         public static async Task<bool> AddGoldCoin([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            bool success = await HelpService.AddGoldCoin(user, 10);
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GOLD_COIN_SUCCESS, new Dictionary<string, object>()
-            {
-                { "AddCount",10}
-            });
-            return success;
+            return await HelpService.AddGoldCoin(user, 10);
         }
         [LCEngineFunction("AddGem")]
         public static async Task<bool> AddGem([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            bool success = await HelpService.AddGem(user, 10);
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_GEM_SUCCESS, new Dictionary<string, object>()
-            {
-                { "AddCount",10}
-            });
-            return success;
+            return await HelpService.AddGem(user, 10);
         }
 
         #endregion
