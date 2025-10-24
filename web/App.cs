@@ -47,16 +47,20 @@ namespace web {
         {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
-        [LCEngineFunction("OnSignUp")]
-        public static async void OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
+        [LCEngineFunction("OnSignUpOrLogin")]
+        public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
+            [LCEngineFunctionParam("upd")] string upd, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
         {
-            Dictionary<string, object> deviceInfoDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
-            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceInfoDic);
-            await HelpService.UserSetupPointer(userId, "deviceInfo", deviceObj);
+            await HelpService.SetupUser(userId, "upd", upd);
 
-            LCObject playerPropObj = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+            Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
+            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
+            await HelpService.SetupPointer(userId, "deviceInfo", deviceObj);
+
+            LCObject playerPropObj = await HelpService.GetPlayerPropsInfoFromUser(userId);
             if (playerPropObj == null) return;
-            await HelpService.UserSetupPointer(userId, "playerPropInfo", playerPropObj);
+            await HelpService.SetupPointer(userId, "playerPropInfo", playerPropObj);
+
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_SIGUP, new Dictionary<string, object>()
             {
@@ -64,23 +68,6 @@ namespace web {
             });
         }
 
-        [LCEngineFunction("OnLogin")]
-        public static async void OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo)
-        {
-            Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
-            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
-            await HelpService.UserSetupPointer(userId, "deviceInfo", deviceObj);
-
-            LCObject playerPropObj = await HelpService.GetPlayerPropsInfoFromUser(userId);
-            if (playerPropObj == null) return;
-            await HelpService.UserSetupPointer(userId, "playerPropInfo", playerPropObj);
-
-            
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.ON_LOGIN, new Dictionary<string, object>()
-            {
-                { "playerProp",playerPropObj.ToString() }
-            });
-        }
 
         [LCEngineFunction("StartGame")]
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)

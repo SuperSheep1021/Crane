@@ -74,10 +74,16 @@ public static class HelpService
         return user["online"].ConvertTo<bool>();
     }
     
-    public static async Task UserSetupPointer(string userId,string key,LCObject lcobject)
+    public static async Task SetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
         user[key] = lcobject;
+        await user.Save();
+    }
+    public static async Task SetupUser(string userId, string key, object value)
+    {
+        LCUser user = await GetUser(userId);
+        user[key] = value;
         await user.Save();
     }
 
@@ -198,7 +204,7 @@ public static class HelpService
         ReadOnlyCollection<LCObject> objs = await devQuery.Find();
         return objs;
     }
-    public static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
+    private static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(string userId)
     {
         LCObject playerProp = new LCObject(PlayerPropsTable);
         playerProp.ACL = SetupACL(userId);
