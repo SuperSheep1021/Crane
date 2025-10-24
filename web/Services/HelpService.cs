@@ -187,10 +187,11 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> CreateOrSetupDeviceInfo(LCUser user,Dictionary<string, object> dic) 
     {
-        LCObject deviceObj = user["deviceInfo"] as LCObject;
-        if (deviceObj == null)
+        LCObject pointer = user["deviceInfo"] as LCObject;
+        LCObject deviceObj = default;
+        if (pointer == null)
         {
-            deviceObj = new LCObject(DeviceTable);
+            deviceObj = LCObject.Create(DeviceTable);
             deviceObj.ACL = SetupACL(user);
             foreach (KeyValuePair<string, object> kv in dic)
             {
@@ -200,6 +201,8 @@ public static class HelpService
         }
         else
         {
+            LCQuery<LCObject> query = new LCQuery<LCObject>(DeviceTable);
+            deviceObj = await query.Get(pointer.ObjectId);
             foreach (KeyValuePair<string, object> kv in dic)
             {
                 deviceObj[kv.Key] = kv.Value;
@@ -237,10 +240,12 @@ public static class HelpService
     public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
         //LCObject.CreateWithoutData();
-        LCObject playerPropObj = user["playerPropInfo"] as LCObject;
-        if (playerPropObj == null)
+        LCObject pointer = user["playerPropInfo"] as LCObject;
+        LCObject playerProp = default;
+
+        if (pointer == null)
         {
-            LCObject playerProp = LCObject.Create(PlayerPropsTable);
+            playerProp = LCObject.Create(PlayerPropsTable);
             playerProp.ACL = SetupACL(user);
             playerProp["userId"] = user.ObjectId;
             playerProp["userName"] = user.Username;
@@ -248,13 +253,13 @@ public static class HelpService
             playerProp["goldCoin"] = 100;
             playerProp["power"] = 50;
             //playerProp["specialDolls"] = user.Username;
-
             await playerProp.Save();
-            return playerProp;
         }
         else {
-            return playerPropObj;
+            LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
+            playerProp = await query.Get(pointer.ObjectId);
         }
+        return playerProp;
     }
 
 
