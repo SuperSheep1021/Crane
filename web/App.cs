@@ -48,20 +48,24 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
         [LCEngineFunction("OnSignUp")]
-        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
+        public static async void OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
         {
             Dictionary<string, object> deviceInfoDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
-            LCObject deviceInfoObj = await HelpService.CreateOrSetupDeviceInfo(deviceInfoDic);
-            LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceInfoDic);
+            await HelpService.UserSetupPointer(userId, "deviceInfo", deviceObj);
+
+            LCObject playerPropObj = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
+            if (playerPropObj == null) return;
+            await HelpService.UserSetupPointer(userId, "playerPropInfo", playerPropObj);
+
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_SIGUP, new Dictionary<string, object>()
             {
-                { "playerProp",playerPropInfo.ToString() }
+                { "playerProp",playerPropObj.ToString() }
             });
-            return true;
         }
 
         [LCEngineFunction("OnLogin")]
-        public static async Task OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo)
+        public static async void OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo)
         {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
             LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
