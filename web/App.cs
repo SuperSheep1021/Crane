@@ -72,8 +72,9 @@ namespace web {
         [LCEngineFunction("StartGame")]
         public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
         {
+            LCUser user = await HelpService.GetUser(userId);
             Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
-            bool success = await HelpService.ConsumePower(userId);
+            bool success = await HelpService.ConsumePower(user);
             if (!success)
             {
                 //消耗失败

@@ -61,7 +61,7 @@ public static class HelpService
     //    }
     //}
 
-    private static async Task<LCUser> GetUser(string objectId)
+    public static async Task<LCUser> GetUser(string objectId)
     {
         LCQuery<LCUser> query = LCUser.GetQuery();
         query.WhereEqualTo("objectId", objectId);
@@ -233,10 +233,10 @@ public static class HelpService
     //}
 
     #region//Power Value
-    public static async Task<bool> AddConsumePower(string userId)
+    public static async Task<bool> AddConsumePower(LCUser user)
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             LCObject gameConfig = await GetGameConfigTableInfo();
@@ -251,10 +251,10 @@ public static class HelpService
         }
         return success;
     }
-    public static async Task<bool> ConsumePower(string userId)
+    public static async Task<bool> ConsumePower(LCUser user)
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             LCObject gameConfig = await GetGameConfigTableInfo();
@@ -273,10 +273,10 @@ public static class HelpService
     #endregion
 
     #region// GoldCoin
-    public static async Task<bool> ConsumeGoldCoin(string userId, int consumeCount)
+    public static async Task<bool> ConsumeGoldCoin(LCUser user, int consumeCount)
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
@@ -290,10 +290,10 @@ public static class HelpService
         }
         return success;
     }
-    public static async Task<bool> AddGoldCoin(string userId,int count) 
+    public static async Task<bool> AddGoldCoin(LCUser user, int count) 
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             int userGoldCoin = ConvertTo<int>(palyerProp["goldCoin"]);
@@ -308,10 +308,10 @@ public static class HelpService
     #endregion
 
     #region// Gem
-    public static async Task<bool> ConsumeGem(string userId, int consumeCount)
+    public static async Task<bool> ConsumeGem(LCUser user, int consumeCount)
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             int userGem = ConvertTo<int>(palyerProp["gem"]);
@@ -325,10 +325,10 @@ public static class HelpService
         }
         return success;
     }
-    public static async Task<bool> AddGem(string userId, int count)
+    public static async Task<bool> AddGem(LCUser user, int count)
     {
         bool success = false;
-        LCObject palyerProp = await GetPlayerPropsInfoFromUser(userId);
+        LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
         if (palyerProp != null)
         {
             int userGem = ConvertTo<int>(palyerProp["gem"]);
