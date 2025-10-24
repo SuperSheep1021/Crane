@@ -62,7 +62,7 @@ namespace web {
             await HelpService.SetupPointer(userId, "playerPropInfo", playerPropObj);
 
 
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_SIGUP, new Dictionary<string, object>()
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
                 { "playerProp",playerPropObj.ToString() }
             });
