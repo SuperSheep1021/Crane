@@ -81,8 +81,24 @@ namespace web {
         }
 
         #endregion
+        [LCEngineFunction("ConsumeGoldCoin")]
+        public static async Task<bool> ConsumeGoldCoin([LCEngineFunctionParam("userId")] string userId,
+            [LCEngineFunctionParam("consumeCount")] int consumeCount)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            return await HelpService.ConsumeGoldCoin(user, consumeCount);
+        }
+        [LCEngineFunction("ConsumeGem")]
+        public static async Task<bool> ConsumeGem([LCEngineFunctionParam("userId")] string userId,
+            [LCEngineFunctionParam("consumeCount")] int consumeCount)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            return await HelpService.ConsumeGem(user, consumeCount);
+        }
 
+        #region
 
+        #endregion
 
         [LCEngineFunction("OnSignUpOrLogin")]
         public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
