@@ -16,13 +16,7 @@ namespace web {
         public static string GetSignature( [LCEngineFunctionParam("args")] string args)
         {
             return LocalSignatureFactory.GenerateSignature(args);
-            //return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
-        //[LCEngineFunction("GetMonsterKey")]
-        //public static string GetMonsterKey()
-        //{
-        //    return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
-        //}
 
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
@@ -47,6 +41,8 @@ namespace web {
         {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
+
+
         [LCEngineFunction("OnSignUpOrLogin")]
         public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
             [LCEngineFunctionParam("upd")] string upd, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
@@ -55,14 +51,14 @@ namespace web {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
 
             LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(user,deviceDic);
-            await HelpService.SetupPointer(userId, "deviceInfo", deviceObj);
+            await HelpService.SetupPointer(user.ObjectId , "deviceInfo", deviceObj);
 
             LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
             if (playerPropObj == null) return;
-            await HelpService.SetupPointer(userId, "playerPropInfo", playerPropObj);
+            await HelpService.SetupPointer(user.ObjectId, "playerPropInfo", playerPropObj);
 
 
-            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_LOGIN, new Dictionary<string, object>()
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
                 { "playerProp",playerPropObj.ToString() }
             });
@@ -70,15 +66,14 @@ namespace web {
 
 
         [LCEngineFunction("StartGame")]
-        public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters)
+        public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("clientTimes")] string parameters)
         {
             LCUser user = await HelpService.GetUser(userId);
-            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
             bool success = await HelpService.ConsumePower(user);
             if (!success)
             {
                 //消耗失败
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.CONSUME_POWER_FAILURE );
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.CONSUME_POWER_FAILURE );
                 return success;
             }
             
@@ -92,10 +87,12 @@ namespace web {
                     CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
                 }
 
+                Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
                 LCObject startGameInfo = await HelpService.CreateStartGameInfo(user,dic);
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.START_GAME, new Dictionary<string, object>() 
+                await HelpService.SetupPointer(user.ObjectId, "startGameInfo", startGameInfo);
+
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.START_GAME, new Dictionary<string, object>() 
                 {
-                    {"startGameId",startGameInfo.ObjectId },
                     {"createSpecialName",CreateSpecialName }
                  });
             }
@@ -103,6 +100,8 @@ namespace web {
             return success;
         }
 
+
+        #region//测试用
 
         [LCEngineFunction("RA创建系统会话(string name)")]
         public static async Task<IDictionary<string,object>> CreateServiceConversation([LCEngineFunctionParam("name")] string sysConversationName)
@@ -126,9 +125,6 @@ namespace web {
         {
             return await RESTAPIService.Inst.QuerySendFormClientId(targetClientId);
         }
-
-
-
 
         [LCEngineFunction("RA发送消息给所有订阅者")]
         public static async Task<IDictionary<string, object>> SendMessageToSubscribes([LCEngineFunctionParam("text")] string text)
@@ -159,15 +155,13 @@ namespace web {
             }
             return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray());
         }
+        #endregion
 
-
-        #region // onlogin OnClient
+        #region //登录 在线离线
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
         public static void OnLogin(LCUser loginUser)
         {
-            loginUser["online"] = true;
-            //await loginUser.Save();
             LCLogger.Debug($"user login {loginUser.Username}");
         }
 
@@ -186,55 +180,38 @@ namespace web {
         }
         #endregion
 
-        //[LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
-        //public static LCObject ReviewBeforeSave(LCObject review)
-        //{
-        //    if (string.IsNullOrEmpty(review["comment"].ToString()))
-        //    {
-        //        throw new Exception("No comment provided!");
-        //    }
-        //    string comment = review["comment"] as string;
-        //    if (comment.Length > 140)
-        //    {
-        //        review["comment"] = string.Format($"{comment.Substring(0, 140)}...");
-        //    }
-        //    return review;
-        //}
+        #region//保存数据库时
+        /// <summary>
+        /// 当 “Review” 对象即将被保存到数据库时执行（LCEngineObjectHookType.BeforeSave）
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        [LCEngineClassHook("Review", LCEngineObjectHookType.BeforeSave)]
+        public static LCObject ReviewBeforeSave(LCObject review)
+        {
+            return review;
+        }
 
 
-        //[LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
-        //public static async Task ReviewAfterSave(LCObject review)
-        //{
-        //    LCObject post = review["post"] as LCObject;
-        //    await post.Fetch();
-        //    post.Increment("comments", 1);
-        //    await post.Save();
-        //}
+        /// <summary>
+        /// 当 “Review” 对象成功保存到数据库后执行（LCEngineObjectHookType.AfterSave），且是异步方法（async Task）。
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        [LCEngineClassHook("Review", LCEngineObjectHookType.AfterSave)]
+        public static async Task ReviewAfterSave(LCObject review)
+        {
+            LCObject post = review["post"] as LCObject;
+            await post.Fetch();
+            post.Increment("comments", 1);
+            await post.Save();
+        }
+        #endregion
 
-
+        #region//消息接收发送
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.MessageReceived)]
         public static object OnMessageReceived(Dictionary<string, object> parameters)
         {
-            //LCLogger.Debug("=======================================");
-            //LCLogger.Debug($"=================={JsonConvert.SerializeObject(parameters)}=====================");
-            //LCLogger.Debug($"=================={parameters["toPeers"]}=====================");
-            //LCLogger.Debug(" =======================================");
-
-            //if (parameters["toPeers"] == null)
-            //{
-            //    string contentjson = parameters["content"] as string;
-            //    var contentdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentjson);
-            //    string lcattrsjson = contentdic["_lcattrs"].ToString();
-            //    var lcattrsdic = JsonConvert.DeserializeObject<Dictionary<string, object>>(lcattrsjson);
-            //    var topeerarray = JsonConvert.DeserializeObject<string[]>(lcattrsdic["toPeers"].ToString());
-            //    parameters["toPeers"] = topeerarray;
-
-
-            //    contentdic.Remove("_lcattrs");
-            //    parameters["content"] = JsonConvert.SerializeObject(contentdic);
-
-            //    LCLogger.Debug($"================execute parameters repair========={parameters["content"]}=======");
-            //}
             return parameters;
         }
 
@@ -244,8 +221,9 @@ namespace web {
         {
             return parameters;
         }
+        #endregion
 
-        #region//conversation
+        #region//Conversation
         /// <summary>
         /// 创建对话，在签名校验（如果开启）之后，实际创建之前调用。开发者在这里可以为新的「对话」添加其他内部属性，或完成操作鉴权，以及其他类似操作。
         /// </summary>
@@ -254,8 +232,6 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStart)]
         public static object OnConversationStart(Dictionary<string, object> parameters)
         {
-            //string convId = parameters["convId"] as string;
-            //LCLogger.Debug($"{convId} OnConversationStart");
             return parameters;
         }
         /// <summary>
@@ -264,125 +240,40 @@ namespace web {
         /// <param name="parameters"></param>
         /// <returns></returns>
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationStarted)]
-        public static object OnConversationStartedAsync(Dictionary<string, object> parameters)
+        public static object OnConversationStarted(Dictionary<string, object> parameters)
         {
-            //string convId = parameters["convId"] as string;
-            //LCLogger.Debug($"{convId} OnConversationStarted");
-
             return parameters;
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdd)]
         public static object OnConversationAdd(Dictionary<string, object> parameters)
         {
-            List<object> members = new List<object>();
-            object membersObj = parameters["members"];
-            if (membersObj is List<object>)
-            {
-                members = membersObj as List<object>;
-            }
-            else {
-                members.Add(membersObj.ToString() );
-            }
-
-            foreach (string str in members)
-            {
-                LCLogger.Debug($"OnConversationAdd imclient object id is {str.ToString() }");
-            }
             return parameters;
         }
-
-        
-
-
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationAdded)]
-        public static async Task<object> OnConversationAddedAsync(Dictionary<string, object> parameters)
+        public static object OnConversationAdded(Dictionary<string, object> parameters)
         {
-            List<object> members = new List<object>();
-            object membersObj = parameters["members"];
-            if (membersObj is List<object>)
-            {
-                members = membersObj as List<object>;
-            }
-            else
-            {
-                members.Add(membersObj.ToString());
-            }
-
-            foreach (string str in members)
-            {
-                LCLogger.Debug($"OnConversationAdded imclient object id is {str.ToString()}");
-            }
-            //if (m_ImSend)
-            //{
-            //    await SysIMClientService.Inst.SendMessageToSubscribesAsync("login success", new string[] { members[0].ToString() });
-            //}
-            //else {
-            //    await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("login success", new string[] { members[0].ToString() });
-            //}
-            //await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync("100000", new string[] { members[0].ToString() });
             return parameters;
         }
-
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemove)]
         public static object OnConversationRemove(Dictionary<string, object> parameters)
         {
-            List<object> members = new List<object>();
-            object membersObj = parameters["members"];
-            if (membersObj is List<object>)
-            {
-                members = membersObj as List<object>;
-            }
-            else
-            {
-                members.Add(membersObj.ToString());
-            }
-
-            foreach (string str in members)
-            {
-                LCLogger.Debug($"OnConversationRemove imclient object id is {str.ToString()}");
-            }
-            return default;
+            return parameters;
         }
-
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationRemoved)]
         public static void OnConversationRemoved(Dictionary<string, object> parameters)
         {
-            List<object> members = new List<object>();
-            object membersObj = parameters["members"];
-            if (membersObj is List<object>)
-            {
-                members = membersObj as List<object>;
-            }
-            else
-            {
-                members.Add(membersObj.ToString());
-            }
-
-            foreach (string str in members)
-            {
-                LCLogger.Debug($"OnConversationRemoved imclient object id is {str.ToString()}");
-            }
+            LCLogger.Debug($"OnConversationRemoved imclient object id is {parameters.ToString()}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ConversationUpdate)]
         public static object OnConversationUpdate(Dictionary<string, object> parameters)
         {
-        //    Dictionary<string, object> attr = parameters["attr"] as Dictionary<string, object>;
-        //    if (attr != null && attr.ContainsKey("name"))
-        //    {
-        //        return new Dictionary<string, object> {
-        //    { "reject", true },
-        //    { "code", 1949 },
-        //    { "detail", "对话名称不可修改" }
-        //};
-        //    }
             return parameters;
         }
         #endregion
-
 
 
     }

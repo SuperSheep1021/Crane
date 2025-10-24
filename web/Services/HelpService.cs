@@ -130,9 +130,9 @@ public static class HelpService
         devQuery.OrderByDescending("createdAt");
         ReadOnlyCollection<LCObject> sGameTables = await devQuery.Find();
 
-        if (sGameTables.Count > 10)
+        if (sGameTables.Count >= 50 )
         {
-            await sGameTables[9].Delete();
+            await sGameTables[49].Delete();
         }
 
 
