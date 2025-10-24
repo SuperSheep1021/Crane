@@ -99,10 +99,6 @@ namespace web {
             if (playerPropObj == null) return;
             await HelpService.SetupPointer(user.ObjectId, "playerPropInfo", playerPropObj);
 
-
-            string playerPropJson = await LCJsonUtils.SerializeObjectAsync(playerPropObj);
-            LCLogger.Debug($"================={playerPropJson}********************");
-
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
                 { "playerProp",playerPropObj.ToString() }

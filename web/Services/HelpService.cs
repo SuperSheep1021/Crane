@@ -239,7 +239,6 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
-        //LCObject.CreateWithoutData();
         LCObject pointer = user["playerPropInfo"] as LCObject;
         LCObject playerProp = default;
 
@@ -249,9 +248,9 @@ public static class HelpService
             playerProp.ACL = SetupACL(user);
             playerProp["userId"] = user.ObjectId;
             playerProp["userName"] = user.Username;
-            playerProp["gem"] = 0;
-            playerProp["goldCoin"] = 100;
-            playerProp["power"] = 50;
+            //playerProp["gem"] = 0;
+            //playerProp["goldCoin"] = 100;
+            //playerProp["power"] = 50;
             //playerProp["specialDolls"] = user.Username;
             await playerProp.Save();
         }
