@@ -187,32 +187,26 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> CreateOrSetupDeviceInfo(LCUser user,Dictionary<string, object> dic) 
     {
-        LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
-        devQuery.WhereEqualTo("userId", user.ObjectId );
-        devQuery.WhereEqualTo("userName", user.Username );
-        LCObject devTable = await devQuery.First();
-
-        if (devTable == null)
+        LCObject deviceObj = user["deviceInfo"] as LCObject;
+        if (deviceObj == null)
         {
-            devTable = new LCObject(DeviceTable);
+            deviceObj = new LCObject(DeviceTable);
+            deviceObj.ACL = SetupACL(user);
             foreach (KeyValuePair<string, object> kv in dic)
             {
-                devTable[kv.Key] = kv.Value;
+                deviceObj[kv.Key] = kv.Value;
             }
-            devTable.ACL = SetupACL(user );
-
-            await devTable.Save();
+            await deviceObj.Save();
         }
         else
         {
             foreach (KeyValuePair<string, object> kv in dic)
             {
-                devTable[kv.Key] = kv.Value;
+                deviceObj[kv.Key] = kv.Value;
             }
-            await devTable.Save();
+            await deviceObj.Save();
         }
-
-        return devTable;
+        return deviceObj;
     }
     /// <summary>
     /// GameConfig
@@ -241,18 +235,20 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
-        LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
-        query.WhereEqualTo("userId", user.ObjectId);
-        LCObject playerProp = await query.First();
-        if (playerProp == null) 
+        LCObject playerPropObj = user["playerPropInfo"] as LCObject;
+        if (playerPropObj == null)
         {
-            playerProp = new LCObject(PlayerPropsTable);
+            LCObject playerProp = new LCObject(PlayerPropsTable);
             playerProp.ACL = SetupACL(user);
             playerProp["userId"] = user.ObjectId;
             playerProp["userName"] = user.Username;
+            playerProp = await playerProp.Fetch();
             await playerProp.Save();
+            return playerProp;
         }
-        return playerProp;
+        else {
+            return playerPropObj;
+        }
     }
 
 

@@ -78,9 +78,14 @@ namespace web {
             await HelpService.SetupPointer(user.ObjectId , "deviceInfo", deviceObj);
 
             LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+            playerPropObj = await playerPropObj.Fetch();
+
             if (playerPropObj == null) return;
             await HelpService.SetupPointer(user.ObjectId, "playerPropInfo", playerPropObj);
 
+
+            string playerPropJson = await LCJsonUtils.SerializeObjectAsync(playerPropObj);
+            LCLogger.Debug($"================={playerPropJson}********************");
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
