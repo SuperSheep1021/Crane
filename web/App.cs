@@ -21,7 +21,7 @@ namespace web {
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
-             return await SysService.Inst.isSignUped(userName);
+             return await HelpService.isSignUped(userName);
         }
 
         [LCEngineFunction("SysConvId")]
@@ -168,14 +168,14 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static async void OnClientOnline(Dictionary<string, object> parameters)
         {
-            await SysService.Inst.Online(parameters["peerId"].ToString(), true);
+            await HelpService.SetupOnline(parameters["peerId"].ToString(), true);
             LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static async void OnClientOffline(Dictionary<string, object> parameters)
         {
-            await SysService.Inst.Online(parameters["peerId"].ToString(), false);
+            await HelpService.SetupOnline(parameters["peerId"].ToString(), false);
             LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
         #endregion

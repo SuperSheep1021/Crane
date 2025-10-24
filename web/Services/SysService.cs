@@ -123,62 +123,8 @@ public class SysService
         LCLogger.Warn($"sys Account Get Sys Conv success");
         return success;
     }
-    public async Task<bool> Online(string userId,bool online)
-    {
-        bool success = false;
-        try
-        {
-            LCQuery<LCUser> userLCQuery = LCUser.GetQuery();
-            userLCQuery.WhereEqualTo("objectId",userId);
-            LCUser user= await userLCQuery.First();
-            user["online"] = online;
-            await user.Save( );
-            success = true;
-        }
-        catch (LCException ex)
-        {
-            LCLogger.Error(ex.Code + ":" + ex.Message);
-        }
-        return success;
-    }
-    public async Task<bool> isSignUped(object userName)
-    {
-        LCLogger.Debug($"=========query user============={userName}========================");
-        LCQuery<LCUser> query = LCUser.GetQuery();
-        query.WhereEqualTo("username", userName);
-        LCUser firstUser = await query.First();
-        if (firstUser != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    //public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds )
-    //{
-    //    LCLogger.Debug($"conv id:{SysConvId}");
-    //    //LCIMServiceConversation serConv = await SysIMClient.GetConversation(SysConvId) as LCIMServiceConversation;
-    //    //await serConv.AddMembers(toClientIds);
-
-    //    LCIMTextMessage message = new LCIMTextMessage(text);
-    //    message.ConversationId = SysConvId;
-    //    message.FromClientId = SysIMClient.Id;
-    //    message["toPeers"] = toClientIds;
-
-    //    LCIMMessageSendOptions sendOptions = LCIMMessageSendOptions.Default;
-    //    //在线才能收到消息
-    //    sendOptions.Transient = true;
-    //    //需要回读
-    //    sendOptions.Receipt = true;
-    //    return await SysIMConversation.Send(message, sendOptions) as LCIMTextMessage;
-
-    //}
     public async Task<LCIMTextMessage> SendMessageToSubscribesAsync(string text, string[] toClientIds)
     {
-        LCLogger.Debug($"conv id:{SysConvId}");
-
         LCIMConversation conv = await SysIMClient.CreateConversation(toClientIds,unique:true);
         LCIMTextMessage message = new LCIMTextMessage(text);
         message.ConversationId = SysConvId;

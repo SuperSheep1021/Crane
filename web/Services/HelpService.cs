@@ -56,6 +56,36 @@ public static class HelpService
         LCUser user = await GetUser(objectId);
         return user["online"].ConvertTo<bool>();
     }
+    public static async Task<bool> isSignUped(object userName)
+    {
+        LCQuery<LCUser> query = LCUser.GetQuery();
+        query.WhereEqualTo("username", userName);
+        LCUser firstUser = await query.First();
+        if (firstUser != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public static async Task<bool> SetupOnline(string objectId, bool online)
+    {
+        bool success = false;
+        try
+        {
+            LCUser user = await GetUser(objectId);
+            user["online"] = online;
+            await user.Save();
+            success = true;
+        }
+        catch (LCException ex)
+        {
+            LCLogger.Error(ex.Code + ":" + ex.Message);
+        }
+        return success;
+    }
     public static async Task<LCUser> SetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
