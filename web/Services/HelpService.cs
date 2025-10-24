@@ -43,24 +43,7 @@ public static class HelpService
         }
     }
 
-    //private static T ConvertTo<T>(object value)
-    //{
-    //    if (value == null)
-    //        return default(T);
-
-    //    if (value is T t)
-    //        return t;
-
-    //    try
-    //    {
-    //        return (T)Convert.ChangeType(value, typeof(T));
-    //    }
-    //    catch
-    //    {
-    //        return default(T);
-    //    }
-    //}
-
+    #region//用户相关
     public static async Task<LCUser> GetUser(string objectId)
     {
         LCQuery<LCUser> query = LCUser.GetQuery();
@@ -73,7 +56,6 @@ public static class HelpService
         LCUser user = await GetUser(objectId);
         return user["online"].ConvertTo<bool>();
     }
-    
     public static async Task<LCUser> SetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
@@ -88,40 +70,29 @@ public static class HelpService
         await user.Save();
         return user;
     }
+    #endregion
 
-    public static async Task<bool> ValidateClientID(string clientUserId,string parametersClientUserId)
-    {
-        bool success = false;
-        try
-        {
-            bool online = await isOnline(clientUserId);
-            if (online)
-            {
-                //验证
-                if (clientUserId == parametersClientUserId)
-                {
-                    success = true;
-                }
-            }
-            else {
-                success = false;
-            }
-        }
-        catch
-        {
-            success=false;
-        }
-        return success;
-    }
+    /// <summary>
+    /// default ACL Setup
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public static LCACL SetupACL(LCUser user) 
     {
         LCACL acl = new LCACL();
         acl.SetUserReadAccess(user, true);
         acl.SetUserWriteAccess(user, true);
-        acl.SetUserReadAccess(SysIMClientService.Inst.SysUser, true);
-        acl.SetUserWriteAccess(SysIMClientService.Inst.SysUser, true);
+        acl.SetUserReadAccess(SysService.Inst.SysUser, true);
+        acl.SetUserWriteAccess(SysService.Inst.SysUser, true);
         return acl;
     }
+
+    /// <summary>
+    /// StartGameInfo
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="dic"></param>
+    /// <returns></returns>
     public static async Task<LCObject> CreateStartGameInfo(LCUser user,Dictionary<string,object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(StartGameTable);
@@ -164,6 +135,12 @@ public static class HelpService
 
         return startGameInfo;
     }
+    /// <summary>
+    /// DeviceInfo
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="dic"></param>
+    /// <returns></returns>
     public static async Task<LCObject> CreateOrSetupDeviceInfo(LCUser user,Dictionary<string, object> dic) 
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(DeviceTable);
@@ -193,48 +170,49 @@ public static class HelpService
 
         return devTable;
     }
+    /// <summary>
+    /// GameConfig
+    /// </summary>
+    /// <returns></returns>
     private static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
         LCObject gameConfig = await devQuery.First();
         return gameConfig;
     }
+    /// <summary>
+    /// SpecialDolls
+    /// </summary>
+    /// <returns></returns>
     private static async Task<ReadOnlyCollection<LCObject>> GetSpecialDollsTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(SpecialDollsTable);
         ReadOnlyCollection<LCObject> objs = await devQuery.Find();
         return objs;
     }
-    private static async Task<LCObject> CreateDefaultPlayerPropsInfoFromUser(LCUser user)
-    {
-        LCObject playerProp = new LCObject(PlayerPropsTable);
-        playerProp.ACL = SetupACL(user);
-        playerProp["userId"] = user.ObjectId;
-        playerProp["userName"] = user.Username;
-        await playerProp.Save();
-        return playerProp;
-    }
+    /// <summary>
+    /// PlayerPropsInfo
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public static async Task<LCObject> CreateOrGetPlayerPropsInfoFromUser(LCUser user)
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
         query.WhereEqualTo("userId", user.ObjectId);
-        LCObject palyerProp = await query.First();
-        if (palyerProp ==null) 
+        LCObject playerProp = await query.First();
+        if (playerProp == null) 
         {
-            palyerProp = await CreateDefaultPlayerPropsInfoFromUser(user);
+            playerProp = new LCObject(PlayerPropsTable);
+            playerProp.ACL = SetupACL(user);
+            playerProp["userId"] = user.ObjectId;
+            playerProp["userName"] = user.Username;
+            await playerProp.Save();
         }
-        return palyerProp;
+        return playerProp;
     }
 
-    //public static async Task<T> GetPlayerPropsInfoFromUser<T>(string userId) where T : LCObject
-    //{
-    //    LCQuery<T> query = new LCQuery<T>(PlayerPropsTable);
-    //    query.WhereEqualTo("userId", userId);
-    //    var palyerProp = await query.First();
-    //    return palyerProp;
-    //}
 
-    #region//Power Value
+    #region// Power Value
     public static async Task<bool> AddConsumePower(LCUser user)
     {
         bool success = false;

@@ -14,25 +14,25 @@ using System.Threading.Tasks;
 
 
 
-public class SysIMClientService 
+public class SysService 
 {
-    static SysIMClientService inst;
-    public static SysIMClientService Inst
+    static SysService inst;
+    public static SysService Inst
     {
         get
         {
             if (inst == null)
             {
-                inst = new SysIMClientService();
+                inst = new SysService();
             }
             return inst;
         }
     }
     public string SysUserName { get; private set; }
     public string SysUserPassword { get; private set; }
-    public string SysConvId { get; private set; }
     public LCUser SysUser { get; private set; }
     public LCIMClient SysIMClient { get; private set; }
+    public string SysConvId { get; private set; }
     public LCIMServiceConversation SysIMConversation { get; private set; }
     async Task<bool> GetSysConv()
     {
@@ -61,7 +61,7 @@ public class SysIMClientService
         try
         {
             string monsterKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
-            SysIMClient = new LCIMClient(SysIMClientService.Inst.SysUser, tag: "sys",signatureFactory: new LocalSignatureFactory(monsterKey)  );
+            SysIMClient = new LCIMClient(SysService.Inst.SysUser, tag: "sys",signatureFactory: new LocalSignatureFactory(monsterKey)  );
             await SysIMClient.Open(true);
             success = true;
             LCLogger.Debug($"SysIMClient Opened Id is {SysIMClient.Id}");

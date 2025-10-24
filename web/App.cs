@@ -21,19 +21,19 @@ namespace web {
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
-             return await SysIMClientService.Inst.isSignUped(userName);
+             return await SysService.Inst.isSignUped(userName);
         }
 
         [LCEngineFunction("SysConvId")]
         public static string SysConvId()
         {
-            return SysIMClientService.Inst.SysConvId;
+            return SysService.Inst.SysConvId;
         }
 
         [LCEngineFunction("SysAccountId")]
         public static string SysAccountId()
         {
-            return SysIMClientService.Inst.SysUser.ObjectId;
+            return SysService.Inst.SysUser.ObjectId;
         }
 
         [LCEngineFunction("SysUTCTime")]
@@ -153,7 +153,7 @@ namespace web {
             {
                 clientIdsStrarr.Add(clientid.ToString());
             }
-            return await SysIMClientService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray());
+            return await SysService.Inst.SendMessageToSubscribesAsync(text, clientIdsStrarr.ToArray());
         }
         #endregion
 
@@ -168,14 +168,14 @@ namespace web {
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
         public static async void OnClientOnline(Dictionary<string, object> parameters)
         {
-            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(), true);
+            await SysService.Inst.Online(parameters["peerId"].ToString(), true);
             LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
         public static async void OnClientOffline(Dictionary<string, object> parameters)
         {
-            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(), false);
+            await SysService.Inst.Online(parameters["peerId"].ToString(), false);
             LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
         #endregion

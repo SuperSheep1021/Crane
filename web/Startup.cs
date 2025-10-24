@@ -66,7 +66,7 @@ namespace web {
 
             Task.Run(async () =>
             {
-                await SysIMClientService.Inst.Initialtion();
+                await SysService.Inst.Initialtion();
             });
 
             services.AddControllersWithViews();
