@@ -23,7 +23,7 @@ namespace web {
             LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
             string playerPropjson = await LCJsonUtils.SerializeAsync(playerProp);
 
-            return $"gameconfig: {gameconfig["perAddPower"].ToString() }";
+            return $"gameconfig: { HelpService.ConvertTo<int>(gameconfig["perAddPower"] ) }";
         }
 
 
