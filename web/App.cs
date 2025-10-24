@@ -173,8 +173,10 @@ namespace web {
         #region // onlogin OnClient
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static void OnLogin(LCUser loginUser)
+        public static async Task OnLogin(LCUser loginUser)
         {
+            loginUser["online"] = true;
+            await loginUser.Save();
             LCLogger.Debug($"user login {loginUser.Username}");
         }
 
