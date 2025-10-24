@@ -31,16 +31,16 @@ public class LocalSignatureFactory : ILCIMSignatureFactory
         }
         return Convert.ToBase64String(bytes);
     }
-    public static string GenerateSignature(string args)
-    {
-        //string text = string.Join(":", args);
-        string signature = SignSHA1(m_MasterKey, args);
-        return signature;
-    }
     private static string GenerateSignature(params string[] args)
     {
         string text = string.Join(":", args);
         string signature = SignSHA1(m_MasterKey, text);
+        return signature;
+    }
+    public static string GenerateSignature(string args)
+    {
+        //string text = string.Join(":", args);
+        string signature = SignSHA1(m_MasterKey, args);
         return signature;
     }
     public Task<LCIMSignature> CreateConnectSignature(string clientId)

@@ -19,7 +19,11 @@ namespace web {
             return signature;
             //return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
         }
-
+        [LCEngineFunction("GetMonsterKey")]
+        public static string GetMonsterKey()
+        {
+            return Environment.GetEnvironmentVariable("LEANCLOUD_APP_MASTER_KEY");
+        }
         [LCEngineFunction("isSignUped")]
         public static async Task<bool> isSignUped([LCEngineFunctionParam("userName")] object userName)
         {
