@@ -215,8 +215,10 @@ public static class HelpService
     public static async Task<LCObject> GetGameConfigTableInfo()
     {
         LCQuery<LCObject> devQuery = new LCQuery<LCObject>(GameConfigTable);
-        ReadOnlyCollection<LCObject> gameconfigs = await devQuery.Find();
-        return LCEncoder.Encode(gameconfigs[0], full: true) as LCObject;
+        LCObject gameconfigs = await devQuery.First();
+        LCObject.ParseObject();
+        //ReadOnlyCollection<LCObject> gameconfigs = await devQuery.Find();
+        return LCEncoder.Encode(gameconfigs, full: true) as LCObject;
     }
 
     /// <summary>
