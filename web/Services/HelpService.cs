@@ -60,19 +60,20 @@ public static class HelpService
     //        return default(T);
     //    }
     //}
-    private static async Task<bool> isOnline(string clientUserId) 
+
+    private static async Task<LCUser> GetUser(string objectId)
     {
-        LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("objectId", clientUserId);
-        int count = await query.Count();
-        LCUser user = await query.First();
-        return user["online"].ConvertTo<bool>();
-    }
-    private static async Task<LCUser> GetUser(string userId)
-    {
-        LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("userId", userId);
+        LCQuery<LCUser> query = LCUser.GetQuery();
+        query.WhereEqualTo("objectId", objectId);
         LCUser user = await query.First();
         return user;
     }
+    private static async Task<bool> isOnline(string objectId) 
+    {
+        LCUser user = await GetUser(objectId);
+        return user["online"].ConvertTo<bool>();
+    }
+    
     public static async Task UserSetupPointer(string userId,string key,LCObject lcobject)
     {
         LCUser user = await GetUser(userId);
