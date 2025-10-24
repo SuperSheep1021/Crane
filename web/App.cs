@@ -21,9 +21,9 @@ namespace web {
 
             LCUser user = await HelpService.GetUser("68fb33b2096517792f2bc965");
             LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
-            string playerPropjson = await LCJsonUtils.SerializeAsync(playerProp);
 
-            return $"gameconfig: { HelpService.ConvertTo<int>(gameconfig["perAddPower"] ) }";
+            return $"gameconfig: { HelpService.ConvertTo<int>(gameconfig["perAddPower"] ) }_" +
+                $"__{HelpService.ConvertTo<int>(playerProp["power"])} ";
         }
 
 
