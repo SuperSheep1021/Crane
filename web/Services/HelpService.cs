@@ -67,6 +67,19 @@ public static class HelpService
         LCUser user = await query.First();
         return user["online"].ConvertTo<bool>();
     }
+    private static async Task<LCUser> GetUser(string userId)
+    {
+        LCQuery<LCUser> query = LCUser.GetQuery().WhereEqualTo("userId", userId);
+        LCUser user = await query.First();
+        return user;
+    }
+    public static async Task UserSetupPointer(string userId,string key,LCObject lcobject)
+    {
+        LCUser user = await GetUser(userId);
+        user[key] = lcobject;
+        await user.Save();
+    }
+
     public static async Task<bool> ValidateClientID(string clientUserId,string parametersClientUserId)
     {
         bool success = false;

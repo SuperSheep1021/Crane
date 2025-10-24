@@ -48,40 +48,33 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
         [LCEngineFunction("OnSignUp")]
-        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("parameters")] string parameters) 
+        public static async Task<bool> OnSignUp([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
         {
-            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
-            LCObject deviceInfo = await HelpService.CreateOrSetupDeviceInfo(dic);
+            Dictionary<string, object> deviceInfoDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
+            LCObject deviceInfoObj = await HelpService.CreateOrSetupDeviceInfo(deviceInfoDic);
             LCObject playerPropInfo = await HelpService.CreateDefaultPlayerPropsInfoFromUser(userId);
-            string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId },HelpService.ON_SIGUP, new Dictionary<string, object>()
             {
-                { "deviceInfoId",deviceInfo.ObjectId },
-                { "playerPropInfoId",playerPropInfo.ObjectId },
-                { "playerProp", playerPropJson }
+                { "playerProp",playerPropInfo.ToString() }
             });
             return true;
         }
 
         [LCEngineFunction("OnLogin")]
-        public static async Task OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfoJson")] string deviceInfoJson)
+        public static async Task OnLogin([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("deviceInfo")] string deviceInfo)
         {
-            Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfoJson);
-            LCLogger.Debug("================CreateOrSetupDeviceInfo==================");
-            await HelpService.CreateOrSetupDeviceInfo(deviceDic);
-            LCLogger.Debug("================CreateOrSetupDeviceInfo==================");
+            Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
+            LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(deviceDic);
+            await HelpService.UserSetupPointer(userId, "deviceInfo", deviceObj);
 
-            LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
-            LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
-            LCLogger.Debug($"================{playerPropInfo.ToString() }==================");
-            LCLogger.Debug("================GetPlayerPropsInfoFromUser==================");
-            if (playerPropInfo == null ) return;
+            LCObject playerPropObj = await HelpService.GetPlayerPropsInfoFromUser(userId);
+            if (playerPropObj == null) return;
+            await HelpService.UserSetupPointer(userId, "playerPropInfo", playerPropObj);
 
-            string playerPropJson = JsonConvert.SerializeObject(playerPropInfo);
-            LCLogger.Debug(playerPropJson);
+            
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { userId }, HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
-                { "playerPropJson",playerPropInfo.ToString() }
+                { "playerProp",playerPropObj.ToString() }
             });
         }
 
