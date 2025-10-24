@@ -31,22 +31,29 @@ namespace web {
                     .AddConsole();
             });
 
-            LCLogger.LogDelegate = (level, log) => 
+            bool openDebug = bool.Parse( Environment.GetEnvironmentVariable("DEBUG_LOG") );
+            if (openDebug)
             {
-                switch (level) {
-                    case LCLogLevel.Debug:
-                        Console.WriteLine($"[DEBUG] {log}");
-                        break;
-                    case LCLogLevel.Warn:
-                        Console.WriteLine($"[WARN] {log}");
-                        break;
-                    case LCLogLevel.Error:
-                        Console.WriteLine($"[ERROR] {log}");
-                        break;
-                    default:
-                        break;
-                }
-            };
+                LCLogger.LogDelegate = (level, log) =>
+                {
+                    switch (level)
+                    {
+                        case LCLogLevel.Debug:
+                            Console.WriteLine($"[DEBUG] {log}");
+                            break;
+                        case LCLogLevel.Warn:
+                            Console.WriteLine($"[WARN] {log}");
+                            break;
+                        case LCLogLevel.Error:
+                            Console.WriteLine($"[ERROR] {log}");
+                            break;
+                        default:
+                            break;
+                    }
+                };
+            }
+            
+
             LCEngine.Initialize(services);
 
             //string appId = Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID");
