@@ -198,6 +198,13 @@ public static class HelpService
         var palyerProp = await query.First();
         return palyerProp;
     }
+    //public static async Task<T> GetPlayerPropsInfoFromUser<T>(string userId) where T : LCObject
+    //{
+    //    LCQuery<T> query = new LCQuery<T>(PlayerPropsTable);
+    //    query.WhereEqualTo("userId", userId);
+    //    var palyerProp = await query.First();
+    //    return palyerProp;
+    //}
 
     #region//Power Value
     public static async Task<bool> AddConsumePower(string userId)
