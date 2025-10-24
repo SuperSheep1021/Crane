@@ -42,6 +42,28 @@ namespace web {
             return await RESTAPIService.Inst.GetSysUTCTime();
         }
 
+        #region//增益
+        [LCEngineFunction("AddPower")]
+        public static async Task<bool> AddPower([LCEngineFunctionParam("userId")] string userId)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            return await HelpService.AddPower(user);
+        }
+        [LCEngineFunction("AddGoldCoin")]
+        public static async Task<bool> AddGoldCoin([LCEngineFunctionParam("userId")] string userId)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            return await HelpService.AddGoldCoin(user,10);
+        }
+        [LCEngineFunction("AddGem")]
+        public static async Task<bool> AddGem([LCEngineFunctionParam("userId")] string userId)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            return await HelpService.AddGem(user,10);
+        }
+        #endregion
+
+
 
         [LCEngineFunction("OnSignUpOrLogin")]
         public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
@@ -223,7 +245,7 @@ namespace web {
         }
         #endregion
 
-        #region//Conversation
+        #region//会话操作
         /// <summary>
         /// 创建对话，在签名校验（如果开启）之后，实际创建之前调用。开发者在这里可以为新的「对话」添加其他内部属性，或完成操作鉴权，以及其他类似操作。
         /// </summary>

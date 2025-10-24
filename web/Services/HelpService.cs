@@ -47,8 +47,8 @@ public static class HelpService
     public static async Task<LCUser> GetUser(string objectId)
     {
         LCQuery<LCUser> query = LCUser.GetQuery();
-        query.WhereEqualTo("objectId", objectId);
-        LCUser user = await query.First();
+        //query.WhereEqualTo("objectId", objectId);
+        LCUser user = await query.Get(objectId);
         return user;
     }
     private static async Task<bool> isOnline(string objectId) 
@@ -243,7 +243,7 @@ public static class HelpService
 
 
     #region// Power Value
-    public static async Task<bool> AddConsumePower(LCUser user)
+    public static async Task<bool> AddPower(LCUser user)
     {
         bool success = false;
         LCObject palyerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
