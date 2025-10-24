@@ -47,7 +47,8 @@ namespace web {
                         break;
                 }
             };
-            //LCEngine.Initialize(services);
+            LCEngine.Initialize(services);
+
             string appId = Environment.GetEnvironmentVariable("LEANCLOUD_APP_ID");
             string appKey = Environment.GetEnvironmentVariable("LEANCLOUD_APP_KEY");
             string server = Environment.GetEnvironmentVariable("LEANCLOUD_API_SERVER");
