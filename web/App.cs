@@ -173,24 +173,24 @@ namespace web {
         #region // onlogin OnClient
 
         [LCEngineUserHook(LCEngineUserHookType.OnLogin)]
-        public static async Task OnLogin(LCUser loginUser)
+        public static void OnLogin(LCUser loginUser)
         {
-            loginUser["online"] = true;
-            await loginUser.Save();
+            //loginUser["online"] = true;
+            //await loginUser.Save();
             LCLogger.Debug($"user login {loginUser.Username}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOnline)]
-        public static async void OnClientOnline(Dictionary<string, object> parameters)
+        public static void OnClientOnline(Dictionary<string, object> parameters)
         {
-            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(),true);
+            //await SysIMClientService.Inst.Online(parameters["peerId"].ToString(),true);
             LCLogger.Debug($"OnClientOnline {parameters["peerId"]}");
         }
 
         [LCEngineRealtimeHook(LCEngineRealtimeHookType.ClientOffline)]
-        public static async void OnClientOffline(Dictionary<string, object> parameters)
+        public static void OnClientOffline(Dictionary<string, object> parameters)
         {
-            await SysIMClientService.Inst.Online(parameters["peerId"].ToString(), false);
+            //await SysIMClientService.Inst.Online(parameters["peerId"].ToString(), false);
             LCLogger.Debug($"OnClientOffline {parameters["peerId"]}");
         }
         #endregion
