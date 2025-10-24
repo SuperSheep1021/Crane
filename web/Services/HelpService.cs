@@ -195,7 +195,7 @@ public static class HelpService
     {
         LCQuery<LCObject> query = new LCQuery<LCObject>(PlayerPropsTable);
         query.WhereEqualTo("userId", userId);
-        LCObject palyerProp = await query.First();
+        var palyerProp = await query.First();
         return palyerProp;
     }
 

@@ -69,7 +69,7 @@ namespace web {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfoJson);
             await HelpService.CreateOrSetupDeviceInfo(deviceDic);
 
-            LCObject playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
+            var playerPropInfo = await HelpService.GetPlayerPropsInfoFromUser(userId);
             if (playerPropInfo == null ) return;
 
             string playerPropJson = await LCJsonUtils.SerializeAsync(playerPropInfo);
