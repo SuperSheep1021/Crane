@@ -133,9 +133,10 @@ public static class HelpService
         if (getSpecialDoll != null)
         {
             LCObject playerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
-            List<object> dolls = playerProp["specialDolls"] as List<object>;
+            List<object> dolls = new List<object>();
+            dolls.AddRange( playerProp["specialDolls"]  as object[] );
             dolls.Add(getSpecialDoll);
-            playerProp["specialDolls"] = dolls;
+            playerProp["specialDolls"] = dolls.ToArray();
             await playerProp.Save();
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_SPECIAL_DOLL, new Dictionary<string, object>()
