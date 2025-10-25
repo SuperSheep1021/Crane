@@ -134,18 +134,20 @@ public static class HelpService
 
         if (getSpecialDoll != null)
         {
+
             LCObject playerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
-            LCLogger.Debug($"==== {playerProp["specialDolls"] }");
-
-
-            List<object> dolls = new List<object>();
-            if (playerProp["specialDolls"] != null)
+            List<object> userContainSpecialDolls = default;
+            if (playerProp["specialDolls"] == null)
             {
-                dolls.AddRange((object[])playerProp["specialDolls"]);
+                userContainSpecialDolls = new List<object>();
             }
-            dolls.Add(getSpecialDoll);
+            else {
+                userContainSpecialDolls = playerProp["specialDolls"] as List<object>;
+            }
+            userContainSpecialDolls.Add(getSpecialDoll);
 
-            playerProp["specialDolls"] = dolls.ToArray();
+            playerProp["specialDolls"] = userContainSpecialDolls;
+
             await playerProp.Save();
 
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_SPECIAL_DOLL, new Dictionary<string, object>()
