@@ -129,9 +129,10 @@ public static class HelpService
     {
         LCObject currStartGameObj = await GetCurrentStartGameInfo(user);
         string getSpecialDoll = currStartGameObj["containsSpecialDoll"] as string;
+        LCLogger.Debug($"ªÒ»°{getSpecialDoll}");
         if (getSpecialDoll != null)
         {
-            LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+            LCObject playerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
             List<object> dolls = playerProp["specialDolls"] as List<object>;
             dolls.Add(getSpecialDoll);
             playerProp["specialDolls"] = dolls;
