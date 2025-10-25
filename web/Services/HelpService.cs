@@ -136,7 +136,7 @@ public static class HelpService
             List<object> dolls = new List<object>();
             if (playerProp["specialDolls"] != null)
             {
-                dolls.AddRange(playerProp["specialDolls"] as object[]);
+                dolls.AddRange( ConvertTo<object[]>(playerProp["specialDolls"]) );
             }
             dolls.Add(getSpecialDoll);
 
