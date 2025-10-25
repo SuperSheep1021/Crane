@@ -99,6 +99,7 @@ namespace web {
         }
         #endregion
 
+
         [LCEngineFunction("OnSignUpOrLogin")]
         public static async void OnSignUpOrLogin([LCEngineFunctionParam("userId")] string userId,
             [LCEngineFunctionParam("upd")] string upd, [LCEngineFunctionParam("deviceInfo")] string deviceInfo) 
@@ -107,11 +108,8 @@ namespace web {
             Dictionary<string, object> deviceDic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(deviceInfo);
 
             LCObject deviceObj = await HelpService.CreateOrSetupDeviceInfo(user,deviceDic);
-            
-
             LCObject playerPropObj = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
             
-
             await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId },HelpService.ON_LOGIN, new Dictionary<string, object>()
             {
                 { "playerProp",playerPropObj.ToString() }
@@ -120,7 +118,7 @@ namespace web {
 
 
         [LCEngineFunction("StartGame")]
-        public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("clientTimes")] string parameters)
+        public static async Task<bool> StartGame([LCEngineFunctionParam("userId")] string userId, [LCEngineFunctionParam("clientTimes")] string clientTimes)
         {
             LCUser user = await HelpService.GetUser(userId);
             bool success = await HelpService.ConsumePower(user);
@@ -134,7 +132,8 @@ namespace web {
                 CreateSpecialName = HelpService.SpecialDollsGenerator.Generate();
             }
 
-            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(parameters);
+            Dictionary<string, object> dic = await LCJsonUtils.DeserializeObjectAsync<Dictionary<string, object>>(clientTimes);
+            dic.Add("containsSpecialDoll", CreateSpecialName);
             LCObject startGameInfo = await HelpService.CreateStartGameInfo(user, dic);
             await HelpService.SetupPointer(user.ObjectId, "startGameInfo", startGameInfo);
 
@@ -146,6 +145,22 @@ namespace web {
             return success;
         }
 
+        [LCEngineFunction("CompleteLevel")]
+        public static async Task<bool> CompleteLevel([LCEngineFunctionParam("userId")] string userId)
+        {
+            LCUser user = await HelpService.GetUser(userId);
+            LCObject currStartGameObj =await HelpService.GetCurrentStartGameInfo(user);
+            string getSpecialDoll = currStartGameObj["containsSpecialDoll"] as string;
+            if (getSpecialDoll != null) 
+            {
+                LCObject playerProp =await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+                List<object> dolls = playerProp["specialDolls"] as List<object>;
+                dolls.Add(getSpecialDoll);
+                playerProp["specialDolls"] = dolls;
+                await playerProp.Save();
+            }
+            return true;
+        }
 
         #region//测试用
 

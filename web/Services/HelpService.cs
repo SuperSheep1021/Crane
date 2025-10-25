@@ -120,6 +120,8 @@ public static class HelpService
         await user.Save();
         return user;
     }
+
+
     #endregion
 
     /// <summary>
@@ -218,6 +220,20 @@ public static class HelpService
         }
         return deviceObj;
     }
+
+    /// <summary>
+    /// 获取用户最近的startGameInfo
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public static async Task<LCObject> GetCurrentStartGameInfo(LCUser user)
+    {
+        LCObject pointer = user["startGame"] as LCObject;
+        LCQuery<LCObject> query = new LCQuery<LCObject>(StartGameTable);
+        LCObject startGameObj = await query.Get(pointer.ObjectId);
+        return startGameObj;
+    }
+
     /// <summary>
     /// GameConfig
     /// </summary>
