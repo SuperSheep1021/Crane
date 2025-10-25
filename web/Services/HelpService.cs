@@ -135,7 +135,7 @@ public static class HelpService
         if (getSpecialDoll != null)
         {
             LCObject playerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
-            LCLogger.Debug($"==== {(object[])playerProp["specialDolls"]}");
+            LCLogger.Debug($"==== {playerProp["specialDolls"] }");
 
 
             List<object> dolls = new List<object>();
