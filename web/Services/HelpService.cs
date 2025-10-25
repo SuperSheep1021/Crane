@@ -38,6 +38,11 @@ public static class HelpService
     public static string ADD_GOLD_COIN_SUCCESS = "100201";
     public static string ADD_GEM_SUCCESS = "100202";
 
+    /// <summary>
+    /// Ω·À„ªÒµ√ÕÊ≈º
+    /// </summary>
+    public static string ADD_SPECIAL_DOLL = "100300";
+
 
     public static T ConvertTo<T>(this object obj)
     {

@@ -146,7 +146,7 @@ namespace web {
         }
 
         [LCEngineFunction("CompleteLevel")]
-        public static async Task<bool> CompleteLevel([LCEngineFunctionParam("userId")] string userId)
+        public static async void CompleteLevel([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
             LCObject currStartGameObj =await HelpService.GetCurrentStartGameInfo(user);
@@ -158,8 +158,12 @@ namespace web {
                 dolls.Add(getSpecialDoll);
                 playerProp["specialDolls"] = dolls;
                 await playerProp.Save();
+
+                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_SPECIAL_DOLL, new Dictionary<string, object>()
+                {
+                    {"addSpecialDoll",getSpecialDoll }
+                });
             }
-            return true;
         }
 
         #region//测试用
