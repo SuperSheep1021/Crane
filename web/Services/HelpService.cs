@@ -250,7 +250,7 @@ public static class HelpService
     /// <returns></returns>
     public static async Task<LCObject> GetCurrentStartGameInfo(LCUser user)
     {
-        LCObject pointer = user["startGame"] as LCObject;
+        LCObject pointer = user["startGameInfo"] as LCObject;
         LCQuery<LCObject> query = new LCQuery<LCObject>(StartGameTable);
         LCObject startGameObj = await query.Get(pointer.ObjectId);
         return startGameObj;
