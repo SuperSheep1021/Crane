@@ -145,25 +145,13 @@ namespace web {
             return success;
         }
 
+
+
         [LCEngineFunction("CompleteLevel")]
         public static async void CompleteLevel([LCEngineFunctionParam("userId")] string userId)
         {
             LCUser user = await HelpService.GetUser(userId);
-            LCObject currStartGameObj =await HelpService.GetCurrentStartGameInfo(user);
-            string getSpecialDoll = currStartGameObj["containsSpecialDoll"] as string;
-            if (getSpecialDoll != null) 
-            {
-                LCObject playerProp =await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
-                List<object> dolls = playerProp["specialDolls"] as List<object>;
-                dolls.Add(getSpecialDoll);
-                playerProp["specialDolls"] = dolls;
-                await playerProp.Save();
-
-                await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_SPECIAL_DOLL, new Dictionary<string, object>()
-                {
-                    {"addSpecialDoll",getSpecialDoll }
-                });
-            }
+            await HelpService.AddSpecialDoll(user);
         }
 
         #region//测试用

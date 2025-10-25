@@ -125,8 +125,25 @@ public static class HelpService
         await user.Save();
         return user;
     }
+    public static async Task<bool> AddSpecialDoll(LCUser user)
+    {
+        LCObject currStartGameObj = await GetCurrentStartGameInfo(user);
+        string getSpecialDoll = currStartGameObj["containsSpecialDoll"] as string;
+        if (getSpecialDoll != null)
+        {
+            LCObject playerProp = await HelpService.CreateOrGetPlayerPropsInfoFromUser(user);
+            List<object> dolls = playerProp["specialDolls"] as List<object>;
+            dolls.Add(getSpecialDoll);
+            playerProp["specialDolls"] = dolls;
+            await playerProp.Save();
 
-
+            await RESTAPIService.Inst.SendMessageToSubscribesClientsAsync(new string[] { user.ObjectId }, HelpService.ADD_SPECIAL_DOLL, new Dictionary<string, object>()
+            {
+                {"addSpecialDoll",getSpecialDoll }
+            });
+        }
+        return true;
+    }
     #endregion
 
     /// <summary>
