@@ -134,8 +134,12 @@ public static class HelpService
         {
             LCObject playerProp = await CreateOrGetPlayerPropsInfoFromUser(user);
             List<object> dolls = new List<object>();
-            dolls.AddRange( playerProp["specialDolls"]  as object[] );
+            if (playerProp["specialDolls"] != null)
+            {
+                dolls.AddRange(playerProp["specialDolls"] as object[]);
+            }
             dolls.Add(getSpecialDoll);
+
             playerProp["specialDolls"] = dolls.ToArray();
             await playerProp.Save();
 
